@@ -74,6 +74,14 @@ export const VIBE_SUGGESTIONS = [
     "A meditative moment in a Zen garden",
     "The rush of the first snowfall",
     "The courage in facing the unknown",
+    "The thrill of a first kiss",
+    "The excitement of a new romance",
+    "Reveling in the beauty of a summer day",
+    "Vibrant colors of a spring garden",
+    "Achieving a long-sought goal",
+    "The thrill of a chase",
+    "Celebrating a hard-earned victory",
+    "Completing a long journey",
 ];
 
 export const PROMPT_SUGGESTIONS = [

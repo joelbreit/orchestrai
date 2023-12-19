@@ -58,7 +58,8 @@ const Header = (args) => {
 									Try It!
 								</Badge>
 							</NavLink>
-						</NavItem><NavItem>
+						</NavItem>
+						<NavItem>
 							<NavLink tag={RouterNavLink} to="/ABCEditor">
 								ABCEditor
 							</NavLink>
@@ -112,7 +113,16 @@ const Header = (args) => {
 				<hr /> */}
 				<p className="mb-0">
 					We will be adding more features soon, including the ability
-					to save your compositions and a research page.
+					to save your compositions and share them with others! In the
+					meantime, join our{" "}
+					<a
+						href="https://discord.gg/e3nNUGVA7A"
+						target="_blank"
+						rel="noreferrer"
+					>
+						Discord
+					</a>{" "}
+					to get updates and chat with us!
 				</p>
 			</Alert>
 		</div>

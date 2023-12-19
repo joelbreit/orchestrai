@@ -6,18 +6,23 @@ const nonNoteNotationRegex = /[\[\]\:\|\\n]/i;
 class ABCNotation {
 	constructor(abcNotation) {
 		this.abcNotation = abcNotation;
-		// Get line starting with "T: " and get the rest of the line
-		this.title = abcNotation.match(/^T:(.*)$/m)[1];
+        this.title = this.extractTitle();
 		this.voices = new Map();
 		this.measureTextMatrix = [];
 		this.measureBeatsMatrix = [];
 		this.readNotation();
 	}
 
+    extractTitle() {
+        const titleMatch = this.abcNotation.match(/^T:(.*)$/m);
+        return titleMatch ? titleMatch[1].trim() : 'Untitled';
+    }
+
 	readNotation() {
 		let lines = this.abcNotation.split("\n");
 		lines = lines.filter((line) => line !== "");
 		lines = lines.filter((line) => !line.startsWith("%"));
+		lines = lines.filter((line) => !line.startsWith("w"));
 		// Remove all consecutive lines that start with "V"
 		if (lines.some((line) => line.startsWith("V:"))) {
 			let index = lines.findIndex((line) => line.startsWith("V:"));
@@ -99,6 +104,8 @@ class ABCNotation {
 				}
 				beats.push(measureBeats);
 			}
+			// Remove any 0s from the beats array
+			beats = beats.filter((beat) => beat !== 0);
 			this.measureBeatsMatrix.push(beats);
 		}
 		console.log(this.measureTextMatrix);
@@ -215,6 +222,35 @@ z2 |: [G,2B,2] z B2D2 | [C,2E2] z E2A,2 | [G,2B,2] z B2D2 | [D2F2] z F2A,2 |
 [G,2B,2] z B2D2 | [C,2E2] z E2G,2 | [G,2B,2] z B2D2 | [G,2B,2] z8 :|
 `;
 
+const abc2 = `X:1
+T:Forest Dusk Serenade
+C:OrchestrAI
+M:4/4
+L:1/8
+Q:1/4=80
+K:Am
+V:1 clef=treble
+%%MIDI program 71
+|:"Am" A3 B c2 de |"G" G4- G2 FE |"F" F3 G A2 cB |"E7" E6 z2 |
+w: The melo-dy starts gent-ly, sug-gest-ing the rhyth-mic sway-ing of tree branch-es.
+"Am" A3 B c2 de |"C" c4- c2 E2 |"G" G3 A B2 d^c |"Am" A6 z2 |
+w: The soft cho-rds rep-re-sent twi-light's scep-ter as shadows blend to dark.
+"E" e3 ^c d2 cB |"Am" A4- A2 ^c2 |"F" d3 c B2 AG |"E7" E6 z2 |
+w: Eth-e-real sounds ech-o, as day-light whis-pers a ten-der fare-well.
+"Am" A3 B "F" A2 F2 |"G" E4- E2 D2 |"Am" C3 D E2 ^C2 |"E7" E6 z2 :|
+w: Soft con-clus-ion as the dusk falls more deep-ly in-to si-lence.
+V:2 clef=bass
+%%MIDI program 42
+|:"Am" A,6 z2 |"G" [D,2G,2B,2] z4 |"F" F,6 z2 |"E7" [E,2G,2B,2] z4 |
+"Am" A,2 C2 E2 A,2 |"C" [C,2E2G2] z4 |"G" D,2 G,2 B,2 D2 |"Am" A,6 z2 |
+"E" [E2^G2B2] z4 |"Am" A,2 C2 E2 A,2 |"F" [F,2A,2C2] z4 |"E7" [E,2G,2B,2] z4 |
+"Am" A,2 ^C2 E2 A,2 |"G" [D,2G,2B,2] z4 |"Am" [C,2E2A,2] z4 |"E7" [E,2G,2B,2] z4:|
+`;
+
 const abcNotation = new ABCNotation(abc);
+
+const abcNotation2 = new ABCNotation(abc2);
+
+console.log(abcNotation.measureTextMatrix);
 
 // export default ABCNotation;
