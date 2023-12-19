@@ -1,0 +1,10 @@
+$primary: #ed8d38;
+$primary-highlight: #d37c30c5;
+
+.highlight {
+	fill: $primary-highlight;
+}
+
+.abcjs-cursor {
+	stroke: $primary;
+}

@@ -1,0 +1,58 @@
+$primary: #0779E4;
+$primary-hover: #03529d;
+
+$secondary: #4CBBB9;
+$secondary-hover: #2f8e8c;
+
+$tertiary: #77D8D8;
+$tertiary-hover: #5db1b1;
+
+$quaternary: #EFF3C6;
+$quaternary-hover: #dce0a9;
+
+$danger: #FF8080;
+$danger-hover: #e57373;
+
+$succes: #AEDF8E;
+$succes-hover: #8ecf6e;
+
+.primary-navbar {
+    background-color: $primary !important;
+}
+
+.secondary-navbar {
+    background-color: $secondary !important;
+}
+
+.primary-button {
+    background-color: $primary !important;
+    border-color: $primary !important;
+    // hover
+    &:hover {
+        background-color: $primary-hover !important;
+        border-color: $primary-hover !important;
+    }
+}
+
+.secondary-button {
+    background-color: $secondary !important;
+    border-color: $secondary !important;
+    // hover
+    &:hover {
+        background-color: $secondary-hover !important;
+        border-color: $secondary-hover !important;
+    }
+}
+
+// Progres bar
+.primary-progress-bar .progress-bar-animated {
+    background-color: $primary !important;
+}
+
+.tertiary-progress-bar .progress-bar-animated {
+    background-color: $tertiary !important;
+}
+
+.quaternary-background {
+    background-color: $quaternary !important;
+}
