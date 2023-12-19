@@ -1,4 +1,8 @@
+// Import dependencies
+import React, { useState, useContext } from "react";
 import {
+	Alert,
+	Badge,
 	Collapse,
 	Nav,
 	NavItem,
@@ -7,13 +11,18 @@ import {
 	NavbarBrand,
 	NavbarToggler,
 } from "reactstrap";
-import React, { useState } from "react";
-
 import { NavLink as RouterNavLink } from "react-router-dom";
 
+// Import contexts
+import { AppContext } from "../contexts/AppContext";
+
+// Import assets
 import OrcheImage from "../assets/images/Orche.png";
 
 const Header = (args) => {
+	// App context
+	const { appState } = useContext(AppContext);
+
 	const [isOpen, setIsOpen] = useState(false);
 
 	const toggle = () => setIsOpen(!isOpen);
@@ -45,16 +54,16 @@ const Header = (args) => {
 						<NavItem>
 							<NavLink tag={RouterNavLink} to="/compose">
 								Compose{" "}
-								<span className="icon-square flex-shrink-0">
-									<i className={`bi bi-plus`}></i>
-								</span>
+								<Badge color="success" pill>
+									Try It!
+								</Badge>
 							</NavLink>
-						</NavItem>
-						{/* <NavItem>
+						</NavItem><NavItem>
 							<NavLink tag={RouterNavLink} to="/ABCEditor">
 								ABCEditor
 							</NavLink>
 						</NavItem>
+						{/* 
 						<NavItem>
 							<NavLink tag={RouterNavLink} to="/portfolio">
 								Portfolio
@@ -64,7 +73,7 @@ const Header = (args) => {
 							<NavLink tag={RouterNavLink} to="/about">
 								About This Site
 							</NavLink>
-						</NavItem>
+						</NavItem> */}
 						<NavItem>
 							<NavLink tag={RouterNavLink} to="/research">
 								Research
@@ -74,18 +83,38 @@ const Header = (args) => {
 							<NavLink tag={RouterNavLink} to="/juxcompose">
 								Juxcompose
 							</NavLink>
-						</NavItem> */}
+						</NavItem>
 						{/* TODO Move to far right */}
+
 						<NavItem style={{ marginLeft: "auto" }}>
 							<NavLink tag={RouterNavLink} to="/profile">
-								<span className="icon-square flex-shrink-0">
-									<i className={`bi bi-person-circle`}></i>
-								</span>
+								{appState.authenticated ? (
+									<span className="icon-square flex-shrink-0">
+										<i className={`bi bi-person-check`}></i>
+									</span>
+								) : (
+									<span className="icon-square flex-shrink-0">
+										<i className={`bi bi-person-dash`}></i>
+									</span>
+								)}
 							</NavLink>
 						</NavItem>
 					</Nav>
 				</Collapse>
 			</Navbar>
+			{/* Banner alert that this site is in beta */}
+			<Alert color="info" className="text-center">
+				<h4 className="alert-heading">OrchestrAI is in beta!</h4>
+				{/* <p>
+					We are still working on the site. If you have any
+					suggestions, please let us know!
+				</p>
+				<hr /> */}
+				<p className="mb-0">
+					We will be adding more features soon, including the ability
+					to save your compositions and a research page.
+				</p>
+			</Alert>
 		</div>
 	);
 };

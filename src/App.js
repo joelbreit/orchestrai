@@ -7,6 +7,8 @@ import ComposePage from "./pages/ComposePage";
 import ProfilePage from "./pages/ProfilePage";
 import { AppProvider } from "./contexts/AppContext";
 import PortfolioPage from "./pages/PortfolioPage";
+import ResearchPage from "./pages/ResearchPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
 	return (
@@ -19,6 +21,8 @@ function App() {
 					<Route path="/juxcompose" element={<JuxComposePage />} />
 					<Route path="/profile" element={<ProfilePage />} />
 					<Route path="/portfolio" element={<PortfolioPage />} />
+					<Route path="/research" element={<ResearchPage />} />
+					<Route path="*" element={<NotFoundPage />} />
 				</Routes>
 			</BrowserRouter>
 		</AppProvider>
