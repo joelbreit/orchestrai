@@ -160,6 +160,16 @@ const ABCEditorContent = ({ tuneId }) => {
 								)}
 							</Col>
 						</Row>
+						<Row className="mt-2">
+							<Col>
+								<h2>Description</h2>
+								{description ? (
+									<p>{description}</p>
+								) : (
+									<p>No description provided</p>
+								)}
+							</Col>
+						</Row>
 					</div>
 				)}
 

@@ -112,9 +112,9 @@ const Header = (args) => {
 				</p>
 				<hr /> */}
 				<p className="mb-0">
-					We will be adding more features soon, including the ability
-					to save your compositions and share them with others! In the
-					meantime, join our{" "}
+					We just added the ability to save your compositions and
+					share them with others and more features are on the way! In
+					the meantime, join our{" "}
 					<a
 						href="https://discord.gg/e3nNUGVA7A"
 						target="_blank"

@@ -95,7 +95,7 @@ const ComposeContent = () => {
 	const handleNotationChange = (e) => {
 		setAbcNotation(e.target.value);
 	};
-	console.log("tuneId:", tuneId);
+	// console.log("tuneId:", tuneId);
 
 	// Calculate % complete
 	useEffect(() => {
