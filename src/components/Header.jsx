@@ -64,12 +64,12 @@ const Header = (args) => {
 								ABCEditor
 							</NavLink>
 						</NavItem>
-						{/* 
 						<NavItem>
 							<NavLink tag={RouterNavLink} to="/portfolio">
 								Portfolio
 							</NavLink>
 						</NavItem>
+						{/* 
 						<NavItem>
 							<NavLink tag={RouterNavLink} to="/about">
 								About This Site
@@ -103,9 +103,13 @@ const Header = (args) => {
 					</Nav>
 				</Collapse>
 			</Navbar>
-			{/* Banner alert that this site is in beta */}
 			<Alert color="info" className="text-center">
-				<h4 className="alert-heading">OrchestrAI is in beta!</h4>
+				<h4 className="alert-heading">
+					OrchestrAI is under construction{" "}
+					<span role="img" aria-label="construction emoji">
+						🔧
+					</span>
+				</h4>
 				{/* <p>
 					We are still working on the site. If you have any
 					suggestions, please let us know!

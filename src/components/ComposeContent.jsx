@@ -241,6 +241,9 @@ const ComposeContent = () => {
 				const messagesLength = LOADING_MESSAGES.length;
 				console.log("Progress:", Math.round(progress * 100), "%");
 				messageIndex = Math.floor(progress * messagesLength);
+				if (messageIndex >= messagesLength) {
+					messageIndex = messagesLength - 1;
+				}
 				console.log("Message index:", messageIndex);
 				setLoadingMessage(LOADING_MESSAGES[messageIndex]);
 
@@ -259,6 +262,7 @@ const ComposeContent = () => {
 			setAbcNotation(output.match(/```([^`]*)```/)[1]);
 			setDescription(output.replace(/```([^`]*)```/, ""));
 			setHasGeneratedMusic(true);
+			setTuneId(uuidv4());
 			setSaveState("");
 			setSaveStatusCode(0);
 			console.log("Generated music:", abcNotation); // It's not updating here either
@@ -277,6 +281,7 @@ const ComposeContent = () => {
 		const file = new Blob(
 			[
 				`Version: ${SAVE_FILE_VERSION}\n
+tuneId: ${tuneId}\n
 accountId: ${appState.accountId}\n
 Date and Time: ${new Date().toLocaleString()}\n
 Input: ${input}\n
@@ -298,7 +303,6 @@ Feedback: ${feedback}\n`,
 
 	const handleSaveTune = async () => {
 		setSaveState("Loading");
-		const tune_id = uuidv4();
 
 		const saveTuneResponse = await fetch(`${apiUrl}/saveTune`, {
 			method: "POST",
@@ -306,7 +310,7 @@ Feedback: ${feedback}\n`,
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify({
-				tuneId: tune_id,
+				tuneId: tuneId,
 				accountId: appState.accountId,
 				date: new Date().toISOString().slice(0, 10),
 				thread: thread,
@@ -329,7 +333,6 @@ Feedback: ${feedback}\n`,
 		}
 		console.log("Save Tune Response:", saveTuneBody);
 
-		setTuneId(tune_id);
 		setSaveStatusCode(statusCode);
 		setSaveState("Complete");
 	};
@@ -586,9 +589,21 @@ Feedback: ${feedback}\n`,
 													height="30"
 													alt="Orche"
 												/>{" "}
-												Failed to clean notation.{" "}
-												{numWarnings} warnings were
-												issued.
+												<span>
+													Sorry, but we couldn't clean
+													up this tune. {numWarnings}{" "}
+													warnings were issued. See
+													something strange? Let us
+													know on our{" "}
+													<a
+														href="https://discord.gg/e3nNUGVA7A"
+														target="_blank"
+														rel="noreferrer"
+													>
+														Discord
+													</a>
+													.
+												</span>
 											</div>
 										</Alert>
 									) : numWarnings > 0 ? (

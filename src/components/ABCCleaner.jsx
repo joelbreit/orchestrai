@@ -159,8 +159,20 @@ const ABCCleaner = () => {
 										height="30"
 										alt="Orche"
 									/>{" "}
-									Failed to clean notation. {numWarnings}{" "}
-									warnings were issued.
+									<span>
+										Sorry, but we couldn't clean up this
+										tune. {numWarnings} warnings were
+										issued. See something strange? Let us
+										know on our{" "}
+										<a
+											href="https://discord.gg/e3nNUGVA7A"
+											target="_blank"
+											rel="noreferrer"
+										>
+											Discord
+										</a>
+										.
+									</span>
 								</div>
 							</Alert>
 						) : numWarnings > 0 ? (
