@@ -21,12 +21,7 @@ import {
 import { AppContext } from "../contexts/AppContext";
 
 // Import parameters
-import {
-	EMAIL_REGEX,
-	PASSWORD_REGEX,
-	USERNAME_REGEX,
-	ACCOUNTNAME_REGEX,
-} from "../assets/Regex";
+import { EMAIL_REGEX, PASSWORD_REGEX } from "../assets/Regex";
 const apiUrl = process.env.REACT_APP_API_URL;
 
 const CreateAccountForm = () => {
@@ -34,17 +29,13 @@ const CreateAccountForm = () => {
 	const { setAppState } = useContext(AppContext);
 
 	// Form fields
-	const [UUID, setUUID] = useState(uuidv4());
+	const [accountId, setAccountId] = useState(uuidv4());
 	const [email, setEmail] = useState("");
-	const [username, setUsername] = useState("");
-	const [accountName, setAccountName] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 
 	// Validation state
 	const [emailValid, setEmailValid] = useState(null);
-	const [usernameValid, setUsernameValid] = useState(null);
-	const [accountNameValid, setAccountNameValid] = useState(null);
 	const [passwordValid, setPasswordValid] = useState(null);
 	const [confirmPasswordValid, setConfirmPasswordValid] = useState(null);
 
@@ -56,30 +47,6 @@ const CreateAccountForm = () => {
 		setEmailValid(valid || emailInput === "");
 		if (!valid) {
 			setError("Please enter a valid email address");
-		} else {
-			setError("");
-		}
-	};
-
-	const validateUsername = (usernameInput) => {
-		const valid = USERNAME_REGEX.test(usernameInput);
-		setUsernameValid(valid || usernameInput === "");	
-		if (!valid) {
-			setError(
-				"Usernames can only contain letters, numbers, dashes, and underscores"
-			);
-		} else {
-			setError("");
-		}
-	};
-
-	const validateAccountName = (accountNameInput) => {
-		const valid = ACCOUNTNAME_REGEX.test(accountNameInput);
-		setAccountNameValid(valid || accountNameInput === "");
-		if (!valid) {
-			setError(
-				"Account names can only contain letters, numbers, dashes, underscores, and spaces"
-			);
 		} else {
 			setError("");
 		}
@@ -103,34 +70,24 @@ const CreateAccountForm = () => {
 		e.preventDefault();
 		setError("");
 
-		if (
-			!emailValid ||
-			!usernameValid ||
-			!accountNameValid ||
-			!passwordValid ||
-			!confirmPasswordValid
-		) {
+		if (!emailValid || !passwordValid || !confirmPasswordValid) {
 			setError("Please correct the errors before submitting");
 			return;
 		}
 
 		try {
-			setUUID(uuidv4());
-			// YYYY-MM-DD in Estern Time
-			const creationDate = new Date()
-				.toLocaleString("en-US", { timeZone: "America/New_York" })
-				.split(",")[0];
-			console.log("Creating account with UUID: ", UUID);
+			setAccountId(uuidv4());
+			// YYYY-MM-DD
+			const creationDate = new Date().toISOString().slice(0, 10);
+			console.log("Creating account with accountId: ", accountId);
 			const response = await fetch(`${apiUrl}/createAccount`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
-					UUID: UUID,
+					accountId: accountId,
 					email: email,
-					username: username,
-					accountName: accountName,
 					password: password,
 					creationDate: creationDate,
 				}),
@@ -144,8 +101,7 @@ const CreateAccountForm = () => {
 				console.log("Account created successfully");
 				setAppState({
 					authenticated: true,
-					username: username,
-					UUID: UUID,
+					accountId: accountId,
 				});
 			} else {
 				console.error(
@@ -191,69 +147,6 @@ const CreateAccountForm = () => {
 						/>
 						<FormFeedback>
 							Please enter a valid email address.
-						</FormFeedback>
-					</Col>
-				</Row>
-			</FormGroup>
-
-			<FormGroup>
-				<Row>
-					<Col xs="12" md="4">
-						<Label for="username" md={4}>
-							Username
-						</Label>
-					</Col>
-					<Col xs="12" md="8">
-						<InputGroup>
-							<InputGroupText>@</InputGroupText>
-							<Input
-								type="text"
-								name="username"
-								id="username"
-								value={username}
-								invalid={usernameValid === false}
-								onBlur={() => validateUsername(username)}
-								placeholder="Enter username"
-								required
-								onChange={(e) => {
-									setUsername(e.target.value);
-									validateUsername(e.target.value);
-								}}
-							/>
-							<FormFeedback>
-								Usernames can only contain letters, numbers,
-								dashes, and underscores.
-							</FormFeedback>
-						</InputGroup>
-					</Col>
-				</Row>
-			</FormGroup>
-
-			<FormGroup>
-				<Row>
-					<Col xs="12" md="4">
-						<Label for="accountName" md={4}>
-							Account Name
-						</Label>
-					</Col>
-					<Col xs="12" md="8">
-						<Input
-							type="text"
-							name="accountName"
-							id="accountName"
-							value={accountName}
-							invalid={accountNameValid === false}
-							onBlur={() => validateAccountName(accountName)}
-							placeholder="Enter account name"
-							required
-							onChange={(e) => {
-								setAccountName(e.target.value);
-								validateAccountName(e.target.value);
-							}}
-						/>
-						<FormFeedback>
-							Account names can only contain letters, numbers,
-							dashes, underscores, and spaces.
 						</FormFeedback>
 					</Col>
 				</Row>
@@ -325,8 +218,6 @@ const CreateAccountForm = () => {
 						block
 						disabled={
 							!email ||
-							!username ||
-							!accountName ||
 							!password ||
 							!confirmPassword ||
 							password !== confirmPassword ||

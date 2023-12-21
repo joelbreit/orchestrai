@@ -82,8 +82,7 @@ const LoginForm = () => {
 				console.log("Login successful");
 				setAppState({
 					authenticated: true,
-					username: body.username,
-					UUID: body.UUID,
+					accountId: body.accountId,
 				});
 			} else {
 				console.error("Login error: ", body.error || statusCode);

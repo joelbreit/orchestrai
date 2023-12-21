@@ -7,6 +7,7 @@ export const AppProvider = ({ children }) => {
         debug: false,
         authenticated: false,
         UUID: "",
+        accountId: "",
     });
 
     return (

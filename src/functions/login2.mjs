@@ -17,9 +17,9 @@ export const handler = async (event) => {
 
 		console.log(`Processing login for email: ${email}`);
 
-		// Check if user exists and retrieve password hash
-		const user = await getUserByEmail(email);
-		if (!user) {
+		// Check if account exists and retrieve password hash
+		const account = await getAccountByEmail(email);
+		if (!account) {
 			console.log("Invalid email or password.");
 			return {
 				statusCode: 401,
@@ -28,8 +28,8 @@ export const handler = async (event) => {
 		}
 
 		// Verify password
-		// const validPassword = await bcrypt.compare(password, user.password);
-		const validPassword = password === user.password;
+		// const validPassword = await bcrypt.compare(password, account.password);
+		const validPassword = password === account.password;
 		if (!validPassword) {
 			console.log("Invalid email or password.");
 			return {
@@ -46,8 +46,7 @@ export const handler = async (event) => {
 			statusCode: 200,
 			body: JSON.stringify({
 				message: "Login successful",
-				UUID: user.UUID,
-				username: user.username,
+				accountId: account.accountId,
 			}),
 		};
 	} catch (error) {
@@ -59,12 +58,12 @@ export const handler = async (event) => {
 	}
 };
 
-// Function to retrieve user by email
-async function getUserByEmail(email) {
-	console.log(`Retrieving user by email: ${email}`);
+// Function to retrieve account by email
+async function getAccountByEmail(email) {
+	console.log(`Retrieving account by email: ${email}`);
 
 	const params = {
-		TableName: "OrchestrAI_Users",
+		TableName: "OrchestrAI_Accounts",
 		IndexName: "email-index",
 		KeyConditionExpression: "email = :email",
 		ExpressionAttributeValues: {
@@ -74,6 +73,6 @@ async function getUserByEmail(email) {
 	};
 
 	const { Items } = await ddbDocClient.send(new QueryCommand(params));
-	console.log("User retrieved:", Items.length === 1 ? Items[0] : null);
+	console.log("Account retrieved:", Items.length === 1 ? Items[0] : null);
 	return Items.length === 1 ? Items[0] : null;
 }

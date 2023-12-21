@@ -12,7 +12,7 @@ import { AppContext } from "../contexts/AppContext";
 const ProtectedContent = ({ children }) => {
 	const { appState } = useContext(AppContext);
 	const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-	const [hasAccount, setHasAccount] = useState(true);
+	const [hasAccount, setHasAccount] = useState(false);
 
 	const toggleLoginModal = () => setIsLoginModalOpen(!isLoginModalOpen);
 	const changeMode = () => setHasAccount(!hasAccount);
@@ -26,8 +26,10 @@ const ProtectedContent = ({ children }) => {
 					<p>
 						You need to login to use this feature.{" "}
 						<Button color="primary" onClick={toggleLoginModal} className="primary-button">
-							Login{" "}
-							<span role="img" aria-label="lock emoji">🔒</span>
+							Create an Account!{" "}
+							<span role="img" aria-label="checkmark">
+								✅
+							</span>
 						</Button>
 					</p>
 					<Modal isOpen={isLoginModalOpen} toggle={toggleLoginModal}>

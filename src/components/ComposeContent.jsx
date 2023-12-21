@@ -143,7 +143,7 @@ const ComposeContent = () => {
 						"Content-Type": "application/json",
 					},
 					body: JSON.stringify({
-						UUID: appState.UUID,
+						accountId: appState.accountId,
 						content: content,
 					}),
 				}
@@ -179,7 +179,7 @@ const ComposeContent = () => {
 							"Content-Type": "application/json",
 						},
 						body: JSON.stringify({
-							UUID: appState.UUID,
+							accountId: appState.accountId,
 							threadId: threadId,
 							runId: runId,
 						}),
@@ -248,7 +248,7 @@ const ComposeContent = () => {
 		const file = new Blob(
 			[
 				`Version: ${SAVE_FILE_VERSION}\n
-Username: ${appState.username}\n
+accountId: ${appState.accountId}\n
 Date and Time: ${new Date().toLocaleString()}\n
 Input: ${input}\n
 Description: ${description}\n

@@ -15,7 +15,7 @@ const ProfileContent = () => {
 		<Container className="mt-5">
 			<h1>Profile</h1>
 			<p>Here you can find your profile information.</p>
-			<p>Username: {appState.username}</p>
+			<p>accountId: {appState.accountId}</p>
 		</Container>
 	);
 };

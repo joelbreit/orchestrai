@@ -1,9 +1,9 @@
 import axios from "axios";
 
 const FEW_SHOT_EXAMPLES = [
-    {
-        prompt: "Compose a tune that expresses the following vibe: A dance under the stars",
-        response: `To compose a tune that captures the essence of a dance under the stars, I will try to incorporate smooth voice leading, counterpoint principles such as contrary and oblique motion, careful interval management, avoidance of parallel fifths and octaves, imitative counterpoint, logical harmonic progression, rhythmic variety, avoidance of voice crossings and overlaps, and culmination in cadence.
+	{
+		prompt: "Compose a tune that expresses the following vibe: A dance under the stars",
+		response: `To compose a tune that captures the essence of a dance under the stars, I will try to incorporate smooth voice leading, counterpoint principles such as contrary and oblique motion, careful interval management, avoidance of parallel fifths and octaves, imitative counterpoint, logical harmonic progression, rhythmic variety, avoidance of voice crossings and overlaps, and culmination in cadence.
 I will use a major key to convey a sense of joy and light-heartedness associated with dancing. I've chosen the tempo of 120 bpm to suggest a lively dance and the 3/4 meter in order to capture the rhythmic feel of a waltz which is often associated with traditional dances that one could envision taking place under an open, starlit sky. I will try to incorporate some minor harmonies or dissonant intervals, creating tension that could represent the mysterious and awe-inspiring aspect of the stars before resolving back to the major key for a sense of warmth and resolution.
 The music will feature intricate interplay between voices, making each line melodically interesting and rhythmically engaging. I will also ensure that the rhythmic patterns enhance the feeling of dancing and include syncopation to add a playful character to the music.
 I hope you enjoy:
@@ -34,10 +34,10 @@ V:3 clef=bass
 "D"F2 A,4|"G"G,2 B,4|"Em"E2 G4|"D7"F2 A,4|
 "G"G,2 D4|"Am"E2 C4|"G"G,2 B,4-|"G"G,6:|
 \`\`\``,
-    },
-    {
-        prompt: "Please create a tune for this prompt: create a song about the joy of reuniting with old friends",
-        response: `For a tune expressing the joy of reuniting with old friends, we will aim for an upbeat melody, using major tonality, bright chord progressions, and a lively tempo to evoke the warmth and happiness of such an occasion. The composition will feature contrasting sections to reflect the different aspects of joyful reunions: the surprise and excitement of seeing friends, the warm embrace, and the cheerful conversations.
+	},
+	{
+		prompt: "Please create a tune for this prompt: create a song about the joy of reuniting with old friends",
+		response: `For a tune expressing the joy of reuniting with old friends, we will aim for an upbeat melody, using major tonality, bright chord progressions, and a lively tempo to evoke the warmth and happiness of such an occasion. The composition will feature contrasting sections to reflect the different aspects of joyful reunions: the surprise and excitement of seeing friends, the warm embrace, and the cheerful conversations.
         It is composed in a major key which helps associate it with warmth and happiness. I will set the tempo to a lively 120 bpm, suitable for expressing joy and excitement.
         I hope you enjoy:
 \`\`\`abc        
@@ -79,62 +79,64 @@ V:2
 |: [G,2B,2] z B3D2 | [C,2E2] z E3A,2 | [G,2B,2] z B3D2 | [D2F2] z F3A,2 | 
 [G,2B,2] z B3D2 | [C,2E2] z E3G,2 | [G,2B,2] z B3D2 | [G,2B,2] z2 z4 :|
 \`\`\``,
-    },
+	},
 ];
 
 const apiKey = process.env.REACT_APP_OPENAI_API_KEY;
 
 export const handler = async (event) => {
-    try {
-        const { content, UUID } = JSON.parse(event.body);
-        console.log(`Received request to generate music with UUID: ${UUID}`);
+	try {
+		const { content, accountId } = JSON.parse(event.body);
+		console.log(
+			`Received request to generate music with accountId: ${accountId}`
+		);
 
-        const axiosInstance = axios.create({
-            baseURL: "https://api.openai.com/v1/",
-            headers: {
-                Authorization: `Bearer ${apiKey}`,
-                "Content-Type": "application/json",
-                "OpenAI-Beta": "assistants=v1",
-            },
-        });
+		const axiosInstance = axios.create({
+			baseURL: "https://api.openai.com/v1/",
+			headers: {
+				Authorization: `Bearer ${apiKey}`,
+				"Content-Type": "application/json",
+				"OpenAI-Beta": "assistants=v1",
+			},
+		});
 
-        console.log(`Creating thread with prompt: ${content}`);
-        let msgs = [];
-        for (let i = 0; i < FEW_SHOT_EXAMPLES.length; i++) {
-            msgs.push({ role: "user", content: FEW_SHOT_EXAMPLES[i].prompt });
-            msgs.push({ role: "user", content: FEW_SHOT_EXAMPLES[i].response });
-        }
-        msgs.push({ role: "user", content: content });
-        const createResponse = await axiosInstance.post("threads", {
-            messages: msgs,
-        });
-        console.log(`Thread created with ID: ${createResponse.data.id}`);
-        const threadId = createResponse.data.id;
+		console.log(`Creating thread with prompt: ${content}`);
+		let msgs = [];
+		for (let i = 0; i < FEW_SHOT_EXAMPLES.length; i++) {
+			msgs.push({ role: "user", content: FEW_SHOT_EXAMPLES[i].prompt });
+			msgs.push({ role: "user", content: FEW_SHOT_EXAMPLES[i].response });
+		}
+		msgs.push({ role: "user", content: content });
+		const createResponse = await axiosInstance.post("threads", {
+			messages: msgs,
+		});
+		console.log(`Thread created with ID: ${createResponse.data.id}`);
+		const threadId = createResponse.data.id;
 
-        console.log(`Creating run with thread ID: ${threadId}`);
-        const runResponse = await axiosInstance.post(
-            `threads/${threadId}/runs`,
-            {
-                assistant_id: process.env.REACT_APP_ORCHESTRAI_ASSISTANT_ID,
-            }
-        );
-        console.log(`Run created with ID: ${runResponse.data.id}`);
-        const runId = runResponse.data.id;
+		console.log(`Creating run with thread ID: ${threadId}`);
+		const runResponse = await axiosInstance.post(
+			`threads/${threadId}/runs`,
+			{
+				assistant_id: process.env.REACT_APP_ORCHESTRAI_ASSISTANT_ID,
+			}
+		);
+		console.log(`Run created with ID: ${runResponse.data.id}`);
+		const runId = runResponse.data.id;
 
-        // Return success response
-        return {
-            statusCode: 200,
-            body: JSON.stringify({
-                message: "Thread and run created successfully",
-                threadId: threadId,
-                runId: runId,
-            }),
-        };
-    } catch (error) {
-        console.error(error);
-        return {
-            statusCode: 500,
-            body: JSON.stringify({ error: "Internal Server Error" }),
-        };
-    }
+		// Return success response
+		return {
+			statusCode: 200,
+			body: JSON.stringify({
+				message: "Thread and run created successfully",
+				threadId: threadId,
+				runId: runId,
+			}),
+		};
+	} catch (error) {
+		console.error(error);
+		return {
+			statusCode: 500,
+			body: JSON.stringify({ error: "Internal Server Error" }),
+		};
+	}
 };
