@@ -12,12 +12,14 @@ import {
 	Col,
 	Spinner,
 	Alert,
-Button,
+	Button,
 } from "reactstrap";
 import { Link } from "react-router-dom"; // Import Link
 
 // Import contexts
 import { AppContext } from "../contexts/AppContext";
+
+import OrcheImage from "../assets/images/Orche.png";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -113,7 +115,23 @@ const ProfileContent = () => {
 					{tunes.length === 0 && (
 						<Col>
 							<Alert color="info">
-								You haven't created any tunes yet.
+								(
+								<div
+									style={{
+										display: "flex",
+										alignItems: "center",
+										// justifyContent: "center",
+									}}
+								>
+									<img
+										src={OrcheImage}
+										width="30"
+										height="30"
+										alt="Orche"
+									/>{" "}
+									You haven't created any tunes yet.
+								</div>
+								)
 							</Alert>
 						</Col>
 					)}

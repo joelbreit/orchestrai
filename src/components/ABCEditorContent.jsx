@@ -4,6 +4,8 @@ import ABCNotations from "../assets/ABCNotations";
 import FileUploader from "./FileUploader";
 import Synthesizer from "./Synthesizer";
 
+import OrcheImage from "../assets/images/Orche.png";
+
 const apiUrl = process.env.REACT_APP_API_URL;
 
 const ABCEditorContent = ({ tuneId }) => {
@@ -117,7 +119,7 @@ const ABCEditorContent = ({ tuneId }) => {
 							role="status"
 							aria-hidden="true"
 						/>{" "}
-						Saving tune...
+						Loading tune...
 					</Alert>
 				)}
 				{retrievalState === "Complete" && (
@@ -129,9 +131,39 @@ const ABCEditorContent = ({ tuneId }) => {
 									: "danger"
 							}
 						>
-							{retrievalStatusCode === 200
-								? "Tune retrieved successfully!"
-								: "There was an error retrieving your tune."}
+							{retrievalStatusCode === 200 ? (
+								<div
+									style={{
+										display: "flex",
+										alignItems: "center",
+										// justifyContent: "center",
+									}}
+								>
+									<img
+										src={OrcheImage}
+										width="30"
+										height="30"
+										alt="Orche"
+									/>{" "}
+									"Tune retrieved successfully!"
+								</div>
+							) : (
+								<div
+									style={{
+										display: "flex",
+										alignItems: "center",
+										// justifyContent: "center",
+									}}
+								>
+									<img
+										src={OrcheImage}
+										width="30"
+										height="30"
+										alt="Orche"
+									/>{" "}
+									"There was an error retrieving your tune."
+								</div>
+							)}
 						</Alert>
 
 						<Row className="mt-2">

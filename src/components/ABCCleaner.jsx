@@ -19,6 +19,8 @@ import Synthesizer from "./Synthesizer";
 
 import ABCNotation from "../services/ABCNotationParser";
 
+import OrcheImage from "../assets/images/Orche.png";
+
 const ABCCleaner = () => {
 	const [abcNotation1, setAbcNotation1] = useState("");
 	const [abcNotation2, setAbcNotation2] = useState("");
@@ -144,24 +146,80 @@ const ABCCleaner = () => {
 					{hasCleaned &&
 						(failed ? (
 							<Alert color="danger">
-								Failed to clean notation. {numWarnings} warnings
-								were issued.
+								<div
+									style={{
+										display: "flex",
+										alignItems: "center",
+										// justifyContent: "center",
+									}}
+								>
+									<img
+										src={OrcheImage}
+										width="30"
+										height="30"
+										alt="Orche"
+									/>{" "}
+									Failed to clean notation. {numWarnings}{" "}
+									warnings were issued.
+								</div>
 							</Alert>
 						) : numWarnings > 0 ? (
 							<Alert color="warning">
-								Notation successfully cleaned! {numFixes} fixes
-								were made, but {numWarnings} warnings were
-								issued.
+								<div
+									style={{
+										display: "flex",
+										alignItems: "center",
+										// justifyContent: "center",
+									}}
+								>
+									<img
+										src={OrcheImage}
+										width="30"
+										height="30"
+										alt="Orche"
+									/>{" "}
+									Notation successfully cleaned! {numFixes}{" "}
+									fixes were made, but {numWarnings} warnings
+									were issued.
+								</div>
 							</Alert>
 						) : numFixes > 0 ? (
 							<Alert color="success">
-								Notation successfully cleaned! {numFixes} fixes
-								were made!
+								<div
+									style={{
+										display: "flex",
+										alignItems: "center",
+										// justifyContent: "center",
+									}}
+								>
+									<img
+										src={OrcheImage}
+										width="30"
+										height="30"
+										alt="Orche"
+									/>{" "}
+									Notation successfully cleaned! {numFixes}{" "}
+									fixes were made!
+								</div>
 							</Alert>
 						) : (
 							<Alert color="info">
-								Notation successfully cleaned! No fixes were
-								made.
+								<div
+									style={{
+										display: "flex",
+										alignItems: "center",
+										// justifyContent: "center",
+									}}
+								>
+									<img
+										src={OrcheImage}
+										width="30"
+										height="30"
+										alt="Orche"
+									/>{" "}
+									Notation successfully cleaned! No fixes were
+									made.
+								</div>
 							</Alert>
 						))}
 					<Col>
