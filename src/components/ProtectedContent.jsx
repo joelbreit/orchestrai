@@ -24,8 +24,27 @@ const ProtectedContent = ({ children }) => {
 			) : (
 				<>
 					<p>
-						You need to login to use this feature.{" "}
-						<Button color="primary" onClick={toggleLoginModal} className="primary-button">
+						This feature is free, but you will need to login or
+						create an account to use it:{" "}
+						<Button
+							onClick={() => {
+								setHasAccount(true);
+								toggleLoginModal();
+							}}
+							className="primary-button-outline"
+						>
+							Login{" "}
+							<span role="img" aria-label="checkmark">
+								✅
+							</span>
+						</Button>{" "}
+						<Button
+							onClick={() => {
+								setHasAccount(false);
+								toggleLoginModal();
+							}}
+							className="primary-button"
+						>
 							Create an Account!{" "}
 							<span role="img" aria-label="checkmark">
 								✅

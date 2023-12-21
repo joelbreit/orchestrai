@@ -8,13 +8,10 @@ import {
 	Button,
 	Col,
 	Form,
-	FormGroup,
-	Label,
-	Row,
-	Input,
-	InputGroup,
-	InputGroupText,
 	FormFeedback,
+	FormGroup,
+	Input,
+	Label,
 } from "reactstrap";
 
 // Import contexts
@@ -124,88 +121,76 @@ const CreateAccountForm = () => {
 			<p>Enter your information below to create an account.</p>
 
 			<FormGroup>
-				<Row>
-					<Col xs="12" md="4">
-						<Label for="email" md={4}>
-							Email
-						</Label>
-					</Col>
-					<Col xs="12" md="8">
-						<Input
-							type="email"
-							name="email"
-							id="email"
-							value={email}
-							invalid={emailValid === false}
-							onBlur={() => validateEmail(email)}
-							placeholder="Enter email"
-							required
-							onChange={(e) => {
-								setEmail(e.target.value);
-								validateEmail(e.target.value);
-							}}
-						/>
-						<FormFeedback>
-							Please enter a valid email address.
-						</FormFeedback>
-					</Col>
-				</Row>
+				<Label for="email" md={4}>
+					Email
+				</Label>
+				<Col>
+					<Input
+						type="email"
+						name="email"
+						id="email"
+						value={email}
+						invalid={emailValid === false}
+						onBlur={() => validateEmail(email)}
+						placeholder="Enter email"
+						required
+						onChange={(e) => {
+							setEmail(e.target.value);
+							validateEmail(e.target.value);
+						}}
+					/>
+					<FormFeedback>
+						Please enter a valid email address.
+					</FormFeedback>
+				</Col>
 			</FormGroup>
 
 			<FormGroup>
-				<Row>
-					<Col xs="12" md="4">
-						<Label for="password" md={4}>
-							Password
-						</Label>
-					</Col>
-					<Col xs="12" md="8">
-						<Input
-							type="password"
-							name="password"
-							id="password"
-							value={password}
-							invalid={passwordValid === false}
-							onBlur={() => validatePassword(password)}
-							placeholder="Enter password"
-							required
-							onChange={(e) => {
-								setPassword(e.target.value);
-								validatePassword(e.target.value);
-							}}
-						/>
-						<FormFeedback>
-							Passwords must be at least 8 characters long.
-						</FormFeedback>
-					</Col>
-				</Row>
+				<Label for="password" md={4}>
+					Password
+				</Label>
+				<Col>
+					<Input
+						type="password"
+						name="password"
+						id="password"
+						value={password}
+						invalid={passwordValid === false}
+						onBlur={() => validatePassword(password)}
+						placeholder="Enter password"
+						required
+						onChange={(e) => {
+							setPassword(e.target.value);
+							validatePassword(e.target.value);
+						}}
+					/>
+					<FormFeedback>
+						Passwords must be at least 8 characters long.
+					</FormFeedback>
+				</Col>
 			</FormGroup>
 
 			<FormGroup>
-				<Row>
-					<Col xs="12" md="4">
-						<Label for="confirmPassword" md={4}>
-							Confirm Password
-						</Label>
-					</Col>
-					<Col xs="12" md="8">
-						<Input
-							type="password"
-							name="confirmPassword"
-							id="confirmPassword"
-							value={confirmPassword}
-							invalid={confirmPasswordValid === false}
-							onBlur={() => validatePassword(confirmPassword)}
-							placeholder="Confirm password"
-							required
-							onChange={(e) => {
-								setConfirmPassword(e.target.value);
-								validatePassword(e.target.value);
-							}}
-						/>
-						<FormFeedback>Passwords do not match.</FormFeedback>
-					</Col>
-				</Row>
+				<Label for="confirmPassword" md={4}>
+					Confirm Password
+				</Label>
+				<Col>
+					<Input
+						type="password"
+						name="confirmPassword"
+						id="confirmPassword"
+						value={confirmPassword}
+						invalid={confirmPasswordValid === false}
+						onBlur={() => validatePassword(confirmPassword)}
+						placeholder="Confirm password"
+						required
+						onChange={(e) => {
+							setConfirmPassword(e.target.value);
+							validatePassword(e.target.value);
+						}}
+					/>
+					<FormFeedback>Passwords do not match.</FormFeedback>
+				</Col>
 			</FormGroup>
 
 			{error && <Alert color="danger">{error}</Alert>}

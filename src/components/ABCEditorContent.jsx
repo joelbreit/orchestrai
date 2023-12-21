@@ -130,8 +130,8 @@ const ABCEditorContent = ({ tuneId }) => {
 							}
 						>
 							{retrievalStatusCode === 200
-								? "Tune saved successfully!"
-								: "There was an error saving your tune."}
+								? "Tune retrieved successfully!"
+								: "There was an error retrieving your tune."}
 						</Alert>
 
 						<Row className="mt-2">

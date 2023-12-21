@@ -10,7 +10,7 @@ import {
 	FormFeedback,
 	FormGroup,
 	Input,
-	Label
+	Label,
 } from "reactstrap";
 
 // Import contexts
@@ -102,9 +102,7 @@ const LoginForm = () => {
 			<p>Enter your information below to login.</p>
 
 			<FormGroup>
-				<Label for="email">
-					Email
-				</Label>
+				<Label for="email">Email</Label>
 				<Col>
 					<Input
 						type="email"
@@ -127,9 +125,7 @@ const LoginForm = () => {
 			</FormGroup>
 
 			<FormGroup>
-				<Label for="password">
-					Password
-				</Label>
+				<Label for="password">Password</Label>
 				<Col>
 					<Input
 						type="password"
