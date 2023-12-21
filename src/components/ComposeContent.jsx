@@ -1,5 +1,6 @@
 // Import dependencies
 import React, { useContext, useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 // Import components
 import {
@@ -23,7 +24,7 @@ import {
 	Progress,
 	Spinner,
 	TabContent,
-	TabPane
+	TabPane,
 } from "reactstrap";
 import FeedbackForm from "./FeedbackForm";
 import ProtectedContent from "./ProtectedContent";
@@ -41,7 +42,9 @@ import {
 	ORCHESTRAI_SAVE_FILE_VERSION as SAVE_FILE_VERSION,
 	VIBE_SUGGESTIONS,
 } from "../assets/Constants";
+import { Link } from "react-router-dom";
 const apiUrl = process.env.REACT_APP_API_URL;
+
 
 const ComposeContent = () => {
 	// App context
@@ -69,6 +72,11 @@ const ComposeContent = () => {
 	const [thread, setThread] = useState("");
 	const [run, setRun] = useState("");
 
+	// Save tune state
+	const [tuneId, setTuneId] = useState("");
+	const [saveState, setSaveState] = useState("");
+	const [saveStatusCode, setSaveStatusCode] = useState(0);
+
 	// Feedback form state
 	const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
 
@@ -79,6 +87,7 @@ const ComposeContent = () => {
 	const handleNotationChange = (e) => {
 		setAbcNotation(e.target.value);
 	};
+	console.log("tuneId:", tuneId);
 
 	// Calculate % complete
 	useEffect(() => {
@@ -232,6 +241,8 @@ const ComposeContent = () => {
 			setAbcNotation(output.match(/```([^`]*)```/)[1]);
 			setDescription(output.replace(/```([^`]*)```/, ""));
 			setHasGeneratedMusic(true);
+			setSaveState("");
+			setSaveStatusCode(0);
 			console.log("Generated music:", abcNotation); // It's not updating here either
 		} catch (error) {
 			console.error("API call failed:", error);
@@ -265,6 +276,43 @@ Feedback: ${feedback}\n`,
 		element.download = fileName;
 		document.body.appendChild(element); // Required for this to work in FireFox
 		element.click();
+	};
+
+	const handleSaveTune = async () => {
+		setSaveState("Loading");
+		const tune_id = uuidv4();
+
+		const saveTuneResponse = await fetch(`${apiUrl}/saveTune`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				tuneId: tune_id,
+				accountId: appState.accountId,
+				date: new Date().toISOString().slice(0, 10),
+				thread: thread,
+				run: run,
+				title: abcNotation.match(/^T:(.*)$/m),
+				prompt: input,
+				description: description,
+				notation: abcNotation,
+			}),
+		});
+
+		// Handle the response
+		const saveTuneBody = await saveTuneResponse.json();
+		const statusCode = saveTuneResponse.status;
+		if (statusCode === 200) {
+			console.log("Success:", saveTuneBody);
+		} else {
+			throw new Error(saveTuneBody.message);
+		}
+		console.log("Save Tune Response:", saveTuneBody);
+
+		setTuneId(tune_id);
+		setSaveStatusCode(statusCode);
+		setSaveState("Complete");
 	};
 
 	const toggleFeedback = () => {
@@ -513,11 +561,21 @@ Feedback: ${feedback}\n`,
 								<Button
 									onClick={handleDownload}
 									className="btn btn-primary primary-button mt-3"
+									style={{ marginRight: "10px" }}
 								>
 									<div className="icon-square flex-shrink-0">
 										{" "}
 										Download{" "}
 										<i className={`bi bi-download`}></i>
+									</div>
+								</Button>
+								<Button
+									onClick={handleSaveTune}
+									className="btn btn-primary primary-button mt-3 ml-3"
+								>
+									<div className="icon-square flex-shrink-0">
+										{" "}
+										Save <i className={`bi bi-save`}></i>
 									</div>
 								</Button>
 								{/* TODO add this back */}
@@ -534,6 +592,50 @@ Feedback: ${feedback}\n`,
 								)} */}
 								<hr />
 							</>
+						)}
+						{saveState === "Loading" && (
+							<Alert color="primary">
+								<Spinner
+									as="span"
+									animation="border"
+									size="sm"
+									role="status"
+									aria-hidden="true"
+								/>{" "}
+								Saving tune...
+							</Alert>
+						)}
+						{saveState === "Complete" && (
+							<Alert
+								color={
+									saveStatusCode === 200
+										? "success"
+										: "danger"
+								}
+							>
+								{saveStatusCode === 200 ? (
+									<>
+										Your tune was saved successfully! You
+										can now share it with{" "}
+										<Link
+											to={`/tunes/${tuneId}`}
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											the world{" "}
+											<span
+												role="img"
+												aria-label="link emoji"
+											>
+												🔗
+											</span>
+										</Link>
+										!
+									</>
+								) : (
+									"There was an error saving your tune."
+								)}
+							</Alert>
 						)}
 
 						<Collapse isOpen={isFeedbackOpen}>

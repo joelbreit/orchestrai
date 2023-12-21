@@ -1,16 +1,68 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Container, Input, Row } from "reactstrap";
-
+import { Alert, Button, Col, Container, Input, Row, Spinner } from "reactstrap";
 import ABCNotations from "../assets/ABCNotations";
 import FileUploader from "./FileUploader";
 import Synthesizer from "./Synthesizer";
 
-const ABCEditorContent = () => {
+const apiUrl = process.env.REACT_APP_API_URL;
+
+const ABCEditorContent = ({ tuneId }) => {
 	const defaultContent = ABCNotations["3-part Pirates ABC"];
 	const [abcNotation, setAbcNotation] = useState(defaultContent);
 	const [file, setFile] = useState(null);
 	const [didUpload, setDidUpload] = useState(false);
 	const [description, setDescription] = useState("");
+	const [title, setTitle] = useState("");
+	const [creationDate, setCreationDate] = useState("");
+	const [prompt, setPrompt] = useState("");
+
+	// Tune retrieval state
+	const [retrievalState, setRetrievalState] = useState("");
+	const [retrievalStatusCode, setRetrievalStatusCode] = useState(0);
+
+	useEffect(() => {
+		const getTune = async () => {
+			setRetrievalState("Loading");
+			try {
+				console.log("Retrieving tune...");
+				const response = await fetch(`${apiUrl}/getTune`, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ tuneId }),
+				});
+
+				// Handle the response
+				const body = await response.json();
+				const statusCode = response.status;
+
+				if (statusCode === 200) {
+					console.log("Tune retrieved successfully");
+					setAbcNotation(body.abcNotation);
+					setDescription(body.description);
+					setTitle(body.title);
+					setCreationDate(body.date);
+					setPrompt(body.prompt);
+
+					setRetrievalState("success");
+				} else {
+					console.error(
+						"Retrieval error: ",
+						body.error || statusCode
+					);
+					setRetrievalState("error");
+				}
+				setRetrievalStatusCode(statusCode);
+			} catch (error) {
+				console.error("Error:", error);
+			}
+			setRetrievalState("Complete");
+		};
+		if (tuneId) {
+			getTune();
+		}
+	}, [tuneId]);
 
 	useEffect(() => {
 		if (file) {
@@ -55,6 +107,62 @@ const ABCEditorContent = () => {
 		<div className="container px-4">
 			<Container>
 				<h1 className="border-bottom">ABC Notation Editor</h1>
+
+				{retrievalState === "Loading" && (
+					<Alert color="primary">
+						<Spinner
+							as="span"
+							animation="border"
+							size="sm"
+							role="status"
+							aria-hidden="true"
+						/>{" "}
+						Saving tune...
+					</Alert>
+				)}
+				{retrievalState === "Complete" && (
+					<div>
+						<Alert
+							color={
+								retrievalStatusCode === 200
+									? "success"
+									: "danger"
+							}
+						>
+							{retrievalStatusCode === 200
+								? "Tune saved successfully!"
+								: "There was an error saving your tune."}
+						</Alert>
+
+						<Row className="mt-2">
+							<Col>
+								<h2>Title</h2>
+								{title ? (
+									<p>{title}</p>
+								) : (
+									<p>No title provided</p>
+								)}
+							</Col>
+							<Col>
+								<h2>Date</h2>
+								{creationDate ? (
+									<p>{creationDate}</p>
+								) : (
+									<p>No date provided</p>
+								)}
+							</Col>
+							<Col>
+								<h2>Prompt</h2>
+								{prompt ? (
+									<p>{prompt}</p>
+								) : (
+									<p>No prompt provided</p>
+								)}
+							</Col>
+						</Row>
+					</div>
+				)}
+
 				<h2>Enter ABC Notation</h2>
 				<Input
 					type="textarea"

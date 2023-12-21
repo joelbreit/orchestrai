@@ -8,6 +8,7 @@ import ProfilePage from "./pages/ProfilePage";
 import { AppProvider } from "./contexts/AppContext";
 import PortfolioPage from "./pages/PortfolioPage";
 import ResearchPage from "./pages/ResearchPage";
+import TunePage from "./pages/TunePage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
 					<Route path="/profile" element={<ProfilePage />} />
 					<Route path="/portfolio" element={<PortfolioPage />} />
 					<Route path="/research" element={<ResearchPage />} />
+					<Route path="/tunes/:tuneId" element={<TunePage />} />
 					<Route path="*" element={<NotFoundPage />} />
 				</Routes>
 			</BrowserRouter>
