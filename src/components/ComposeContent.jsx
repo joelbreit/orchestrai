@@ -1,5 +1,6 @@
 // Import dependencies
 import React, { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
 // Import components
@@ -29,6 +30,7 @@ import {
 import FeedbackForm from "./FeedbackForm";
 import ProtectedContent from "./ProtectedContent";
 import Synthesizer from "./Synthesizer";
+import ABCNotation from "../services/ABCNotationParser";
 
 // Import contexts
 import { AppContext } from "../contexts/AppContext";
@@ -42,9 +44,8 @@ import {
 	ORCHESTRAI_SAVE_FILE_VERSION as SAVE_FILE_VERSION,
 	VIBE_SUGGESTIONS,
 } from "../assets/Constants";
-import { Link } from "react-router-dom";
+import OrcheImage from "../assets/images/Orche.png";
 const apiUrl = process.env.REACT_APP_API_URL;
-
 
 const ComposeContent = () => {
 	// App context
@@ -67,6 +68,13 @@ const ComposeContent = () => {
 	// Music generation state
 	const [abcNotation, setAbcNotation] = useState("");
 	const [description, setDescription] = useState("");
+
+	// ABC Cleaner state
+	const [hasCleaned, setHasCleaned] = useState(false);
+	const [numFixes, setNumFixes] = useState(0);
+	const [numWarnings, setNumWarnings] = useState(0);
+	const [warnings, setWarnings] = useState([]);
+	const [failed, setFailed] = useState(false);
 
 	// File download information
 	const [thread, setThread] = useState("");
@@ -109,6 +117,16 @@ const ComposeContent = () => {
 			setInput(fullPrompt);
 		}
 	}, [activeTab, vibe, fullPrompt]);
+
+	useEffect(() => {
+		const cleanedNotation = new ABCNotation(abcNotation);
+		setAbcNotation(cleanedNotation.abcNotation);
+		setHasCleaned(true);
+		setNumFixes(cleanedNotation.numFixes);
+		setNumWarnings(cleanedNotation.numWarnings);
+		setWarnings(cleanedNotation.warnings);
+		setFailed(cleanedNotation.failed);
+	}, [abcNotation]);
 
 	const suggestVibe = () => {
 		const randomIndex = Math.floor(Math.random() * VIBE_SUGGESTIONS.length);
@@ -551,6 +569,88 @@ Feedback: ${feedback}\n`,
 										index={0}
 									/>
 								</div>
+								{/* TODO clean this up */}
+								{hasCleaned &&
+									(failed ? (
+										<Alert color="info">
+											<div
+												style={{
+													display: "flex",
+													alignItems: "center",
+													// justifyContent: "center",
+												}}
+											>
+												<img
+													src={OrcheImage}
+													width="30"
+													height="30"
+													alt="Orche"
+												/>{" "}
+												Failed to clean notation.{" "}
+												{numWarnings} warnings were
+												issued.
+											</div>
+										</Alert>
+									) : numWarnings > 0 ? (
+										<Alert color="info">
+											<div
+												style={{
+													display: "flex",
+													alignItems: "center",
+													// justifyContent: "center",
+												}}
+											>
+												<img
+													src={OrcheImage}
+													width="30"
+													height="30"
+													alt="Orche"
+												/>{" "}
+												Notation successfully cleaned!{" "}
+												{numFixes} fixes were made, but{" "}
+												{numWarnings} warnings were
+												issued.
+											</div>
+										</Alert>
+									) : numFixes > 0 ? (
+										<Alert color="success">
+											<div
+												style={{
+													display: "flex",
+													alignItems: "center",
+													// justifyContent: "center",
+												}}
+											>
+												<img
+													src={OrcheImage}
+													width="30"
+													height="30"
+													alt="Orche"
+												/>{" "}
+												Notation successfully cleaned!{" "}
+												{numFixes} fixes were made!
+											</div>
+										</Alert>
+									) : (
+										<Alert color="info">
+											<div
+												style={{
+													display: "flex",
+													alignItems: "center",
+													// justifyContent: "center",
+												}}
+											>
+												<img
+													src={OrcheImage}
+													width="30"
+													height="30"
+													alt="Orche"
+												/>{" "}
+												Notation successfully cleaned!
+												No fixes were made.
+											</div>
+										</Alert>
+									))}
 								<h2>Generated ABC Notation</h2>
 								<Input
 									type="textarea"
