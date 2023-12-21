@@ -39,7 +39,7 @@ const ABCEditorContent = ({ tuneId }) => {
 
 				if (statusCode === 200) {
 					console.log("Tune retrieved successfully");
-					setAbcNotation(body.abcNotation);
+					setAbcNotation(body.notation);
 					setDescription(body.description);
 					setTitle(body.title);
 					setCreationDate(body.date);
@@ -65,7 +65,7 @@ const ABCEditorContent = ({ tuneId }) => {
 	}, [tuneId]);
 
 	useEffect(() => {
-		if (file) {
+		if (file && !tuneId) {
 			setDidUpload(true);
 			const reader = new FileReader();
 
@@ -97,7 +97,7 @@ const ABCEditorContent = ({ tuneId }) => {
 
 			reader.readAsText(file);
 		}
-	}, [file]);
+	}, [file, tuneId]);
 
 	const handleInputChange = (e) => {
 		setAbcNotation(e.target.value);

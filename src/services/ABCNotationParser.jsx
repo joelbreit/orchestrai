@@ -369,8 +369,13 @@ class ABCNotation {
 			newMeasure += originalText.slice(0, lastSpaceIndex);
 			newMeasure += " ";
 			// Add the difference number of z's
-			for (let k = 0; k < difference; k++) {
+			// for (let k = 0; k < difference; k++) {
+			// 	newMeasure += "z";
+			// }
+			if (difference === 1) {
 				newMeasure += "z";
+			} else {
+				newMeasure += "z" + difference;
 			}
 			// Add the rest of the measure
 			newMeasure += originalText.slice(lastSpaceIndex);
