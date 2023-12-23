@@ -11,6 +11,7 @@
    5. `npm install abcjs` (music notation)
    6. `npm install axios` (HTTP requests)Only works for servers or backend, use axios instead
    7. `npm install react-popper` (tooltips)
+   8. `npm install bcryptjs` (password hashing)
 4. Run `npm install` and `npm update`
 5. Run `npm start`
 

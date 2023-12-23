@@ -1,6 +1,7 @@
 // Import dependencies
 import React, { useContext, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import hash from "../services/Hash";
 
 // Import components
 import {
@@ -77,6 +78,8 @@ const CreateAccountForm = () => {
 			// YYYY-MM-DD
 			const creationDate = new Date().toISOString().slice(0, 10);
 			console.log("Creating account with accountId: ", accountId);
+			const hashedPassword = hash(password);
+			console.debug("Hashed password: ", hashedPassword);
 			const response = await fetch(`${apiUrl}/createAccount`, {
 				method: "POST",
 				headers: {
@@ -85,7 +88,7 @@ const CreateAccountForm = () => {
 				body: JSON.stringify({
 					accountId: accountId,
 					email: email,
-					password: password,
+					password: hashedPassword,
 					creationDate: creationDate,
 				}),
 			});

@@ -31,6 +31,11 @@ export const handler = async (event) => {
 		// const validPassword = await bcrypt.compare(password, account.password);
 		const validPassword = password === account.password;
 		if (!validPassword) {
+			console.log("Password(", password, ") != account.password(", account.password, ")");
+		} else {
+			console.log("Password(", password, ") == account.password(", account.password, ")");
+		}
+		if (!validPassword) {
 			console.log("Invalid email or password.");
 			return {
 				statusCode: 401,

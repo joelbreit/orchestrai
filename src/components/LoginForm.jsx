@@ -1,5 +1,6 @@
 // Import dependencies
 import React, { useContext, useState } from "react";
+import hash from "../services/Hash";
 
 // Import components
 import {
@@ -66,12 +67,15 @@ const LoginForm = () => {
 
 		try {
 			console.log("Attempting to login");
+			const hashedPassword = hash(password);
+			console.debug("Hashed password: ", hashedPassword);
 			const response = await fetch(`${apiUrl}/login`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify({ email, password }),
+				body: JSON.stringify({ email
+					, password: hashedPassword }),
 			});
 
 			// Handle the response

@@ -115,7 +115,6 @@ const ProfileContent = () => {
 					{tunes.length === 0 && (
 						<Col>
 							<Alert color="info">
-								(
 								<div
 									style={{
 										display: "flex",
@@ -131,7 +130,6 @@ const ProfileContent = () => {
 									/>{" "}
 									You haven't created any tunes yet.
 								</div>
-								)
 							</Alert>
 						</Col>
 					)}

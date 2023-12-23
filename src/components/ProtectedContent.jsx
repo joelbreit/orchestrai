@@ -2,7 +2,14 @@
 import React, { useContext, useState } from "react";
 
 // Import components
-import { Modal, ModalBody, ModalHeader, ModalFooter, Button } from "reactstrap";
+import {
+	Modal,
+	ModalBody,
+	ModalHeader,
+	ModalFooter,
+	Button,
+	Col,
+} from "reactstrap";
 import CreateAccountForm from "./CreateAccountForm";
 import LoginForm from "./LoginForm";
 
@@ -26,30 +33,32 @@ const ProtectedContent = ({ children }) => {
 					<p>
 						This feature is free, but you will need to login or
 						create an account to use it:{" "}
-						<Button
-							onClick={() => {
-								setHasAccount(true);
-								toggleLoginModal();
-							}}
-							className="primary-button-outline"
-						>
-							Login{" "}
-							<span role="img" aria-label="checkmark">
-								✅
-							</span>
-						</Button>{" "}
-						<Button
-							onClick={() => {
-								setHasAccount(false);
-								toggleLoginModal();
-							}}
-							className="primary-button"
-						>
-							Create an Account!{" "}
-							<span role="img" aria-label="checkmark">
-								✅
-							</span>
-						</Button>
+						<Col className="mt-2">
+							<Button
+								onClick={() => {
+									setHasAccount(true);
+									toggleLoginModal();
+								}}
+								className="primary-button-outline"
+							>
+								Login{" "}
+								<span role="img" aria-label="checkmark">
+									✅
+								</span>
+							</Button>{" "}
+							<Button
+								onClick={() => {
+									setHasAccount(false);
+									toggleLoginModal();
+								}}
+								className="primary-button"
+							>
+								Create an Account!{" "}
+								<span role="img" aria-label="checkmark">
+									✅
+								</span>
+							</Button>
+						</Col>
 					</p>
 					<Modal isOpen={isLoginModalOpen} toggle={toggleLoginModal}>
 						<ModalHeader toggle={toggleLoginModal}>
@@ -65,7 +74,6 @@ const ProtectedContent = ({ children }) => {
 									<Button color="link" onClick={changeMode}>
 										Create one
 									</Button>
-									.
 								</p>
 							) : (
 								<p>
@@ -73,7 +81,6 @@ const ProtectedContent = ({ children }) => {
 									<Button color="link" onClick={changeMode}>
 										Login
 									</Button>
-									.
 								</p>
 							)}
 						</ModalFooter>
