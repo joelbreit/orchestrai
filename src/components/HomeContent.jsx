@@ -13,7 +13,7 @@ import {
 
 import OrcasOpusImage from "../assets/images/OrcasOpusImage.png";
 import OrcheImage from "../assets/images/Orche.png";
-import JuxComposeImage from "../assets/images/MusicExplosion.png";
+import JuxComposeImage from "../assets/images/JuxCompose.png";
 import ABCEditorImage from "../assets/images/ABCEditor.png";
 import VictoriousFanfareImage from "../assets/images/VictoriousFanfare.png";
 

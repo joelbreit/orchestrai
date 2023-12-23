@@ -10,6 +10,7 @@ export const ORCHESTRAI_LOADING_MESSAGES = [
     "Picking a chord progression...",
     "Constructing a bangin melody...",
     "Seeking inspiration from the greats...",
+    "\"Replacing the tedious imagination and humanity of art.\" - Some guy on Reddit",
     "Taking a cry break...",
     "Piecing together some harmonies...",
     "Creating a masterpiece...",
