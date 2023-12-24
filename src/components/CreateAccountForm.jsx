@@ -79,7 +79,7 @@ const CreateAccountForm = () => {
 			const creationDate = new Date().toISOString().slice(0, 10);
 			console.log("Creating account with accountId: ", accountId);
 			const hashedPassword = hash(password);
-			console.debug("Hashed password: ", hashedPassword);
+			// console.debug("Hashed password: ", hashedPassword);
 			const response = await fetch(`${apiUrl}/createAccount`, {
 				method: "POST",
 				headers: {

@@ -68,7 +68,7 @@ const LoginForm = () => {
 		try {
 			console.log("Attempting to login");
 			const hashedPassword = hash(password);
-			console.debug("Hashed password: ", hashedPassword);
+			// console.debug("Hashed password: ", hashedPassword);
 			const response = await fetch(`${apiUrl}/login`, {
 				method: "POST",
 				headers: {
