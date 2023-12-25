@@ -210,7 +210,6 @@ const ABCEditorContent = ({ tuneId }) => {
 					</div>
 				)}
 				{!tuneId && (
-					// TODO this is duplicated code
 					<>
 						<h2>Enter ABC Notation</h2>
 						<Input
@@ -255,9 +254,8 @@ const ABCEditorContent = ({ tuneId }) => {
 					</Col>
 				</Row>
 				{tuneId && (
-					// TODO this is duplicated code
 					<>
-						<h2>Enter ABC Notation</h2>
+						<h2>Generated Music Notation</h2>
 						<Input
 							type="textarea"
 							value={abcNotation}

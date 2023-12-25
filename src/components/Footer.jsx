@@ -6,7 +6,7 @@ const Footer = () => {
 	const year = new Date().getFullYear();
 
 	return (
-		<footer className="bg-light text-center text-lg-start">
+		<footer className="bg-light text-center text-lg-start mt-4">
 			<Alert color="info" className="text-center">
 				<h4 className="alert-heading">
 					OrchestrAI is under construction{" "}
