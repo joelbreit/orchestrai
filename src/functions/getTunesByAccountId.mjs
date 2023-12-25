@@ -26,7 +26,7 @@ export const handler = async (event) => {
 			ExpressionAttributeValues: {
 				":accountId": accountId,
 			},
-			Limit: 10, // Limit to 10 items
+			Limit: 25, // Limit to 25 items
 		};
 
 		const data = await ddbDocClient.send(new QueryCommand(params));

@@ -103,32 +103,6 @@ const Header = (args) => {
 					</Nav>
 				</Collapse>
 			</Navbar>
-			<Alert color="info" className="text-center">
-				<h4 className="alert-heading">
-					OrchestrAI is under construction{" "}
-					<span role="img" aria-label="construction emoji">
-						🔧
-					</span>
-				</h4>
-				{/* <p>
-					We are still working on the site. If you have any
-					suggestions, please let us know!
-				</p>
-				<hr /> */}
-				<p className="mb-0">
-					We just added the ability to save your compositions and
-					share them with others and more features are on the way! In
-					the meantime, join our{" "}
-					<a
-						href="https://discord.gg/e3nNUGVA7A"
-						target="_blank"
-						rel="noreferrer"
-					>
-						Discord
-					</a>{" "}
-					to get updates and chat with us!
-				</p>
-			</Alert>
 		</div>
 	);
 };

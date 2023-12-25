@@ -94,7 +94,7 @@ const ProfileContent = () => {
 				<Row>
 					{tunes.map((tune) => (
 						<Col md={4} key={tune.tuneId}>
-							<Card className="m-2">
+							<Card className="mb-2">
 								<CardBody>
 									<CardTitle tag="h5">
 										{truncateText(tune.title, 30)}

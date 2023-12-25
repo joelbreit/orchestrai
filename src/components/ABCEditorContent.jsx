@@ -66,6 +66,8 @@ const ABCEditorContent = ({ tuneId }) => {
 		}
 	}, [tuneId]);
 
+	console.debug("Tune ID: ", tuneId);
+
 	useEffect(() => {
 		if (file && !tuneId) {
 			setDidUpload(true);
@@ -108,8 +110,11 @@ const ABCEditorContent = ({ tuneId }) => {
 	return (
 		<div className="container px-4">
 			<Container>
-				<h1 className="border-bottom">ABC Notation Editor</h1>
-
+				{!title ? (
+					<h1 className="border-bottom">ABC Notation Editor</h1>
+				) : (
+					<h1 className="border-bottom">{title}</h1>
+				)}
 				{retrievalState === "Loading" && (
 					<Alert color="primary">
 						<Spinner
@@ -204,15 +209,19 @@ const ABCEditorContent = ({ tuneId }) => {
 						</Row>
 					</div>
 				)}
-
-				<h2>Enter ABC Notation</h2>
-				<Input
-					type="textarea"
-					value={abcNotation}
-					onChange={handleInputChange}
-					placeholder="Enter ABC notation here"
-					rows={10}
-				/>
+				{!tuneId && (
+					// TODO this is duplicated code
+					<>
+						<h2>Enter ABC Notation</h2>
+						<Input
+							type="textarea"
+							value={abcNotation}
+							onChange={handleInputChange}
+							placeholder="Enter ABC notation here"
+							rows={10}
+						/>
+					</>
+				)}
 				<Row className="mt-2">
 					<Col className="d-flex justify-content-end">
 						<Button
@@ -241,10 +250,23 @@ const ABCEditorContent = ({ tuneId }) => {
 				)}
 				<Row className="mt-2">
 					<Col>
-						<h2>Rendered Sheet Music</h2>
+						{/* <h2>Rendered Sheet Music</h2> */}
 						<Synthesizer abcNotation={abcNotation} index={0} />
 					</Col>
 				</Row>
+				{tuneId && (
+					// TODO this is duplicated code
+					<>
+						<h2>Enter ABC Notation</h2>
+						<Input
+							type="textarea"
+							value={abcNotation}
+							onChange={handleInputChange}
+							placeholder="Enter ABC notation here"
+							rows={10}
+						/>
+					</>
+				)}
 			</Container>
 		</div>
 	);
