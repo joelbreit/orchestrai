@@ -1,6 +1,7 @@
 // Import dependencies
 import React, { useContext, useState } from "react";
 import hash from "../services/Hash";
+import Logger from "../services/Logger";
 
 // Import components
 import {
@@ -66,16 +67,15 @@ const LoginForm = () => {
 		}
 
 		try {
-			console.log("Attempting to login");
+			Logger.log("Attempting to login");
 			const hashedPassword = hash(password);
-			// console.debug("Hashed password: ", hashedPassword);
+			// Logger.debug("Hashed password: ", hashedPassword);
 			const response = await fetch(`${apiUrl}/login`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify({ email
-					, password: hashedPassword }),
+				body: JSON.stringify({ email, password: hashedPassword }),
 			});
 
 			// Handle the response
@@ -83,20 +83,20 @@ const LoginForm = () => {
 			const statusCode = response.status;
 
 			if (statusCode === 200) {
-				console.log("Login successful");
+				Logger.log("Login successful");
 				setAppState({
 					authenticated: true,
 					accountId: body.accountId,
 				});
 			} else {
-				console.error("Login error: ", body.error || statusCode);
+				Logger.error("Login error: ", body.error || statusCode);
 				setError(
 					body.error ||
 						"An unexpected error occurred. Please try again."
 				);
 			}
 		} catch (error) {
-			console.error("Error:", error);
+			Logger.error("Error:", error);
 			setError("An unexpected error occurred. Please try again.");
 		}
 	};

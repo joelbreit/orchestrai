@@ -1,5 +1,7 @@
+import Logger from "../services/Logger";
+
 const voiceLineStartRegex = /^[a-gz{|%w"()}[]/i;
-const nonNoteNotationRegex = /[[\]:|\\n]/i;
+// const nonNoteNotationRegex = /[[\]:|\\n]/i;
 
 // TODO '|'s can appear inside of ( )'s
 // TODO deal with obvious octave errors
@@ -30,7 +32,7 @@ class ABCNotation {
 					(measures) => measures.length
 				);
 				const error = `Error: mismatched number of measures between voices. Measure numbers: ${measureNumbers}`;
-				console.error(error);
+				Logger.error(error);
 				this.numWarnings++;
 				this.warnings.push(error);
 			}
@@ -42,8 +44,9 @@ class ABCNotation {
 					for (const measure of voice) {
 						if (measure.includes("/")) {
 							const index = measure.indexOf("/");
-							const numPriorQuotes =
-								measure.slice(0, index).split('"').length;
+							const numPriorQuotes = measure
+								.slice(0, index)
+								.split('"').length;
 							if (numPriorQuotes % 2 !== 0) {
 								// '/' is not in a chord
 								const error = `Error: composition contains '/' syntax which cannot be addressed by this parser`;
@@ -59,11 +62,11 @@ class ABCNotation {
 			}
 			this.parse();
 			// TODO double check that measure numbers match up across voices
-			console.debug("ABCNotationParser: ", this);
+			Logger.debug("ABCNotationParser: ", this);
 		} catch (error) {
 			this.failed = true;
-			console.debug("ABCNotationParser: ", this);
-			console.error("Error in ABCNotationParser: " + error);
+			Logger.debug("ABCNotationParser: ", this);
+			Logger.error("Error in ABCNotationParser: " + error);
 		}
 	}
 
@@ -216,7 +219,7 @@ class ABCNotation {
 			beats = beats.filter((beat) => beat !== 0);
 			this.measureBeatsMatrix.push(beats);
 		}
-		console.log(this.measureTextMatrix);
+		Logger.log(this.measureTextMatrix);
 	}
 
 	readVoiceSection(lines, index) {
@@ -301,7 +304,7 @@ class ABCNotation {
 				mostCommonLengthCount = count;
 			}
 		}
-		console.log(mostCommonLength);
+		Logger.log(mostCommonLength);
 		return mostCommonLength;
 	}
 
@@ -329,9 +332,9 @@ class ABCNotation {
 				}
 			}
 		}
-		console.log(pickupMeasures);
-		console.log(shortMeasures);
-		console.log(longMeasures);
+		Logger.log(pickupMeasures);
+		Logger.log(shortMeasures);
+		Logger.log(longMeasures);
 		// TODO deal with pickup measures
 		for (let i = 0; i < pickupMeasures.length; i++) {
 			const measure = pickupMeasures[i];
@@ -345,7 +348,7 @@ class ABCNotation {
 					allMatch = false;
 					const error = `Error: pickup measure found with mismatched length in voices ${voiceIndex} and ${j}`;
 					this.warnings.push(error);
-					console.error(error);
+					Logger.error(error);
 					this.numWarnings++;
 					break;
 				}
@@ -386,8 +389,8 @@ class ABCNotation {
 				newMeasure + "|"
 			);
 			this.measureTextMatrix[voiceIndex][measureIndex] = newMeasure;
-			console.log("original: " + originalText);
-			console.log("new: " + newMeasure);
+			Logger.log("original: " + originalText);
+			Logger.log("new: " + newMeasure);
 
 			this.numFixes++;
 		}
@@ -452,7 +455,7 @@ class ABCNotation {
 					}
 					// TODO this will fail with chords, simultaneous notes, and triplets
 				}
-				console.error("Error: could not fix long measure");
+				Logger.error("Error: could not fix long measure");
 				this.warnings.push(
 					"Error: could not fix long measure: " + originalText
 				);
@@ -465,8 +468,8 @@ class ABCNotation {
 				newMeasure + "|"
 			);
 			this.measureTextMatrix[voiceIndex][measureIndex] = newMeasure;
-			console.log("original: " + originalText);
-			console.log("new: " + newMeasure);
+			Logger.log("original: " + originalText);
+			Logger.log("new: " + newMeasure);
 			this.numFixes++;
 		}
 	}
@@ -518,7 +521,7 @@ class ABCNotation {
 									.filter((match) => match.length > 0).length;
 								// replace the first instance of the original text with the new text
 								if (numMatches > 1) {
-									console.error(
+									Logger.error(
 										"Error: mismatched repeats were found, but a unique match could not be found"
 									);
 									this.warnings.push(
@@ -665,8 +668,8 @@ V:3 bass
 const celebrationsDanceExample = new ABCNotation(celebrationsDance);
 
 // const output = complexExample.abcNotation;
-// console.log(complexExample.abcNotation);
-// console.log(mediumExample.abcNotation);
-// console.log(simpleExample.abcNotation);
+// Logger.log(complexExample.abcNotation);
+// Logger.log(mediumExample.abcNotation);
+// Logger.log(simpleExample.abcNotation);
 
 export default ABCNotation;

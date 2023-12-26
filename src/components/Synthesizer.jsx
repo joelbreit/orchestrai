@@ -2,6 +2,7 @@ import "abcjs/abcjs-audio.css";
 import "../assets/sass/music.scss";
 
 import React, { useEffect, useRef } from "react";
+import Logger from "../services/Logger";
 
 import ABCJS from "abcjs";
 
@@ -34,7 +35,7 @@ function Synthesizer({ abcNotation, index }) {
 					if (svg) {
 						svg.appendChild(cursor);
 					} else {
-						console.warn(
+						Logger.warn(
 							"Could not find SVG element to attach cursor."
 						);
 					}
@@ -118,14 +119,14 @@ function Synthesizer({ abcNotation, index }) {
 							cursorControl
 						)
 						.then(function () {
-							console.log("Audio successfully loaded.");
+							Logger.log("Audio successfully loaded.");
 						})
 						.catch(function (error) {
-							console.warn("Audio problem:", error);
+							Logger.warn("Audio problem:", error);
 						});
 				})
 				.catch(function (error) {
-					console.warn("Audio problem:", error);
+					Logger.warn("Audio problem:", error);
 				});
 		} else {
 			if (audioRef.current) {

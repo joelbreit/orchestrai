@@ -2,6 +2,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
+import Logger from "../services/Logger";
 
 // Import components
 import {
@@ -95,7 +96,7 @@ const ComposeContent = () => {
 	const handleNotationChange = (e) => {
 		setAbcNotation(e.target.value);
 	};
-	// console.log("tuneId:", tuneId);
+	// Logger.log("tuneId:", tuneId);
 
 	// Calculate % complete
 	useEffect(() => {
@@ -106,7 +107,7 @@ const ComposeContent = () => {
 			raw = (timeSoFar / EXPECTED_DURATION) * 100;
 		}
 		const rounded = Math.round(raw);
-		console.log("Percent complete:", rounded);
+		Logger.log("Percent complete:", rounded);
 		setPercentComplete(rounded);
 	}, [timeSoFar]);
 
@@ -180,11 +181,11 @@ const ComposeContent = () => {
 			const generateMusicBody = await generateMusicResponse.json();
 			const statusCode = generateMusicResponse.status;
 			if (statusCode === 200) {
-				console.log("Success:", generateMusicBody);
+				Logger.log("Success:", generateMusicBody);
 			} else {
 				throw new Error(generateMusicBody.message);
 			}
-			console.log("Generate Music Response:", generateMusicBody.message);
+			Logger.log("Generated response:", generateMusicBody.message);
 
 			threadId = generateMusicBody.threadId;
 			runId = generateMusicBody.runId;
@@ -217,16 +218,16 @@ const ComposeContent = () => {
 				const checkStatusBody = await checkStatusResponse.json();
 				const statusCode = checkStatusResponse.status;
 				if (statusCode === 200) {
-					console.log("Success:", checkStatusBody);
+					Logger.log("Success:", checkStatusBody);
 				} else {
 					throw new Error(checkStatusBody.message);
 				}
-				console.log("Check Status Response:", checkStatusBody.message);
+				Logger.log("Check Status Response:", checkStatusBody.message);
 
 				runStatus = checkStatusBody.status;
 				messages = checkStatusBody.messages;
 
-				console.log("Run status:", runStatus);
+				Logger.log("Run status:", runStatus);
 
 				// Wait for a few seconds before checking again
 				const seconds = Math.floor(Math.random() * 8) + 2;
@@ -235,16 +236,16 @@ const ComposeContent = () => {
 				);
 
 				secondsSoFar = Math.floor((Date.now() - startTime) / 1000);
-				console.log("Seconds so far:", secondsSoFar);
+				Logger.log("Seconds so far:", secondsSoFar);
 				setTimeSoFar(secondsSoFar);
 				const progress = secondsSoFar / EXPECTED_DURATION;
 				const messagesLength = LOADING_MESSAGES.length;
-				console.log("Progress:", Math.round(progress * 100), "%");
+				Logger.log("Progress:", Math.round(progress * 100), "%");
 				messageIndex = Math.floor(progress * messagesLength);
 				if (messageIndex >= messagesLength) {
 					messageIndex = messagesLength - 1;
 				}
-				console.log("Message index:", messageIndex);
+				Logger.log("Message index:", messageIndex);
 				setLoadingMessage(LOADING_MESSAGES[messageIndex]);
 
 				if (secondsSoFar > MAX_DURATION) {
@@ -256,18 +257,18 @@ const ComposeContent = () => {
 				}
 			} while (runStatus !== "completed");
 
-			console.log("Messages:", messages);
+			Logger.log("Messages:", messages);
 			const output = messages[0].content[0].text.value;
-			console.log("Output:", output);
+			Logger.log("Output:", output);
 			setAbcNotation(output.match(/```([^`]*)```/)[1]);
 			setDescription(output.replace(/```([^`]*)```/, ""));
 			setHasGeneratedMusic(true);
 			setTuneId(uuidv4());
 			setSaveState("");
 			setSaveStatusCode(0);
-			console.log("Generated music:", abcNotation); // It's not updating here either
+			Logger.log("Generated music:", abcNotation); // It's not updating here either
 		} catch (error) {
-			console.error("API call failed:", error);
+			Logger.error("API call failed:", error);
 			setErrorMessage(error.message);
 			setIsLoading(false);
 			return;
@@ -327,11 +328,11 @@ Feedback: ${feedback}\n`,
 		const saveTuneBody = await saveTuneResponse.json();
 		const statusCode = saveTuneResponse.status;
 		if (statusCode === 200) {
-			console.log("Success:", saveTuneBody);
+			Logger.log("Success:", saveTuneBody);
 		} else {
 			throw new Error(saveTuneBody.message);
 		}
-		console.log("Save Tune Response:", saveTuneBody);
+		Logger.log("Save Tune Response:", saveTuneBody);
 
 		setSaveStatusCode(statusCode);
 		setSaveState("Complete");

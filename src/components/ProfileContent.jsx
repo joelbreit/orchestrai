@@ -1,20 +1,21 @@
 // Import dependencies
 import React, { useContext, useEffect, useState } from "react";
+import Logger from "../services/Logger";
 
 // Import components
+import { Link } from "react-router-dom"; // Import Link
 import {
-	Container,
-	Card,
-	CardBody,
-	CardTitle,
-	CardText,
-	Row,
-	Col,
-	Spinner,
 	Alert,
 	Button,
+	Card,
+	CardBody,
+	CardText,
+	CardTitle,
+	Col,
+	Container,
+	Row,
+	Spinner,
 } from "reactstrap";
-import { Link } from "react-router-dom"; // Import Link
 
 // Import contexts
 import { AppContext } from "../contexts/AppContext";
@@ -42,10 +43,7 @@ const ProfileContent = () => {
 		const getTunesByAccountId = async () => {
 			setLoadingState("Loading");
 			try {
-				console.log(
-					"Loading tunes for accountId: ",
-					appState.accountId
-				);
+				Logger.log("Loading tunes for accountId: ", appState.accountId);
 				const response = await fetch(`${apiUrl}/getTunesByAccountId`, {
 					method: "POST",
 					headers: {
@@ -59,17 +57,17 @@ const ProfileContent = () => {
 				const statusCode = response.status;
 
 				if (statusCode === 200) {
-					console.log("Tunes loaded successfully");
+					Logger.log("Tunes loaded successfully");
 					// Body contains a list of up to 10 objects with theses keys:
 					// tuneId, title, description, date, prompt, notation
 					setTunes(body);
 					setLoadingState("Success");
 				} else {
-					console.error("Load error: ", body.error || statusCode);
+					Logger.error("Load error: ", body.error || statusCode);
 					setLoadingState("Error");
 				}
 			} catch (error) {
-				console.error("Error:", error);
+				Logger.error("Error:", error);
 				setLoadingState("Error");
 			}
 		};

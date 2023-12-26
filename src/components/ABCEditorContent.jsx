@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Button, Col, Container, Input, Row, Spinner } from "reactstrap";
 import ABCNotations from "../assets/ABCNotations";
+import Logger from "../services/Logger";
 import FileUploader from "./FileUploader";
 import Synthesizer from "./Synthesizer";
 
@@ -26,7 +27,7 @@ const ABCEditorContent = ({ tuneId }) => {
 		const getTune = async () => {
 			setRetrievalState("Loading");
 			try {
-				console.log("Retrieving tune...");
+				Logger.log("Retrieving tune...");
 				const response = await fetch(`${apiUrl}/getTune`, {
 					method: "POST",
 					headers: {
@@ -40,7 +41,7 @@ const ABCEditorContent = ({ tuneId }) => {
 				const statusCode = response.status;
 
 				if (statusCode === 200) {
-					console.log("Tune retrieved successfully");
+					Logger.log("Tune retrieved successfully");
 					setAbcNotation(body.notation);
 					setDescription(body.description);
 					setTitle(body.title);
@@ -49,15 +50,12 @@ const ABCEditorContent = ({ tuneId }) => {
 
 					setRetrievalState("success");
 				} else {
-					console.error(
-						"Retrieval error: ",
-						body.error || statusCode
-					);
+					Logger.error("Retrieval error: ", body.error || statusCode);
 					setRetrievalState("error");
 				}
 				setRetrievalStatusCode(statusCode);
 			} catch (error) {
-				console.error("Error:", error);
+				Logger.error("Error:", error);
 			}
 			setRetrievalState("Complete");
 		};
@@ -66,7 +64,7 @@ const ABCEditorContent = ({ tuneId }) => {
 		}
 	}, [tuneId]);
 
-	console.debug("Tune ID: ", tuneId);
+	Logger.debug("Tune ID: ", tuneId);
 
 	useEffect(() => {
 		if (file && !tuneId) {

@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
 	Alert,
 	Button,
@@ -10,7 +11,7 @@ import {
 	Input,
 	Row,
 } from "reactstrap";
-import React, { useEffect, useState } from "react";
+import Logger from "../services/Logger";
 
 // import tunes from "../assets/Tunes";
 import GeneratedTunes from "../assets/GeneratedTunes";
@@ -52,7 +53,7 @@ const ABCCleaner = () => {
 		setAbcNotation1(contents[0].output);
 		setAbcNotation2(contents[1].output);
 		resetCleaner();
-		console.log(
+		Logger.log(
 			"New tune selected. Resetting cleaner. hasCleaned: ",
 			hasCleaned
 		);
@@ -66,18 +67,20 @@ const ABCCleaner = () => {
 		setFailed(false);
 	};
 
+	Logger.warn("Warnings: ", warnings);
+
 	// useEffect(() => {
 	// 	setHasCleaned(false);
 	// 	setNumFixes(0);
 	// 	setNumWarnings(0);
 	// 	setFailed(false);
-	// 	console.log("hasCleaned: ", hasCleaned);
+	// 	Logger.log("hasCleaned: ", hasCleaned);
 	// }
 	// , [abcNotation1, abcNotation2]);
 
-	console.log("hasCleaned: ", hasCleaned);
-	console.log("numFixes: ", numFixes);
-	console.log("failed: ", failed);
+	Logger.log("hasCleaned: ", hasCleaned);
+	Logger.log("numFixes: ", numFixes);
+	Logger.log("failed: ", failed);
 
 	return (
 		<Container>

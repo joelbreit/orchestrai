@@ -11,9 +11,9 @@ import {
 } from "reactstrap";
 
 import ColorsOfSpringImage from "../assets/images/ColorsOfSpring.png";
-import VictoriousFanfareImage from "../assets/images/VictoriousFanfare.png";
 import OceanRaidersOvertureImage from "../assets/images/OceanRaidersOverture.png";
 import StarryNightSerenadeImage from "../assets/images/StarryNightSerenade.png";
+import VictoriousFanfareImage from "../assets/images/VictoriousFanfare.png";
 
 const PortfolioContent = () => {
 	// Sample data, replace with actual data
@@ -37,7 +37,12 @@ const PortfolioContent = () => {
 			tuneId: "76d42155-9f4e-480f-98bf-720f1fe789a3",
 			title: "Starry Night Serenade",
 			image: StarryNightSerenadeImage,
-		}
+		},
+		// {
+		// 	tuneId: "b7b35e9e-26cd-4b92-8c01-693cb6426f09",
+		// 	title: "The Quaint Village Street",
+		// 	image: "https://via.placeholder.com/300x300",
+		// },
 	];
 
 	return (

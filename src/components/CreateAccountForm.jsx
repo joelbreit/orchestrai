@@ -2,6 +2,7 @@
 import React, { useContext, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import hash from "../services/Hash";
+import Logger from "../services/Logger";
 
 // Import components
 import {
@@ -77,9 +78,9 @@ const CreateAccountForm = () => {
 			setAccountId(uuidv4());
 			// YYYY-MM-DD
 			const creationDate = new Date().toISOString().slice(0, 10);
-			console.log("Creating account with accountId: ", accountId);
+			Logger.log("Creating account with accountId: ", accountId);
 			const hashedPassword = hash(password);
-			// console.debug("Hashed password: ", hashedPassword);
+			// Logger.debug("Hashed password: ", hashedPassword);
 			const response = await fetch(`${apiUrl}/createAccount`, {
 				method: "POST",
 				headers: {
@@ -98,13 +99,13 @@ const CreateAccountForm = () => {
 			const statusCode = response.status;
 
 			if (statusCode === 200) {
-				console.log("Account created successfully");
+				Logger.log("Account created successfully");
 				setAppState({
 					authenticated: true,
 					accountId: accountId,
 				});
 			} else {
-				console.error(
+				Logger.error(
 					"Error during account creation: ",
 					body.error || statusCode
 				);
@@ -114,7 +115,7 @@ const CreateAccountForm = () => {
 				);
 			}
 		} catch (error) {
-			console.error("Error:", error);
+			Logger.error("Error:", error);
 			setError("An unexpected error occurred. Please try again.");
 		}
 	};
