@@ -67,21 +67,6 @@ const ABCCleaner = () => {
 		setFailed(false);
 	};
 
-	Logger.warn("Warnings: ", warnings);
-
-	// useEffect(() => {
-	// 	setHasCleaned(false);
-	// 	setNumFixes(0);
-	// 	setNumWarnings(0);
-	// 	setFailed(false);
-	// 	Logger.log("hasCleaned: ", hasCleaned);
-	// }
-	// , [abcNotation1, abcNotation2]);
-
-	Logger.log("hasCleaned: ", hasCleaned);
-	Logger.log("numFixes: ", numFixes);
-	Logger.log("failed: ", failed);
-
 	return (
 		<Container>
 			<h1>JuxCompose</h1>
