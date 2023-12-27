@@ -23,7 +23,7 @@ export const handler = async (event) => {
 	try {
 		console.log("Received event:", event);
 
-		const { accountId, email, password, creationDate } = JSON.parse(
+		const { accountId, email, password, emailPreference, creationDate } = JSON.parse(
 			event.body
 		);
 		const hashedPassword = await hashPassword(password);
@@ -42,6 +42,7 @@ export const handler = async (event) => {
 			accountId: accountId,
 			email: email,
 			password: hashedPassword,
+			emailPreference: emailPreference,
 			creationDate: creationDate,
 		};
 

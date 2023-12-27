@@ -32,31 +32,55 @@ const CreateAccountForm = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
+	const [emailPreference, setEmailPreference] = useState("critical");
 
 	// Validation state
 	const [emailValid, setEmailValid] = useState(null);
 	const [passwordValid, setPasswordValid] = useState(null);
 	const [confirmPasswordValid, setConfirmPasswordValid] = useState(null);
-
-	// Form state
 	const [error, setError] = useState("");
+
+	const allOtherFieldsHaveValues = () => {
+		return (
+			email !== "" &&
+			password !== "" &&
+			confirmPassword !== "" &&
+			emailPreference !== ""
+		);
+	};
+
+	const handEmailChange = (emailInput) => {
+		if (allOtherFieldsHaveValues()) {
+			validateEmail(emailInput);
+		}
+	};
 
 	const validateEmail = (emailInput) => {
 		const valid = EMAIL_REGEX.test(emailInput);
 		setEmailValid(valid || emailInput === "");
-		if (!valid) {
+		if (!valid && emailInput !== "") {
 			setError("Please enter a valid email address");
 		} else {
 			setError("");
 		}
 	};
 
+	const handlePasswordChange = (passwordInput) => {
+		if (allOtherFieldsHaveValues()) {
+			validatePassword(passwordInput);
+		}
+	};
+
 	const validatePassword = (passwordInput) => {
+		// TODO errors should show up under the corresponding field
+		if (!allOtherFieldsHaveValues()) {
+			return;
+		}
 		const valid = PASSWORD_REGEX.test(passwordInput);
 		setPasswordValid(valid || passwordInput === "");
-		if (!valid) {
+		if (!valid && passwordInput !== "") {
 			setError("Passwords must be at least 8 characters long");
-		} else if (passwordInput !== confirmPassword) {
+		} else if (passwordInput !== confirmPassword && confirmPassword !== "") {
 			setConfirmPasswordValid(false);
 			setError("Passwords do not match");
 		} else {
@@ -90,6 +114,7 @@ const CreateAccountForm = () => {
 					accountId: accountId,
 					email: email,
 					password: hashedPassword,
+					emailPreference: emailPreference,
 					creationDate: creationDate,
 				}),
 			});
@@ -140,7 +165,7 @@ const CreateAccountForm = () => {
 						required
 						onChange={(e) => {
 							setEmail(e.target.value);
-							validateEmail(e.target.value);
+							handEmailChange(e.target.value);
 						}}
 					/>
 					<FormFeedback>
@@ -165,7 +190,7 @@ const CreateAccountForm = () => {
 						required
 						onChange={(e) => {
 							setPassword(e.target.value);
-							validatePassword(e.target.value);
+							handlePasswordChange(e.target.value);
 						}}
 					/>
 					<FormFeedback>
@@ -190,11 +215,43 @@ const CreateAccountForm = () => {
 						required
 						onChange={(e) => {
 							setConfirmPassword(e.target.value);
-							validatePassword(e.target.value);
+							handlePasswordChange(e.target.value);
 						}}
 					/>
 					<FormFeedback>Passwords do not match.</FormFeedback>
 				</Col>
+			</FormGroup>
+
+			<FormGroup tag="fieldset">
+				<Label>Email Preferences</Label>
+				<FormGroup check>
+					<Label check>
+						<Input
+							type="radio"
+							name="emailPreference"
+							value="critical"
+							checked={emailPreference === "critical"}
+							onChange={(e) => setEmailPreference(e.target.value)}
+						/>
+						<small>
+							{" "}
+							Only send address confirmation, password reset, and
+							<i> critical</i> update emails
+						</small>
+					</Label>
+				</FormGroup>
+				<FormGroup check>
+					<Label check>
+						<Input
+							type="radio"
+							name="emailPreference"
+							value="never"
+							checked={emailPreference === "never"}
+							onChange={(e) => setEmailPreference(e.target.value)}
+						/>
+						<small> Literally never email me</small>
+					</Label>
+				</FormGroup>
 			</FormGroup>
 
 			{error && <Alert color="danger">{error}</Alert>}
