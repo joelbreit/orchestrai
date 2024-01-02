@@ -6,6 +6,7 @@ const voiceLineStartRegex = /^[a-gz{|%w"()}[]/i;
 // TODO '|'s can appear inside of ( )'s
 // TODO deal with obvious octave errors
 // TODO Voice names can be different for the same voice
+// TODO remove ||'s
 
 class ABCNotation {
 	constructor(abcNotation) {

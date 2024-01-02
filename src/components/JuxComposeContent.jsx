@@ -11,7 +11,7 @@ import {
 	NavLink,
 	Row,
 	TabContent,
-	TabPane
+	TabPane,
 } from "reactstrap";
 
 // import tunes from "../assets/Tunes";
@@ -25,7 +25,8 @@ const JuxComposeContent = () => {
 	const [abcNotation1, setAbcNotation1] = useState("");
 	const [abcNotation2, setAbcNotation2] = useState("");
 	const [dropdownOpen, setDropdownOpen] = useState(false);
-	const selectedTune = useState("Select a Tune");
+	const [prompt, setPrompt] = useState("");
+	const [selectedTune, setSelectedTune] = useState("Select a tune");
 
 	const toggleTab = (tab) => {
 		if (activeTab !== tab) setActiveTab(tab);
@@ -43,6 +44,8 @@ const JuxComposeContent = () => {
 
 	const selectTune = (tuneKey) => {
 		const contents = GeneratedTunes[tuneKey];
+		setPrompt(tuneKey);
+		setSelectedTune(tuneKey);
 		// setSelectedTune(GeneratedTunes[tuneKey].split("\n")[1].substring(2)); // To get the title (T:TuneName)
 
 		setAbcNotation1(contents[0].output);
@@ -82,12 +85,10 @@ const JuxComposeContent = () => {
 			<TabContent activeTab={activeTab}>
 				<TabPane tabId="1">
 					<h1>JuxCompose</h1>
-					<Dropdown
-						isOpen={dropdownOpen}
-						toggle={toggleDropdown}
-						className="mb-2"
-					>
-						<DropdownToggle caret>{selectedTune}</DropdownToggle>
+					<Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
+						<DropdownToggle caret className="primary-dropdown">
+							{selectedTune}
+						</DropdownToggle>
 						<DropdownMenu>
 							{Object.keys(GeneratedTunes).map((tuneKey) => (
 								<DropdownItem
@@ -100,6 +101,7 @@ const JuxComposeContent = () => {
 							))}
 						</DropdownMenu>
 					</Dropdown>
+					<h2>Generated Tunes for: {prompt}</h2>
 					<Row>
 						<Col sm="6">
 							<Input
@@ -110,7 +112,7 @@ const JuxComposeContent = () => {
 								rows={10}
 							/>
 							<Col>
-								<h2>Rendered Music Sheet:</h2>
+								<h2>ABC Notation Output:</h2>
 								<Synthesizer
 									abcNotation={abcNotation1}
 									index={1}
@@ -128,7 +130,7 @@ const JuxComposeContent = () => {
 								rows={10}
 							/>
 							<Col>
-								<h2>Rendered Music Sheet:</h2>
+								<h2>Note Duration Pairs Output:</h2>
 								<Synthesizer
 									abcNotation={abcNotation2}
 									index={2}

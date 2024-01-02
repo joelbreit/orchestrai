@@ -46,6 +46,16 @@ $succes-hover: #8ecf6e;
     }
 }
 
+.primary-dropdown {
+    background-color: $primary !important;
+    border-color: $primary !important;
+    // hover
+    &:hover {
+        background-color: $primary-hover !important;
+        border-color: $primary-hover !important;
+    }
+}
+
 .secondary-button {
     background-color: $secondary !important;
     border-color: $secondary !important;

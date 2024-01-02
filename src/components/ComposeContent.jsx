@@ -553,7 +553,6 @@ Feedback: ${feedback}\n`,
 								<h2>Generated Description</h2>
 								{vibe || fullPrompt ? (
 									<>
-										<h3>Output</h3>
 										{description ? (
 											<p>{description}</p>
 										) : (
