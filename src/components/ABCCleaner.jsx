@@ -28,11 +28,10 @@ const ABCCleaner = () => {
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const [hasCleaned, setHasCleaned] = useState(false);
 	const [numFixes, setNumFixes] = useState(0);
-	const [numWarnings, setNumWarnings] = useState(0);
 	const [warnings, setWarnings] = useState([]);
 	const [failed, setFailed] = useState(false);
 
-	const selectedTune = useState("Select a Tune");
+	const [selectedTune, setSelectedTune] = useState("Select a tune");
 
 	const handleInputChange1 = (e) => {
 		setAbcNotation1(e.target.value);
@@ -48,6 +47,8 @@ const ABCCleaner = () => {
 
 	const selectTune = (tuneKey) => {
 		const contents = GeneratedTunes[tuneKey];
+
+		setSelectedTune(tuneKey);
 		// setSelectedTune(GeneratedTunes[tuneKey].split("\n")[1].substring(2)); // To get the title (T:TuneName)
 
 		setAbcNotation1(contents[0].output);
@@ -62,7 +63,6 @@ const ABCCleaner = () => {
 	const resetCleaner = () => {
 		setHasCleaned(false);
 		setNumFixes(0);
-		setNumWarnings(0);
 		setWarnings([]);
 		setFailed(false);
 	};
@@ -75,7 +75,9 @@ const ABCCleaner = () => {
 				toggle={toggleDropdown}
 				className="mb-2"
 			>
-				<DropdownToggle caret>{selectedTune}</DropdownToggle>
+				<DropdownToggle caret className="primary-dropdown">
+					{selectedTune}
+				</DropdownToggle>
 				<DropdownMenu>
 					{Object.keys(GeneratedTunes).map((tuneKey) => (
 						<DropdownItem
@@ -119,7 +121,6 @@ const ABCCleaner = () => {
 							setAbcNotation2(cleanedNotation.abcNotation);
 							setHasCleaned(true);
 							setNumFixes(cleanedNotation.numFixes);
-							setNumWarnings(cleanedNotation.numWarnings);
 							setWarnings(cleanedNotation.warnings);
 							setFailed(cleanedNotation.failed);
 						}}
@@ -149,7 +150,7 @@ const ABCCleaner = () => {
 									/>{" "}
 									<span>
 										Sorry, but we couldn't clean up this
-										tune. {numWarnings} warnings were
+										tune. {warnings.length} warnings were
 										issued. See something strange? Let us
 										know on our{" "}
 										<a
@@ -163,7 +164,7 @@ const ABCCleaner = () => {
 									</span>
 								</div>
 							</Alert>
-						) : numWarnings > 0 ? (
+						) : warnings.length > 0 ? (
 							<Alert color="warning">
 								<div
 									style={{
@@ -179,7 +180,7 @@ const ABCCleaner = () => {
 										alt="Orche"
 									/>{" "}
 									Notation successfully cleaned! {numFixes}{" "}
-									fixes were made, but {numWarnings} warnings
+									fixes were made, but {warnings.length} warnings
 									were issued.
 								</div>
 							</Alert>
@@ -218,7 +219,7 @@ const ABCCleaner = () => {
 										alt="Orche"
 									/>{" "}
 									Notation successfully cleaned! No fixes were
-									made.
+									needed.
 								</div>
 							</Alert>
 						))}

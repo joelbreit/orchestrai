@@ -31,8 +31,8 @@ const ProtectedContent = ({ children }) => {
 			) : (
 				<>
 					<p>
-						This feature is free, but you will need to login or
-						create an account to use it:{" "}
+						<strong>This feature is completely free</strong>, but
+						you will need to login or create an account to use it:{" "}
 						<Col className="mt-2">
 							<Button
 								onClick={() => {

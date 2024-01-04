@@ -22,6 +22,9 @@ export const handler = async (event) => {
 			prompt,
 			description,
 			notation,
+			warnings,
+			fixes,
+			generationDuration,
 		} = JSON.parse(event.body);
 
 		// Prepare item to insert
@@ -35,6 +38,9 @@ export const handler = async (event) => {
 			prompt,
 			description,
 			notation,
+			warnings,
+			fixes,
+			generationDuration,
 		};
 
 		console.log("New tune prepared:", newTune);

@@ -42,7 +42,7 @@ import {
 	ORCHESTRAI_LOADING_MESSAGES as LOADING_MESSAGES,
 	ORCHESTRAI_TIMEOUT_DURATION as MAX_DURATION,
 	PROMPT_SUGGESTIONS,
-	ORCHESTRAI_SAVE_FILE_VERSION as SAVE_FILE_VERSION,
+	// ORCHESTRAI_SAVE_FILE_VERSION as SAVE_FILE_VERSION,
 	VIBE_SUGGESTIONS,
 } from "../assets/Constants";
 import OrcheImage from "../assets/images/Orche.png";
@@ -65,6 +65,7 @@ const ComposeContent = () => {
 	const [loadingMessage, setLoadingMessage] = useState(LOADING_MESSAGES[0]);
 	const [hasGeneratedMusic, setHasGeneratedMusic] = useState(false);
 	const [errorMessage, setErrorMessage] = useState();
+	const [runStatus, setRunStatus] = useState("");
 
 	// Music generation state
 	const [abcNotation, setAbcNotation] = useState("");
@@ -73,7 +74,6 @@ const ComposeContent = () => {
 	// ABC Cleaner state
 	const [hasCleaned, setHasCleaned] = useState(false);
 	const [numFixes, setNumFixes] = useState(0);
-	const [numWarnings, setNumWarnings] = useState(0);
 	const [warnings, setWarnings] = useState([]);
 	const [failed, setFailed] = useState(false);
 
@@ -107,7 +107,7 @@ const ComposeContent = () => {
 			raw = (timeSoFar / EXPECTED_DURATION) * 100;
 		}
 		const rounded = Math.round(raw);
-		Logger.log("Percent complete:", rounded);
+		Logger.debug("Percent complete:", rounded);
 		setPercentComplete(rounded);
 	}, [timeSoFar]);
 
@@ -124,10 +124,16 @@ const ComposeContent = () => {
 		setAbcNotation(cleanedNotation.abcNotation);
 		setHasCleaned(true);
 		setNumFixes(cleanedNotation.numFixes);
-		setNumWarnings(cleanedNotation.numWarnings);
 		setWarnings(cleanedNotation.warnings);
 		setFailed(cleanedNotation.failed);
 	}, [abcNotation]);
+
+	// When ready to save tune
+	useEffect(() => {
+		if (hasGeneratedMusic && hasCleaned) {
+			handleSaveTune();
+		}
+	}, [hasGeneratedMusic, hasCleaned]);
 
 	const suggestVibe = () => {
 		const randomIndex = Math.floor(Math.random() * VIBE_SUGGESTIONS.length);
@@ -150,6 +156,7 @@ const ComposeContent = () => {
 		setErrorMessage("");
 		setIsLoading(true);
 		setIsFeedbackOpen(false);
+		setRunStatus("Queued");
 
 		try {
 			let threadId = "";
@@ -228,45 +235,84 @@ const ComposeContent = () => {
 				messages = checkStatusBody.messages;
 
 				Logger.log("Run status:", runStatus);
-
-				// Wait for a few seconds before checking again
-				const seconds = Math.floor(Math.random() * 8) + 2;
-				await new Promise((resolve) =>
-					setTimeout(resolve, 1000 * seconds)
-				);
-
-				secondsSoFar = Math.floor((Date.now() - startTime) / 1000);
-				Logger.log("Seconds so far:", secondsSoFar);
-				setTimeSoFar(secondsSoFar);
-				const progress = secondsSoFar / EXPECTED_DURATION;
-				const messagesLength = LOADING_MESSAGES.length;
-				Logger.log("Progress:", Math.round(progress * 100), "%");
-				messageIndex = Math.floor(progress * messagesLength);
-				if (messageIndex >= messagesLength) {
-					messageIndex = messagesLength - 1;
+				switch (runStatus) {
+					case "queued":
+						setRunStatus("Queued");
+						break;
+					case "in_progress":
+						setRunStatus("In Progress");
+						break;
+					case "completed":
+						setRunStatus("Completed");
+						break;
+					case "failed":
+						setRunStatus("Failed");
+						break;
+					default:
+						setRunStatus("Unknown");
+						break;
 				}
-				Logger.log("Message index:", messageIndex);
-				setLoadingMessage(LOADING_MESSAGES[messageIndex]);
 
-				if (secondsSoFar > MAX_DURATION) {
-					setErrorMessage(
-						"OrchestrAI took too long to generate music. Please try again."
-					);
-					setIsLoading(false);
-					return;
+				if (runStatus !== "completed") {
+					const pauseStart = Date.now();
+					// Update a few times more quickly
+					const numTimes = Math.floor(Math.random() * 5) + 1; // 1-5 times
+					for (let i = 0; i < numTimes; i++) {
+						const shorterPause = Math.random() * 4; // 0-4 seconds
+						await new Promise((resolve) =>
+							setTimeout(resolve, 1000 * shorterPause)
+						);
+						secondsSoFar = Math.floor(
+							(Date.now() - startTime) / 1000
+						);
+						Logger.debug("Seconds so far:", secondsSoFar);
+						setTimeSoFar(secondsSoFar);
+						const progress = secondsSoFar / EXPECTED_DURATION;
+						const messagesLength = LOADING_MESSAGES.length;
+						Logger.debug(
+							"Progress:",
+							Math.round(progress * 100),
+							"%"
+						);
+						messageIndex = Math.floor(progress * messagesLength);
+						if (messageIndex >= messagesLength) {
+							messageIndex = messagesLength - 1;
+						}
+						Logger.debug("Message index:", messageIndex);
+						setLoadingMessage(LOADING_MESSAGES[messageIndex]);
+					}
+
+					// Make sure we wait at least 2 seconds before pinging again
+					const pauseEnd = Date.now();
+					const pauseDuration = pauseEnd - pauseStart;
+					if (pauseDuration < 2000) {
+						await new Promise((resolve) =>
+							setTimeout(resolve, 2000 - pauseDuration)
+						);
+					}
+
+					if (secondsSoFar > MAX_DURATION) {
+						setErrorMessage(
+							"OrchestrAI took too long to generate music. Please try again."
+						);
+						setIsLoading(false);
+						return;
+					}
 				}
 			} while (runStatus !== "completed");
 
 			Logger.log("Messages:", messages);
 			const output = messages[0].content[0].text.value;
 			Logger.log("Output:", output);
+
+			setHasCleaned(false);
 			setAbcNotation(output.match(/```([^`]*)```/)[1]);
 			setDescription(output.replace(/```([^`]*)```/, ""));
 			setHasGeneratedMusic(true);
 			setTuneId(uuidv4());
 			setSaveState("");
 			setSaveStatusCode(0);
-			Logger.log("Generated music:", abcNotation); // It's not updating here either
+			handleSaveTune();
 		} catch (error) {
 			Logger.error("API call failed:", error);
 			setErrorMessage(error.message);
@@ -277,33 +323,44 @@ const ComposeContent = () => {
 		}
 	};
 
-	const handleDownload = (feedback) => {
-		const element = document.createElement("a");
-		const file = new Blob(
-			[
-				`Version: ${SAVE_FILE_VERSION}\n
-tuneId: ${tuneId}\n
-accountId: ${appState.accountId}\n
-Date and Time: ${new Date().toLocaleString()}\n
-Input: ${input}\n
-Description: ${description}\n
-ABC Notation: ${abcNotation}\n
-Thread ID: ${thread}\n
-Run ID: ${run}\n
-Error Message: ${errorMessage}\n,
-Feedback: ${feedback}\n`,
-			],
-			{ type: "text/plain" }
-		);
-		element.href = URL.createObjectURL(file);
-		const fileName = `OrchestrAI_${new Date().toLocaleString()}.txt`;
-		element.download = fileName;
-		document.body.appendChild(element); // Required for this to work in FireFox
-		element.click();
-	};
+// 	const handleDownload = (feedback) => {
+// 		const element = document.createElement("a");
+// 		const file = new Blob(
+// 			[
+// 				`Version: ${SAVE_FILE_VERSION}\n
+// tuneId: ${tuneId}\n
+// accountId: ${appState.accountId}\n
+// Date and Time: ${new Date().toLocaleString()}\n
+// Input: ${input}\n
+// Description: ${description}\n
+// ABC Notation: ${abcNotation}\n
+// Thread ID: ${thread}\n
+// Run ID: ${run}\n
+// Error Message: ${errorMessage}\n,
+// Feedback: ${feedback}\n`,
+// 			],
+// 			{ type: "text/plain" }
+// 		);
+// 		element.href = URL.createObjectURL(file);
+// 		const fileName = `OrchestrAI_${new Date().toLocaleString()}.txt`;
+// 		element.download = fileName;
+// 		document.body.appendChild(element); // Required for this to work in FireFox
+// 		element.click();
+// 	};
 
 	const handleSaveTune = async () => {
 		setSaveState("Loading");
+
+		const nycTime = new Date().toLocaleString("en-US", {
+			timeZone: "America/New_York",
+			hour12: false,
+			hour: "numeric",
+			minute: "numeric",
+			second: "numeric",
+		});
+		const dateAndTime = `${new Date()
+			.toISOString()
+			.slice(0, 10)} ${nycTime}`;
 
 		const saveTuneResponse = await fetch(`${apiUrl}/saveTune`, {
 			method: "POST",
@@ -313,7 +370,7 @@ Feedback: ${feedback}\n`,
 			body: JSON.stringify({
 				tuneId: tuneId,
 				accountId: appState.accountId,
-				date: new Date().toISOString().slice(0, 10),
+				date: dateAndTime,
 				thread: thread,
 				run: run,
 				// Get everything after 'T:' on the first line where that exists
@@ -321,6 +378,9 @@ Feedback: ${feedback}\n`,
 				prompt: input,
 				description: description,
 				notation: abcNotation,
+				warnings: warnings,
+				fixes: numFixes, // TODO Update to an actual list up fixes made
+				generationDuration: timeSoFar,
 			}),
 		});
 
@@ -450,28 +510,52 @@ Feedback: ${feedback}\n`,
 										You must enter a vibe and an API key.
 									</FormFeedback>
 									<FormGroup>
-										<Button
-											type="submit"
-											value="Generate Music"
-											className="btn btn-primary primary-button"
-											disabled={!vibe || isLoading}
-										>
-											{isLoading && (
-												<>
-													<Spinner
-														as="span"
-														animation="border"
-														size="sm"
-														role="status"
-														aria-hidden="true"
-													/>{" "}
-												</>
+										<div className="d-flex align-items-center">
+											<Button
+												type="submit"
+												value="Generate Music"
+												className="btn btn-primary primary-button"
+												disabled={!vibe || isLoading}
+											>
+												{isLoading && (
+													<>
+														<Spinner
+															as="span"
+															animation="border"
+															size="sm"
+															role="status"
+															aria-hidden="true"
+														/>{" "}
+													</>
+												)}
+												Generate Music{" "}
+												<i
+													className={`bi bi-music-note-beamed`}
+												></i>
+											</Button>
+											{/* Badge that displays the run status */}
+											{runStatus && (
+												<div
+													className={`badge ${
+														runStatus ===
+														"Completed"
+															? "bg-success"
+															: runStatus ===
+															  "Failed"
+															? "bg-danger"
+															: runStatus ===
+															  "In Progress"
+															? "bg-warning"
+															: "bg-info"
+													}`}
+													style={{
+														marginLeft: "10px",
+													}}
+												>
+													{runStatus}
+												</div>
 											)}
-											Generate Music{" "}
-											<i
-												className={`bi bi-music-note-beamed`}
-											></i>
-										</Button>
+										</div>
 									</FormGroup>
 								</Form>
 							</TabPane>
@@ -565,6 +649,40 @@ Feedback: ${feedback}\n`,
 								) : (
 									"Enter a vibe above to generate music."
 								)}
+
+								{saveState === "Complete" && (
+									<Alert
+										color={
+											saveStatusCode === 200
+												? "success"
+												: "danger"
+										}
+									>
+										{saveStatusCode === 200 ? (
+											<>
+												Your tune was saved successfully! You
+												can now share it with{" "}
+												<Link
+													to={`/tunes/${tuneId}`}
+													target="_blank"
+													rel="noopener noreferrer"
+												>
+													the world{" "}
+													<span
+														role="img"
+														aria-label="link emoji"
+													>
+														🔗
+													</span>
+												</Link>
+												!
+											</>
+										) : (
+											"There was an error saving your tune."
+										)}
+									</Alert>
+								)}
+		
 								<div style={{ marginTop: "20px" }}>
 									<h2>Rendered Sheet Music</h2>
 									<Synthesizer
@@ -591,10 +709,10 @@ Feedback: ${feedback}\n`,
 												/>{" "}
 												<span>
 													Sorry, but we couldn't clean
-													up this tune. {numWarnings}{" "}
-													warnings were issued. See
-													something strange? Let us
-													know on our{" "}
+													up this tune.{" "}
+													{warnings.length} warnings
+													were issued. See something
+													strange? Let us know on our{" "}
 													<a
 														href="https://discord.gg/e3nNUGVA7A"
 														target="_blank"
@@ -606,7 +724,7 @@ Feedback: ${feedback}\n`,
 												</span>
 											</div>
 										</Alert>
-									) : numWarnings > 0 ? (
+									) : warnings.length > 0 ? (
 										<Alert color="info">
 											<div
 												style={{
@@ -623,7 +741,7 @@ Feedback: ${feedback}\n`,
 												/>{" "}
 												Notation successfully cleaned!{" "}
 												{numFixes} fixes were made, but{" "}
-												{numWarnings} warnings were
+												{warnings.length} warnings were
 												issued.
 											</div>
 										</Alert>
@@ -662,7 +780,7 @@ Feedback: ${feedback}\n`,
 													alt="Orche"
 												/>{" "}
 												Notation successfully cleaned!
-												No fixes were made.
+												No fixes were needed.
 											</div>
 										</Alert>
 									))}
@@ -674,7 +792,9 @@ Feedback: ${feedback}\n`,
 									placeholder="Enter ABC notation here"
 									rows={10}
 								/>
-								<Button
+
+								{/* Download functionality not really needed and saves happen automatically*/}
+								{/* <Button
 									onClick={handleDownload}
 									className="btn btn-primary primary-button mt-3"
 									style={{ marginRight: "10px" }}
@@ -685,6 +805,7 @@ Feedback: ${feedback}\n`,
 										<i className={`bi bi-download`}></i>
 									</div>
 								</Button>
+
 								<Button
 									onClick={handleSaveTune}
 									className="btn btn-primary primary-button mt-3 ml-3"
@@ -693,7 +814,8 @@ Feedback: ${feedback}\n`,
 										{" "}
 										Save <i className={`bi bi-save`}></i>
 									</div>
-								</Button>
+								</Button> */}
+
 								{/* TODO add this back */}
 								{/* {!isFeedbackOpen && (
 									<Button
@@ -719,38 +841,6 @@ Feedback: ${feedback}\n`,
 									aria-hidden="true"
 								/>{" "}
 								Saving tune...
-							</Alert>
-						)}
-						{saveState === "Complete" && (
-							<Alert
-								color={
-									saveStatusCode === 200
-										? "success"
-										: "danger"
-								}
-							>
-								{saveStatusCode === 200 ? (
-									<>
-										Your tune was saved successfully! You
-										can now share it with{" "}
-										<Link
-											to={`/tunes/${tuneId}`}
-											target="_blank"
-											rel="noopener noreferrer"
-										>
-											the world{" "}
-											<span
-												role="img"
-												aria-label="link emoji"
-											>
-												🔗
-											</span>
-										</Link>
-										!
-									</>
-								) : (
-									"There was an error saving your tune."
-								)}
 							</Alert>
 						)}
 

@@ -10,7 +10,6 @@ const voiceLineStartRegex = /^[a-gz{|%w"()}[]/i;
 
 class ABCNotation {
 	constructor(abcNotation) {
-		this.numWarnings = 0;
 		this.warnings = [];
 		this.failed = false;
 		try {
@@ -20,6 +19,7 @@ class ABCNotation {
 			this.measureTextMatrix = [];
 			this.measureBeatsMatrix = [];
 			this.parse();
+			// TODO log if there are any outstanding issues
 
 			this.numFixes = 0;
 
@@ -34,7 +34,6 @@ class ABCNotation {
 				);
 				const error = `Error: mismatched number of measures between voices. Measure numbers: ${measureNumbers}`;
 				Logger.error(error);
-				this.numWarnings++;
 				this.warnings.push(error);
 			}
 
@@ -51,7 +50,6 @@ class ABCNotation {
 							if (numPriorQuotes % 2 !== 0) {
 								// '/' is not in a chord
 								const error = `Error: composition contains '/' syntax which cannot be addressed by this parser`;
-								this.numWarnings++;
 								this.warnings.push(error);
 								throw error;
 							}
@@ -363,7 +361,6 @@ class ABCNotation {
 					const error = `Error: pickup measure found with mismatched length in voices ${voiceIndex} and ${j}`;
 					this.warnings.push(error);
 					Logger.error(error);
-					this.numWarnings++;
 					break;
 				}
 			}
@@ -719,7 +716,6 @@ class ABCNotation {
 			this.abcNotation = this.abcNotation.replace(/\|:/g, "|");
 			this.abcNotation = this.abcNotation.replace(/:\|/g, "|");
 			const warning = `Error: could not fix mismatched repeats. All repeats were removed`;
-			this.numWarnings++;
 			this.warnings.push(warning);
 			Logger.warn(warning);
 		}
