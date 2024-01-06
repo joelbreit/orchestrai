@@ -323,30 +323,30 @@ const ComposeContent = () => {
 		}
 	};
 
-// 	const handleDownload = (feedback) => {
-// 		const element = document.createElement("a");
-// 		const file = new Blob(
-// 			[
-// 				`Version: ${SAVE_FILE_VERSION}\n
-// tuneId: ${tuneId}\n
-// accountId: ${appState.accountId}\n
-// Date and Time: ${new Date().toLocaleString()}\n
-// Input: ${input}\n
-// Description: ${description}\n
-// ABC Notation: ${abcNotation}\n
-// Thread ID: ${thread}\n
-// Run ID: ${run}\n
-// Error Message: ${errorMessage}\n,
-// Feedback: ${feedback}\n`,
-// 			],
-// 			{ type: "text/plain" }
-// 		);
-// 		element.href = URL.createObjectURL(file);
-// 		const fileName = `OrchestrAI_${new Date().toLocaleString()}.txt`;
-// 		element.download = fileName;
-// 		document.body.appendChild(element); // Required for this to work in FireFox
-// 		element.click();
-// 	};
+	// 	const handleDownload = (feedback) => {
+	// 		const element = document.createElement("a");
+	// 		const file = new Blob(
+	// 			[
+	// 				`Version: ${SAVE_FILE_VERSION}\n
+	// tuneId: ${tuneId}\n
+	// accountId: ${appState.accountId}\n
+	// Date and Time: ${new Date().toLocaleString()}\n
+	// Input: ${input}\n
+	// Description: ${description}\n
+	// ABC Notation: ${abcNotation}\n
+	// Thread ID: ${thread}\n
+	// Run ID: ${run}\n
+	// Error Message: ${errorMessage}\n,
+	// Feedback: ${feedback}\n`,
+	// 			],
+	// 			{ type: "text/plain" }
+	// 		);
+	// 		element.href = URL.createObjectURL(file);
+	// 		const fileName = `OrchestrAI_${new Date().toLocaleString()}.txt`;
+	// 		element.download = fileName;
+	// 		document.body.appendChild(element); // Required for this to work in FireFox
+	// 		element.click();
+	// 	};
 
 	const handleSaveTune = async () => {
 		setSaveState("Loading");
@@ -413,7 +413,6 @@ const ComposeContent = () => {
 					generated in ABC notation which will then be rendered for
 					you to watch, listen, edit and save.
 				</p>
-				{/* TODO separate the different error message areas */}
 				{errorMessage && <Alert color="danger">{errorMessage}</Alert>}
 				<ProtectedContent>
 					<div>
@@ -510,52 +509,28 @@ const ComposeContent = () => {
 										You must enter a vibe and an API key.
 									</FormFeedback>
 									<FormGroup>
-										<div className="d-flex align-items-center">
-											<Button
-												type="submit"
-												value="Generate Music"
-												className="btn btn-primary primary-button"
-												disabled={!vibe || isLoading}
-											>
-												{isLoading && (
-													<>
-														<Spinner
-															as="span"
-															animation="border"
-															size="sm"
-															role="status"
-															aria-hidden="true"
-														/>{" "}
-													</>
-												)}
-												Generate Music{" "}
-												<i
-													className={`bi bi-music-note-beamed`}
-												></i>
-											</Button>
-											{/* Badge that displays the run status */}
-											{runStatus && (
-												<div
-													className={`badge ${
-														runStatus ===
-														"Completed"
-															? "bg-success"
-															: runStatus ===
-															  "Failed"
-															? "bg-danger"
-															: runStatus ===
-															  "In Progress"
-															? "bg-warning"
-															: "bg-info"
-													}`}
-													style={{
-														marginLeft: "10px",
-													}}
-												>
-													{runStatus}
-												</div>
+										<Button
+											type="submit"
+											value="Generate Music"
+											className="btn btn-primary primary-button"
+											disabled={!vibe || isLoading}
+										>
+											{isLoading && (
+												<>
+													<Spinner
+														as="span"
+														animation="border"
+														size="sm"
+														role="status"
+														aria-hidden="true"
+													/>{" "}
+												</>
 											)}
-										</div>
+											Generate Music{" "}
+											<i
+												className={`bi bi-music-note-beamed`}
+											></i>
+										</Button>
 									</FormGroup>
 								</Form>
 							</TabPane>
@@ -620,6 +595,26 @@ const ComposeContent = () => {
 						</TabContent>
 						{isLoading && (
 							<div>
+								{/* Badge that displays the run status */}
+								{runStatus && (
+									<div
+										className={`badge ${
+											runStatus === "Completed"
+												? "bg-success"
+												: runStatus === "Failed"
+												? "bg-danger"
+												: runStatus === "In Progress"
+												? "bg-warning"
+												: "bg-info"
+										}`}
+										style={{
+											marginRight: "10px",
+											marginBottom: "10px",
+										}}
+									>
+										{runStatus}
+									</div>
+								)}
 								<p>{loadingMessage}</p>
 								<Progress
 									animated
@@ -660,8 +655,9 @@ const ComposeContent = () => {
 									>
 										{saveStatusCode === 200 ? (
 											<>
-												Your tune was saved successfully! You
-												can now share it with{" "}
+												Your tune was saved
+												successfully! You can now share
+												it with{" "}
 												<Link
 													to={`/tunes/${tuneId}`}
 													target="_blank"
@@ -682,7 +678,7 @@ const ComposeContent = () => {
 										)}
 									</Alert>
 								)}
-		
+
 								<div style={{ marginTop: "20px" }}>
 									<h2>Rendered Sheet Music</h2>
 									<Synthesizer

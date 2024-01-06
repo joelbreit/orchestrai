@@ -60,12 +60,11 @@ class ABCNotation {
 				this.fixMismatchedRepeats();
 			}
 			this.parse();
-			// TODO double check that measure numbers match up across voices
-
 		} catch (error) {
 			this.failed = true;
 			Logger.debug("ABCNotationParser: ", this);
 			Logger.error("Error in ABCNotationParser: " + error);
+			this.warnings.push("Unexpected error in ABCNotationParser: " + error);
 		}
 	}
 
@@ -574,7 +573,10 @@ class ABCNotation {
 					measureIndex++
 				) {
 					const measure = measures[measureIndex];
-					if (measure.includes(":") && !measuresWithRepeats.includes(measureIndex)) {
+					if (
+						measure.includes(":") &&
+						!measuresWithRepeats.includes(measureIndex)
+					) {
 						measuresWithRepeats.push(measureIndex);
 						// Logger.debug(
 						// 	`This measure: ${measure}, has a ':', so checking other measures`
@@ -609,10 +611,11 @@ class ABCNotation {
 							}
 						}
 						if (voicesWithMismatchedRepeats.length > 0) {
-							const voicesList = voicesWithMismatchedRepeats.join(
-								", "
+							const voicesList =
+								voicesWithMismatchedRepeats.join(", ");
+							Logger.debug(
+								`Voice ${firstVoiceIndex} has repeats, but voices ${voicesList} do not`
 							);
-							Logger.debug(`Voice ${firstVoiceIndex} has repeats, but voices ${voicesList} do not`);
 						}
 					}
 				}
@@ -621,11 +624,6 @@ class ABCNotation {
 			return numMismatchedRepeats;
 		};
 
-		// TODO remove
-		Logger.debug(
-			"measuresWithMultipleMatches: ",
-			measuresWithMultipleMatches
-		);
 		for (let i = 0; i < measuresWithMultipleMatches.length; i++) {
 			// For each match, try to replace it with the new text
 			// If it fails, try the next match
@@ -653,7 +651,7 @@ class ABCNotation {
 
 			function replaceNthOccurrence(str, original, replacement, n) {
 				let index = -1;
-				for (let i = 0; i < n+1; i++) {
+				for (let i = 0; i < n + 1; i++) {
 					index = str.indexOf(original, index + 1);
 					if (index === -1) break; // Break if the original string is not found
 				}
@@ -682,10 +680,9 @@ class ABCNotation {
 					l
 				);
 				Logger.debug(`After: ${this.abcNotation}`);
-				
+
 				if (old === this.abcNotation) {
 					Logger.debug(`Failed to replace match ${l}`);
-					
 				} else {
 					Logger.debug(`Successfully replaced match ${l}`);
 				}
@@ -706,7 +703,9 @@ class ABCNotation {
 					);
 				} else {
 					this.abcNotation = previousNotation;
-					Logger.debug(`Replacing mismatched repeat: ${measure.originalText} -> ${measure.newText} at ${l}th occurrence did not fix the mismatch`);
+					Logger.debug(
+						`Replacing mismatched repeat: ${measure.originalText} -> ${measure.newText} at ${l}th occurrence did not fix the mismatch`
+					);
 					this.parse();
 				}
 			}
