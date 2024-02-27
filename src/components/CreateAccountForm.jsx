@@ -100,8 +100,17 @@ const CreateAccountForm = () => {
 
 		try {
 			setAccountId(uuidv4());
-			// YYYY-MM-DD
-			const creationDate = new Date().toISOString().slice(0, 10);
+
+			const nycTime = new Date().toLocaleString("en-US", {
+				timeZone: "America/New_York",
+				hour12: false,
+				hour: "numeric",
+				minute: "numeric",
+				second: "numeric",
+			});
+			const dateAndTime = `${new Date()
+				.toISOString()
+				.slice(0, 10)} ${nycTime}`;
 			Logger.log("Creating account with accountId: ", accountId);
 			const hashedPassword = hash(password);
 			// Logger.debug("Hashed password: ", hashedPassword);
@@ -115,7 +124,7 @@ const CreateAccountForm = () => {
 					email: email,
 					password: hashedPassword,
 					emailPreference: emailPreference,
-					creationDate: creationDate,
+					creationDate: dateAndTime,
 				}),
 			});
 
