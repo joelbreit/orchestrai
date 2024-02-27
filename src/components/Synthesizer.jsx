@@ -2,6 +2,9 @@ import "abcjs/abcjs-audio.css";
 import "../assets/sass/music.scss";
 
 import React, { useEffect, useRef } from "react";
+import { Button, Container, Row, Col } from "reactstrap";
+import { saveAs } from "file-saver";
+
 import Logger from "../services/Logger";
 
 import ABCJS from "abcjs";
@@ -9,6 +12,19 @@ import ABCJS from "abcjs";
 function Synthesizer({ abcNotation, index }) {
 	const musicSheetRef = useRef(null);
 	const audioRef = useRef(null);
+
+	const downloadMIDI = async () => {
+		if (!abcNotation) return;
+
+		const midi = await ABCJS.synth.getMidiFile(abcNotation, {
+			midiOutputType: "binary",
+		})[0];
+		// midi is a Uint8Array
+		console.debug(midi);
+		console.debug(typeof midi);
+		const blob = new Blob([midi], { type: "audio/midi" });
+		saveAs(blob, `tune-${index}.midi`);
+	};
 
 	useEffect(() => {
 		if (!abcNotation) return;
@@ -137,10 +153,21 @@ function Synthesizer({ abcNotation, index }) {
 	}, [abcNotation, index]);
 
 	return (
-		<div>
+		<Container>
 			<div ref={audioRef} id={`audio${index}`} />
 			<div ref={musicSheetRef} id={`paper${index}`} />
-		</div>
+			<Row className="mt-2">
+				<Col>
+					<Button
+						className="primary-button"
+						size="sm"
+						onClick={downloadMIDI}
+					>
+						Download MIDI
+					</Button>
+				</Col>
+			</Row>
+		</Container>
 	);
 }
 
