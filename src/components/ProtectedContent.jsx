@@ -3,18 +3,20 @@ import React, { useContext, useState } from "react";
 
 // Import components
 import {
-	Modal,
-	ModalBody,
-	ModalHeader,
-	ModalFooter,
 	Button,
 	Col,
+	Modal,
+	ModalBody,
+	ModalFooter,
+	ModalHeader,
 } from "reactstrap";
 import CreateAccountForm from "./CreateAccountForm";
 import LoginForm from "./LoginForm";
 
 // Import contexts
 import { AppContext } from "../contexts/AppContext";
+
+const LOGGED_IN = process.env.REACT_APP_LOGGED_IN;
 
 const ProtectedContent = ({ children }) => {
 	const { appState } = useContext(AppContext);
@@ -26,7 +28,7 @@ const ProtectedContent = ({ children }) => {
 
 	return (
 		<>
-			{appState.authenticated ? (
+			{appState.authenticated || LOGGED_IN ? (
 				children
 			) : (
 				<>
@@ -64,7 +66,7 @@ const ProtectedContent = ({ children }) => {
 						<ModalHeader toggle={toggleLoginModal}>
 							{hasAccount ? "Login" : "Create Account"}
 						</ModalHeader>
-						<ModalBody>
+						<ModalBody style={{ paddingBottom: "0px" }}>
 							{hasAccount ? <LoginForm /> : <CreateAccountForm />}
 						</ModalBody>
 						<ModalFooter>

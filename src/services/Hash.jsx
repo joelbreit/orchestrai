@@ -6,5 +6,6 @@ export default function hash(string) {
 		hash = (hash << 5) - hash + char;
 		hash = hash & hash;
 	}
+	hash = Math.abs(hash);
 	return hash.toString();
 }
