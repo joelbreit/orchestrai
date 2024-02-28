@@ -12,6 +12,7 @@
         "bootstrap-icons": "^1.11.1",
         "file-saver": "^2.0.5",
         "react": "^18.2.0",
+        "react-abc": "^0.4.0",
         "react-dom": "^18.2.0",
         "react-popper": "^2.3.0",
         "react-router-dom": "^6.19.0",
