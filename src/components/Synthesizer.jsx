@@ -34,7 +34,17 @@ function Synthesizer({ abcNotation, index }) {
 			function SimpleCursorControl() {
 				var cursor;
 
-				this.onReady = function () {};
+				this.onReady = function () {
+					// Remove existing highlights
+					var lastHighlights = document.querySelectorAll(
+						`#paper${index} svg .highlight`
+					);
+					lastHighlights.forEach(function (element) {
+						element.classList.remove("highlight");
+					});
+
+					// 
+				};
 
 				this.onStart = function () {
 					// Create the cursor as an SVG line element
@@ -159,7 +169,7 @@ function Synthesizer({ abcNotation, index }) {
 			<Row className="mt-2">
 				<Col>
 					<Button
-						className="primary-button"
+						className="primary-button mb-2"
 						size="sm"
 						onClick={downloadMIDI}
 					>
