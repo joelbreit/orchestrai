@@ -94,7 +94,7 @@ class ABCNotation {
 		// Remove empty lines
 		lines = lines.filter((line) => line !== "");
 		// Lines that start with "w" are words, not notes
-		lines = lines.filter((line) => !line.startsWith("w"));
+		// lines = lines.filter((line) => !line.startsWith("w"));
 
 		const cleanedText = lines.join("\n");
 		const newNumLines = cleanedText.split("\n").length;

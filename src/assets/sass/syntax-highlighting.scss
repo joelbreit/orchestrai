@@ -1,0 +1,74 @@
+$primary: #0779E4;
+$primary-hover: #03529d;
+
+$secondary: #4CBBB9;
+$secondary-hover: #2f8e8c;
+
+$tertiary: #77D8D8;
+$tertiary-hover: #5db1b1;
+
+$quaternary: #EFF3C6;
+$quaternary-hover: #dce0a9;
+
+$info: #3498db;
+$info-hover: #217dbb;
+
+$comment: #27ae60;
+$comment-hover: #1b5e3b;
+
+$danger: #FF8080;
+$danger-hover: #e57373;
+
+$succes: #AEDF8E;
+$succes-hover: #8ecf6e;
+
+/* Style for headers */
+.token.header {
+	color: #888;
+	font-weight: bold;
+}
+.token.header .token.keyword {
+	color: #555;
+}
+.token.header .token.operator {
+	color: #999;
+}
+.token.header .token.value {
+	color: #077;
+}
+
+/* Style for notes */
+.token.note {
+	color: $info;
+}
+
+/* Style for note lengths */
+.token.length {
+	color: #e67e22;
+}
+
+/* Style for chords */
+.token.chord {
+	color: #2980b9;
+}
+
+/* Style for comments */
+.token.comment {
+	color: #27ae60;
+}
+
+// Directives
+.token.directive {
+	color: $secondary;
+	font-weight: bold;
+}
+
+// Barlines
+.token.barline {
+	font-weight: bold;
+}
+
+// Lyrics
+.token.lyrics {
+	color: #79ba9d;
+}

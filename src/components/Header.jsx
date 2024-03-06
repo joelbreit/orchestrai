@@ -1,7 +1,7 @@
 // Import dependencies
-import React, { useState, useContext } from "react";
+import React, { useContext, useState } from "react";
+import { NavLink as RouterNavLink } from "react-router-dom";
 import {
-	Alert,
 	Badge,
 	Collapse,
 	Nav,
@@ -11,7 +11,6 @@ import {
 	NavbarBrand,
 	NavbarToggler,
 } from "reactstrap";
-import { NavLink as RouterNavLink } from "react-router-dom";
 
 // Import contexts
 import { AppContext } from "../contexts/AppContext";
@@ -21,11 +20,16 @@ import OrcheImage from "../assets/images/Orche.png";
 
 const Header = (args) => {
 	// App context
-	const { appState } = useContext(AppContext);
+	const { appState, setAppState } = useContext(AppContext);
 
 	const [isOpen, setIsOpen] = useState(false);
 
 	const toggle = () => setIsOpen(!isOpen);
+
+	const handleLogout = () => {
+		setAppState((prevState) => ({ ...prevState, authenticated: false }));
+		localStorage.removeItem("userToken");
+	};
 
 	return (
 		<div>
@@ -44,29 +48,47 @@ const Header = (args) => {
 							height="30"
 							alt="Orche"
 						/>{" "}
-						{/* <i className={`bi bi-music-note`}></i> */}
+						<span className="d-sm-none d-md-inline d-inline">
+							OrchestrAI
+						</span>
 					</span>{" "}
-					OrchestrAI
 				</NavbarBrand>
 				<NavbarToggler onClick={toggle} />
-				<Collapse isOpen={isOpen} navbar>
-					<Nav className="me-auto" navbar>
+				<Collapse
+					isOpen={isOpen}
+					navbar
+					className="justify-content-end"
+				>
+					<Nav className="" navbar>
 						<NavItem>
 							<NavLink tag={RouterNavLink} to="/compose">
 								Compose{" "}
-								<Badge color="success" pill>
+								<span className="icon-square flex-shrink-0 d-none d-lg-inline">
+									<i className={`bi bi-music-note-beamed`} />
+								</span>{" "}
+								<Badge
+									color="success"
+									pill
+									className="d-none d-md-inline"
+								>
 									Try It!
 								</Badge>
 							</NavLink>
 						</NavItem>
 						<NavItem>
 							<NavLink tag={RouterNavLink} to="/ABCEditor">
-								ABCEditor
+								ABCEditor{" "}
+								<span className="icon-square flex-shrink-0 d-none d-lg-inline">
+									<i className={`bi bi-pencil-square`} />
+								</span>
 							</NavLink>
 						</NavItem>
 						<NavItem>
 							<NavLink tag={RouterNavLink} to="/portfolio">
-								Portfolio
+								Portfolio{" "}
+								<span className="icon-square flex-shrink-0 d-none d-lg-inline">
+									<i className={`bi bi-journal-text`} />
+								</span>
 							</NavLink>
 						</NavItem>
 						{/* 
@@ -77,29 +99,85 @@ const Header = (args) => {
 						</NavItem> */}
 						<NavItem>
 							<NavLink tag={RouterNavLink} to="/research">
-								Research
+								Research{" "}
+								<span className="icon-square flex-shrink-0 d-none d-lg-inline">
+									<i className={`bi bi-trophy`} />
+								</span>
 							</NavLink>
 						</NavItem>
 						<NavItem>
 							<NavLink tag={RouterNavLink} to="/juxcompose">
-								Juxcompose
+								Juxcompose{" "}
+								<span className="icon-square flex-shrink-0 d-none d-lg-inline">
+									<i className={`bi bi-terminal-split`} />
+								</span>
 							</NavLink>
 						</NavItem>
 						{/* TODO Move to far right */}
 
-						<NavItem style={{ marginLeft: "auto" }}>
-							<NavLink tag={RouterNavLink} to="/profile">
-								{appState.authenticated ? (
-									<span className="icon-square flex-shrink-0">
-										<i className={`bi bi-person-check`}></i>
+						{appState.authenticated ? (
+							<>
+								<NavItem>
+									<NavLink tag={RouterNavLink} to="/submit">
+										Submit{" "}
+										<span className="icon-square flex-shrink-0 d-none d-lg-inline">
+											<i
+												className={`bi bi-cloud-upload`}
+											/>
+										</span>
+									</NavLink>
+								</NavItem>
+								{/* <NavItem>
+								<NavLink tag={RouterNavLink} to="/results">
+									Results{" "}
+								<span className="icon-square flex-shrink-0 d-none d-lg-inline">
+										<i className={`bi bi-bar-chart-line`} />
 									</span>
-								) : (
-									<span className="icon-square flex-shrink-0">
-										<i className={`bi bi-person-dash`}></i>
+								</NavLink>
+							</NavItem> */}
+								<NavItem>
+									<NavLink
+										tag={RouterNavLink}
+										to="/profile"
+										maxwidth="100px"
+									>
+										{appState.username || "Profile"}{" "}
+										<span className="icon-square flex-shrink-0 d-none d-lg-inline">
+											<i
+												className={`bi bi-person-circle`}
+											/>
+										</span>
+									</NavLink>
+								</NavItem>
+								<NavItem>
+									<NavLink
+										tag={RouterNavLink}
+										onClick={handleLogout}
+										to="#"
+										active={false}
+										className="inactive-navbar-link"
+									>
+										Logout{" "}
+										<span className="icon-square flex-shrink-0 d-none d-lg-inline">
+											<i
+												className={`bi bi-box-arrow-right`}
+											/>
+										</span>
+									</NavLink>
+								</NavItem>
+							</>
+						) : (
+							<NavItem>
+								{/* <NavLink tag={RouterNavLink} to="/login">
+									Login{" "}
+									<span className="icon-square flex-shrink-0 d-none d-lg-inline">
+										<i
+											className={`bi bi-box-arrow-in-right`}
+										/>
 									</span>
-								)}
-							</NavLink>
-						</NavItem>
+								</NavLink> */}
+							</NavItem>
+						)}
 					</Nav>
 				</Collapse>
 			</Navbar>

@@ -46,6 +46,7 @@ import {
 	VIBE_SUGGESTIONS,
 } from "../assets/Constants";
 import OrcheImage from "../assets/images/Orche.png";
+import ABCInput from "./ABCInput";
 const apiUrl = process.env.REACT_APP_API_URL;
 
 const ComposeContent = () => {
@@ -107,7 +108,6 @@ const ComposeContent = () => {
 			raw = (timeSoFar / EXPECTED_DURATION) * 100;
 		}
 		const rounded = Math.round(raw);
-		Logger.debug("Percent complete:", rounded);
 		setPercentComplete(rounded);
 	}, [timeSoFar]);
 
@@ -190,7 +190,8 @@ const ComposeContent = () => {
 			if (statusCode === 200) {
 				Logger.log("Success:", generateMusicBody);
 			} else {
-				throw new Error(generateMusicBody.message);
+				setErrorMessage(generateMusicBody.message);
+				Logger.error("Error:", generateMusicBody.message);
 			}
 			Logger.log("Generated response:", generateMusicBody.message);
 
@@ -214,7 +215,7 @@ const ComposeContent = () => {
 							"Content-Type": "application/json",
 						},
 						body: JSON.stringify({
-							accountId: appState.accountId,
+							UUID: appState.accountId,
 							threadId: threadId,
 							runId: runId,
 						}),
@@ -224,10 +225,11 @@ const ComposeContent = () => {
 				// Handle the response
 				const checkStatusBody = await checkStatusResponse.json();
 				const statusCode = checkStatusResponse.status;
-				if (statusCode === 200) {
+				if (statusCode === 200 || statusCode === 202) {
 					Logger.log("Success:", checkStatusBody);
 				} else {
-					throw new Error(checkStatusBody.message);
+					setErrorMessage(checkStatusBody.message);
+					Logger.error("Error:", checkStatusBody.message);
 				}
 				Logger.log("Check Status Response:", checkStatusBody.message);
 
@@ -265,20 +267,13 @@ const ComposeContent = () => {
 						secondsSoFar = Math.floor(
 							(Date.now() - startTime) / 1000
 						);
-						Logger.debug("Seconds so far:", secondsSoFar);
 						setTimeSoFar(secondsSoFar);
 						const progress = secondsSoFar / EXPECTED_DURATION;
 						const messagesLength = LOADING_MESSAGES.length;
-						Logger.debug(
-							"Progress:",
-							Math.round(progress * 100),
-							"%"
-						);
 						messageIndex = Math.floor(progress * messagesLength);
 						if (messageIndex >= messagesLength) {
 							messageIndex = messagesLength - 1;
 						}
-						Logger.debug("Message index:", messageIndex);
 						setLoadingMessage(LOADING_MESSAGES[messageIndex]);
 					}
 
@@ -362,26 +357,29 @@ const ComposeContent = () => {
 			.toISOString()
 			.slice(0, 10)} ${nycTime}`;
 
+		const body = {
+			tuneId: tuneId,
+			accountId: appState.accountId,
+			date: dateAndTime,
+			thread: thread,
+			run: run,
+			// Get everything after 'T:' on the first line where that exists
+			// This is causing an error sometimes, so I'm commenting it out for now
+			// title: abcNotation.match(/^T:(.*)$/m)[1],
+			prompt: input,
+			description: description,
+			notation: abcNotation,
+			warnings: warnings,
+			fixes: numFixes, // TODO Update to an actual list up fixes made
+			generationDuration: timeSoFar,
+		};
+
 		const saveTuneResponse = await fetch(`${apiUrl}/saveTune`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({
-				tuneId: tuneId,
-				accountId: appState.accountId,
-				date: dateAndTime,
-				thread: thread,
-				run: run,
-				// Get everything after 'T:' on the first line where that exists
-				title: abcNotation.match(/^T:(.*)$/m)[1],
-				prompt: input,
-				description: description,
-				notation: abcNotation,
-				warnings: warnings,
-				fixes: numFixes, // TODO Update to an actual list up fixes made
-				generationDuration: timeSoFar,
-			}),
+			body: JSON.stringify(body),
 		});
 
 		// Handle the response
@@ -390,7 +388,7 @@ const ComposeContent = () => {
 		if (statusCode === 200) {
 			Logger.log("Success:", saveTuneBody);
 		} else {
-			throw new Error(saveTuneBody.message);
+			Logger.error("Error:", saveTuneBody.message);
 		}
 		Logger.log("Save Tune Response:", saveTuneBody);
 
@@ -615,6 +613,7 @@ const ComposeContent = () => {
 										{runStatus}
 									</div>
 								)}
+
 								<p>{loadingMessage}</p>
 								<Progress
 									animated
@@ -781,12 +780,18 @@ const ComposeContent = () => {
 										</Alert>
 									))}
 								<h2>Generated ABC Notation</h2>
-								<Input
+								{/* <Input
 									type="textarea"
 									value={abcNotation}
 									onChange={handleNotationChange}
 									placeholder="Enter ABC notation here"
 									rows={10}
+								/> */}
+
+								<ABCInput
+									parentText={abcNotation}
+									placeholderText="Enter ABC notation here"
+									onChange={handleNotationChange}
 								/>
 
 								{/* Download functionality not really needed and saves happen automatically*/}

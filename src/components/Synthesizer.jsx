@@ -20,8 +20,6 @@ function Synthesizer({ abcNotation, index }) {
 			midiOutputType: "binary",
 		})[0];
 		// midi is a Uint8Array
-		console.debug(midi);
-		console.debug(typeof midi);
 		const blob = new Blob([midi], { type: "audio/midi" });
 		saveAs(blob, `tune-${index}.midi`);
 	};

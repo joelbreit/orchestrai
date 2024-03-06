@@ -1,7 +1,31 @@
-
 const ABCNotations = {
-    "Swing Dance Party NoteDur": 
-`X:1
+	"Placeholder Tune": `abc
+X:1
+T:ABC Notation Example
+C:OrchestrAI
+M:3/4
+L:1/8
+Q:1/4=120
+K:C
+V:1 clef=treble
+%%MIDI program 1
+|: "C"C2E2G2 | "Am"A2A2B2 | "F"F2A2c2 | "G"G4G2 |
+w: This is a place-hold-er tune just for you! You
+"C"E2G2c2 | "Dm"D2F2A2 | "Em"E2G2B2 |1"G7"G4F2 :|2 "G7"G4z2 |]
+w: can use it to get start-ed on your tunes!
+V:2 clef=treble
+%%MIDI program 49
+|: "C"C4z2 | "Am"A,2C2E2 | "F"F4z2 | "G"D2B,2D2 |
+w: Don't - too - close-ly oo-oo-oo
+"C"E4z2 | "Dm"F3ED2 | "Em"G2B,2D2 |1 "G7"F4E2 :|2 "G7"F4z2 |]
+w: It's here un-til there's some-thing new
+V:3 clef=bass
+%%MIDI program 42
+|: "C"C,4C2 | "Am"A,4A,2 | "F"F,4F,2 | "G"G,4G,2 |
+w: Don't look too close-ly in lieu
+"C"C,4C2 | "Dm"D,4D,2 | "Em"E,4E,2 |1 "G7"D,4C,2 :|2 "G7"D,4z2 |]
+w: It's just here 'til there's 'thing new`,
+	"Swing Dance Party NoteDur": `X:1
 T:Swing Party
 M:4/4
 L:1/8
@@ -13,8 +37,7 @@ P:A
 |: A2 c2 e2 c2 | G4 F4 | E2 EG F2 ED | C4 C4 :|
 P:B
 |: A2 GA B2 BA | G2 FG A2 GA | E2 EG F2 ED | C4 C4 :|`,
-    "Pirate's Horizon": 
-`X:1
+	"Pirate's Horizon": `X:1
 T:Pirate's Horizon
 C:Generated with AI!
 M:4/4
@@ -42,8 +65,7 @@ V:3
 "Dm"D4 A,4|"Gm"G,4 B,4|"A7"E4 C4|"Dm"D4 A,4:|
 |:"Dm"A,4 A,4|"C"E4 C4|"G/B"G,4 B,4|"Am"A,4 E4|
 "F"F4 C4|"C"E4 C4|"A7"E4 C4|"Dm"D4 A,4:|`,
-    "Brass Band Road Trip ABC": 
-`X:1
+	"Brass Band Road Trip ABC": `X:1
 T:Road Trip Adventure
 C:AI Composer
 M:4/4
@@ -54,8 +76,7 @@ K:Bb
 |: "Gm"G2 B2 d2 g2 | "F"A4 A2 G2 | "Eb"G2 E2 C2 G,2 | "Bb"B,6 z2 :|
 |: "Bb"D2 F2 G2 A2 | B4 B2 A2 | "Eb"G2 E2 F2 G2 | "F"F6 z2 :|
 |: "Bb"D2 B2 B2 c2 | d4 d2 c2 | "Eb"B2 G2 G2 A2 | "Bb"B6 z2 :|`,
-"Brass Band Road Trip NoteDur":
-`X:1
+	"Brass Band Road Trip NoteDur": `X:1
 T:Road Trip Adventure
 M:4/4
 L:1/8
@@ -91,8 +112,7 @@ V:Tuba clef=bass
 [V:Trumpet1] c2 A2 | F2 D2 |
 [V:Trombone1] F,4 | D,4 |
 [V:Tuba] C,,8 | G,,8 |`,
-"Quarantine String Quartet ABC":
-`X:1
+	"Quarantine String Quartet ABC": `X:1
 T:Quarantine
 C:AI Composer
 M:4/4
@@ -107,8 +127,7 @@ V:3
 D2 F2 A2 d2 | c2 A2 F2 D2 | B,2 D2 G2 B2 | A2 F2 E2 C2 | D2 C2 B,2 A,2 | G,4 F,4 | E,8 | D8 |
 V:4 
 D,8 | A,,8 | D,8 | A,,8 | D,8 | A,,8 | D,8 | D,8 |`,
-"Quarantine String Quartet NoteDur":
-`X:1
+	"Quarantine String Quartet NoteDur": `X:1
 T:Quarantine Reflections
 C:Anonymous
 M:4/4
@@ -139,8 +158,7 @@ V:Va
 [V:Va] B2 A2 G4 | F8 |
 V:Vc
 [V:Vc] B,8 | G,8 |`,
-"Sadness to Joy Marching Band ABC":
-`M:4/4
+	"Sadness to Joy Marching Band ABC": `M:4/4
 L:1/8
 K:Gmin
 G2 A2 B2 c2 | d4 d4 | e2 f2 g2 a2 | b4 b4 |
@@ -150,8 +168,7 @@ e2 f2 g2 a2 | b4 b4 | c2 d2 e2 f2 | g4 g4 |
 a2 b2 c'2 d'2 | e'4 e'4 | f'2 g'2 a'2 b'2 | c''4 c''4 |
 d''2 c''2 b'2 a'2 | g'4 g'4 | f'2 e'2 d'2 c'2 | B4 B4 |
 A2 G2 F2 E2 | D4 D4 | C2 B2 A2 G2 | F4 F4 |`,
-"Sadness to Joy Marching Band NoteDur":
-`X:1
+	"Sadness to Joy Marching Band NoteDur": `X:1
 T:Journey from Sadness to Joy
 C:Anonymous
 M:4/4
@@ -165,8 +182,7 @@ V:Trumpet clef=treble
 [V:Clarinet] C2 B,2 A,4 | C2 B,2 A,4 | F1 G1 A1 B1 | c1 d1 e1 f1 | A2 B2 c2 d2 || 
 [V:Alto_Sax] E2 D2 C4 | E2 D2 C4 | c1 d1 e1 f1 | g1 a1 b1 c'1 | e2 f2 g2 a2 || 
 [V:Trumpet] A2 G2 F4 | A2 G2 F4 | G1 A1 B1 c1 | d1 e1 f1 g1 | B2 c2 d2 e2 ||`,
-"Brass Trio Celebration ABC":
-`X:1
+	"Brass Trio Celebration ABC": `X:1
 T:Triumphal Fanfare
 C:AI Composer
 M:4/4
@@ -187,8 +203,7 @@ z | e2 e2 f2 g2 | a2 g2 f2 d2 | c'2 b2 a2 g2 | e4 f4 |
 V:3
 z | C2 C2 E2 G2 | A2 G2 E2 C2 | G2 F2 E2 D2 | C4 D4 |
 | C2 C2 E2 G2 | A2 G2 E2 C2 | G2 F2 E2 D2 | C4 !fermata!z4 |`,
-"Brass Trio Celebration NoteDur":
-`X: 1
+	"Brass Trio Celebration NoteDur": `X: 1
 T: Triumphant Celebration
 M: 4/4
 L: 1/4
@@ -207,8 +222,7 @@ V: H
 % Trombone Part
 V: B
 |: G, A, B, D | D2 B,2 | A, B, C D | D>C B,2 :|`,
-"3-part Pirates ABC":
-`X:1
+	"3-part Pirates ABC": `X:1
 T:Pirate's Horizon
 C:AI Composer
 M:4/4
@@ -227,8 +241,7 @@ V:2 clef=treble
 V:3 clef=bass
 |: "Dm"D4 F4 | "C"E4 G4 | "Bb"B,4 D4 | "A"A,4 E4 |
 "Dm"D4 F4 | "C"E4 G4 | "Bb"B,4 "A"C4 |1 "Dm"D4 D4 :|2 "Dm"D4 z4 |`,
-"3-part Pirates NoteDur":
-`X:1
+	"3-part Pirates NoteDur": `X:1
 T:Pirate's Theme
 M:4/4
 L:1/8
@@ -244,8 +257,7 @@ V:B            clef=bass
 [V:T2] A4 G3 A3 | B4 A3 G3 | F3 F2 z4 | D4 B3 A3 | G4 F3 E3 | D3 D2 z4 |
 % 3. Bass Line
 [V:B]  D2 z2 C2 z2 | B,2 z2 A,2 z2 | D2 z2 G,2 z2 | A,2 z2 D2 z2 |`,
-"Pirates Trio ABC":
-`X:1
+	"Pirates Trio ABC": `X:1
 T:Pirate's Horizon
 C:AI Composer
 M:4/4
@@ -273,8 +285,7 @@ V:3
 "Dm"D4 A,4|"Gm"G,4 B,4|"A7"E4 C4|"Dm"D4 A,4:|
 |:"Dm"A,4 A,4|"C"E4 C4|"G/B"G,4 B,4|"Am"A,4 E4|
 "F"F4 C4|"C"E4 C4|"A7"E4 C4|"Dm"D4 A,4:|`,
-"Pirates Trio NoteDur":
-`X:1
+	"Pirates Trio NoteDur": `X:1
 T:Pirate Theme - Melody
 M:4/4
 K:C
@@ -285,8 +296,7 @@ V:2 clef=treble
 GAB2 cBAG F2A2 | B2c2 d2c2 B2A2G2 | F2G2 A2G2 F2E2 | D2E2 ||
 V:3 clef=bass
 C,EGC, C,EGC, | E,G,C,E, E,G,C,E, | D,F,AD, D,F,AD, ||`,
-"Rebellious Mambo ABC":
-`X:1
+	"Rebellious Mambo ABC": `X:1
 T:Rebel Mambo
 M:4/4
 L:1/8
@@ -305,8 +315,7 @@ c2 c2 d2 A2 | c4 B4 | G2 GA Bc d2 | c6 z2 |
 % Voice 3 - Bass Line
 [V:3] C,4 C,4 | D,2 D,2 E,4 | F,2 F,2 G,2 G,2 | C,6 z2 |
 C,4 C,4 | D,2 D,2 E,4 | F,2 F,2 G,2 G,2 | C,6 z2 |`,
-"Rebellious Mambo NoteDur":
-`X:1
+	"Rebellious Mambo NoteDur": `X:1
 T:Rebellion Mambo
 M:4/4
 L:1/8
@@ -318,8 +327,7 @@ V:V3 name="Bass Line"
 [V:V1] c2 |:  e2 g4 z2 | g2 f1 e5 :|
 [V:V2] z2 |: A4 G2 F2 | E2 D2 C4 :|
 [V:V3] z2 |: C4 E4 | G,8 | C,8 :|`,
-"Show Choir Sandess to Joy ABC":
-`X:1
+	"Show Choir Sandess to Joy ABC": `X:1
 T:From Sadness to Joy
 M:4/4
 L:1/8
@@ -348,8 +356,7 @@ K:Amaj
 [V:CM] A,4 E2 A2 | B4 A2 F2 | A6 z2 |1 C4 D2 E2 :|2 C4 D2 A2 |
 [V:B] A,4 A,2 B,2 | C4 B,2 A,2 | E,4 A,2 B,2 | B,4 A,2 ^G,2 |
 [V:B] A,2 A,2 E2 A,2 | B,4 A,2 ^F,2 | A,6 z2 |1 E4 F2 ^G2 :|2 E4 F2 A,2 |`,
-"Show Choir Sandess to Joy NoteDur":
-`X:1
+	"Show Choir Sandess to Joy NoteDur": `X:1
 T:From Sadness to Joy
 M:4/4
 L:1/8
@@ -360,8 +367,7 @@ K:Cmin
 "Dm" C2 E2 G2 E2 | G2 A2 G2 E2 | C2 G2 E2 C2 | D2 G2 F2 D2 |
 "CM" C8 | 
 "CM" E2 G2 c2 G2 | E2 G2 c2 G2 | D2 G2 B2 G2 | C2 E2 A2 E2 | G8 |`,
-"Barbershop Quartet Victory ABC":
-`X:1
+	"Barbershop Quartet Victory ABC": `X:1
 T:Victory Song
 C:AI Composer
 M:4/4
@@ -392,8 +398,7 @@ C, | E, F, G, A, | B,,2 E,2 | G, A, B, C | G,,4 |
 [V:T2] (E | G)3 F | E2 C2 | E4- | E4 |
 [V:B1] C, | E,3 F, | G,2 B,,2 | C4- | C4 |
 [V:B2] (C | E)3 D | C2 A,2 | C4- | C4 |`,
-"Barbershop Quartet Victory NoteDur":
-`X:1
+	"Barbershop Quartet Victory NoteDur": `X:1
 T:Victory Song
 C:Traditional Barbershop
 M:4/4
@@ -401,8 +406,6 @@ L:1/8
 Q:1/4=120
 K:C
 G2 A B c B A G2 | E4 D2 E F G F E D | C2 E G A B G A2 | G2 G A B c B A G | F4 G2 E4 |]`,
-
-    
 };
 
 export default ABCNotations;

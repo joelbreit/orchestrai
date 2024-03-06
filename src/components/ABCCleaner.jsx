@@ -21,6 +21,7 @@ import Synthesizer from "./Synthesizer";
 import ABCNotation from "../services/ABCNotationParser";
 
 import OrcheImage from "../assets/images/Orche.png";
+import ABCInput from "./ABCInput";
 
 const ABCCleaner = () => {
 	const [abcNotation1, setAbcNotation1] = useState("");
@@ -91,12 +92,17 @@ const ABCCleaner = () => {
 			</Dropdown>
 			<Row>
 				<Col sm="6">
-					<Input
+					{/* <Input
 						type="textarea"
 						value={abcNotation1}
 						onChange={handleInputChange1}
 						placeholder="Enter ABC notation here"
 						rows={10}
+					/> */}
+					<ABCInput
+						parentText={abcNotation1}
+						placeholderText="Enter ABC notation here"
+						onChange={setAbcNotation1}
 					/>
 					<Col>
 						<h2>Rendered Music Sheet:</h2>
@@ -106,12 +112,17 @@ const ABCCleaner = () => {
 					</Col>
 				</Col>
 				<Col sm="6">
-					<Input
+					{/* <Input
 						type="textarea"
 						value={abcNotation2}
 						onChange={handleInputChange2}
 						placeholder="Enter ABC notation here"
 						rows={10}
+					/> */}
+					<ABCInput
+						parentText={abcNotation2}
+						placeholderText="Enter ABC notation here"
+						onChange={setAbcNotation2}
 					/>
 					<Button
 						onClick={() => {
@@ -180,8 +191,8 @@ const ABCCleaner = () => {
 										alt="Orche"
 									/>{" "}
 									Notation successfully cleaned! {numFixes}{" "}
-									fixes were made, but {warnings.length} warnings
-									were issued.
+									fixes were made, but {warnings.length}{" "}
+									warnings were issued.
 								</div>
 							</Alert>
 						) : numFixes > 0 ? (

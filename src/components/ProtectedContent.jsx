@@ -32,7 +32,7 @@ const ProtectedContent = ({ children }) => {
 				children
 			) : (
 				<>
-					<p>
+					<div>
 						<strong>This feature is completely free</strong>, but
 						you will need to login or create an account to use it:{" "}
 						<Col className="mt-2">
@@ -61,7 +61,7 @@ const ProtectedContent = ({ children }) => {
 								</span>
 							</Button>
 						</Col>
-					</p>
+					</div>
 					<Modal isOpen={isLoginModalOpen} toggle={toggleLoginModal}>
 						<ModalHeader toggle={toggleLoginModal}>
 							{hasAccount ? "Login" : "Create Account"}
@@ -71,19 +71,19 @@ const ProtectedContent = ({ children }) => {
 						</ModalBody>
 						<ModalFooter>
 							{hasAccount ? (
-								<p>
+								<div>
 									Don't have an account?{" "}
 									<Button color="link" onClick={changeMode}>
 										Create one
 									</Button>
-								</p>
+								</div>
 							) : (
-								<p>
+								<div>
 									Already have an account?{" "}
 									<Button color="link" onClick={changeMode}>
 										Login
 									</Button>
-								</p>
+								</div>
 							)}
 						</ModalFooter>
 					</Modal>

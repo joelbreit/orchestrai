@@ -6,6 +6,13 @@ export const handler = async (event) => {
 	try {
 		const { threadId, runId, UUID } = JSON.parse(event.body);
 
+		if (!threadId || !runId || !UUID) {
+			return {
+				statusCode: 400,
+				body: JSON.stringify({ error: "Bad Request" }),
+			};
+		}
+
 		console.log(
 			`Received request from user with ID ${UUID} to check status for thread ID: ${threadId}, run ID: ${runId}`
 		);
@@ -52,7 +59,7 @@ export const handler = async (event) => {
 		} else {
 			console.log(`Run not yet completed, returning status`);
 			return {
-				statusCode: 200,
+				statusCode: 202,
 				body: JSON.stringify({
 					message: "Run not yet completed",
 					status: status,

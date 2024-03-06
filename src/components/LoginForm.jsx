@@ -13,12 +13,15 @@ import {
 	FormGroup,
 	Input,
 	Label,
+Spinner,
+	UncontrolledTooltip,
 } from "reactstrap";
 
 // Import contexts
 import { AppContext } from "../contexts/AppContext";
 
 // Import parameters
+import { Username, Password } from "../assets/Validation";
 import { EMAIL_REGEX, PASSWORD_REGEX } from "../assets/Regex";
 const apiUrl = process.env.REACT_APP_API_URL;
 

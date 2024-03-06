@@ -6,11 +6,12 @@ import FileUploader from "./FileUploader";
 import Synthesizer from "./Synthesizer";
 
 import OrcheImage from "../assets/images/Orche.png";
+import ABCInput from "./ABCInput";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
 const ABCEditorContent = ({ tuneId }) => {
-	const defaultContent = ABCNotations["3-part Pirates ABC"];
+	const defaultContent = ABCNotations["Placeholder Tune"];
 	const [abcNotation, setAbcNotation] = useState(defaultContent);
 	const [file, setFile] = useState(null);
 	const [didUpload, setDidUpload] = useState(false);
@@ -210,12 +211,17 @@ const ABCEditorContent = ({ tuneId }) => {
 				{!tuneId && (
 					<>
 						<h2>Enter ABC Notation</h2>
-						<Input
+						{/* <Input
 							type="textarea"
 							value={abcNotation}
 							onChange={handleInputChange}
 							placeholder="Enter ABC notation here"
 							rows={10}
+						/> */}
+						<ABCInput
+							parentText={abcNotation}
+							placeholderText="Enter ABC notation here"
+							onChange={setAbcNotation}
 						/>
 					</>
 				)}
@@ -254,12 +260,17 @@ const ABCEditorContent = ({ tuneId }) => {
 				{tuneId && (
 					<>
 						<h2>Generated Music Notation</h2>
-						<Input
+						{/* <Input
 							type="textarea"
 							value={abcNotation}
 							onChange={handleInputChange}
 							placeholder="Enter ABC notation here"
 							rows={10}
+						/> */}
+						<ABCInput
+							parentText={abcNotation}
+							placeholderText="Enter ABC notation here"
+							onChange={setAbcNotation}
 						/>
 					</>
 				)}
