@@ -1,7 +1,6 @@
 // Import dependencies
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
 import Logger from "../services/Logger";
 
 // Import components
@@ -28,10 +27,10 @@ import {
 	TabContent,
 	TabPane,
 } from "reactstrap";
+import ABCNotation from "../services/ABCNotationParser";
 import FeedbackForm from "./FeedbackForm";
 import ProtectedContent from "./ProtectedContent";
 import Synthesizer from "./Synthesizer";
-import ABCNotation from "../services/ABCNotationParser";
 
 // Import contexts
 import { AppContext } from "../contexts/AppContext";
@@ -46,6 +45,7 @@ import {
 	VIBE_SUGGESTIONS,
 } from "../assets/Constants";
 import OrcheImage from "../assets/images/Orche.png";
+import GenerateId from "../services/GenerateId";
 import ABCInput from "./ABCInput";
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -130,10 +130,63 @@ const ComposeContent = () => {
 
 	// When ready to save tune
 	useEffect(() => {
-		if (hasGeneratedMusic && hasCleaned) {
+		const handleSaveTune = async () => {
+			setSaveState("Loading");
+
+			const nycTime = new Date().toLocaleString("en-US", {
+				timeZone: "America/New_York",
+				hour12: false,
+				hour: "numeric",
+				minute: "numeric",
+				second: "numeric",
+			});
+			const dateAndTime = `${new Date()
+				.toISOString()
+				.slice(0, 10)} ${nycTime}`;
+
+			const body = {
+				tuneId: tuneId,
+				accountId: appState.accountId,
+				date: dateAndTime,
+				thread: thread,
+				run: run,
+				// Get everything after 'T:' on the first line where that exists
+				// This is causing an error sometimes, so I'm commenting it out for now
+				// title: abcNotation.match(/^T:(.*)$/m)[1],
+				prompt: input,
+				description: description,
+				notation: abcNotation,
+				warnings: warnings,
+				fixes: numFixes, // TODO Update to an actual list up fixes made
+				generationDuration: timeSoFar,
+			};
+
+			const saveTuneResponse = await fetch(`${apiUrl}/saveTune`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(body),
+			});
+
+			// Handle the response
+			const saveTuneBody = await saveTuneResponse.json();
+			const statusCode = saveTuneResponse.status;
+			if (statusCode === 200) {
+				Logger.log("Success:", saveTuneBody);
+			} else {
+				Logger.error("Error:", saveTuneBody.message);
+			}
+			Logger.log("Save Tune Response:", saveTuneBody);
+
+			setSaveStatusCode(statusCode);
+			setSaveState("Complete");
+		};
+
+		if (hasGeneratedMusic && hasCleaned && tuneId) {
 			handleSaveTune();
 		}
-	}, [hasGeneratedMusic, hasCleaned]);
+	}, [hasGeneratedMusic, hasCleaned, tuneId]); // TODO seems I'm doing this wrong somehow
 
 	const suggestVibe = () => {
 		const randomIndex = Math.floor(Math.random() * VIBE_SUGGESTIONS.length);
@@ -304,10 +357,10 @@ const ComposeContent = () => {
 			setAbcNotation(output.match(/```([^`]*)```/)[1]);
 			setDescription(output.replace(/```([^`]*)```/, ""));
 			setHasGeneratedMusic(true);
-			setTuneId(uuidv4());
+			setTuneId(GenerateId());
 			setSaveState("");
 			setSaveStatusCode(0);
-			handleSaveTune();
+			// handleSaveTune();
 		} catch (error) {
 			Logger.error("API call failed:", error);
 			setErrorMessage(error.message);
@@ -342,59 +395,6 @@ const ComposeContent = () => {
 	// 		document.body.appendChild(element); // Required for this to work in FireFox
 	// 		element.click();
 	// 	};
-
-	const handleSaveTune = async () => {
-		setSaveState("Loading");
-
-		const nycTime = new Date().toLocaleString("en-US", {
-			timeZone: "America/New_York",
-			hour12: false,
-			hour: "numeric",
-			minute: "numeric",
-			second: "numeric",
-		});
-		const dateAndTime = `${new Date()
-			.toISOString()
-			.slice(0, 10)} ${nycTime}`;
-
-		const body = {
-			tuneId: tuneId,
-			accountId: appState.accountId,
-			date: dateAndTime,
-			thread: thread,
-			run: run,
-			// Get everything after 'T:' on the first line where that exists
-			// This is causing an error sometimes, so I'm commenting it out for now
-			// title: abcNotation.match(/^T:(.*)$/m)[1],
-			prompt: input,
-			description: description,
-			notation: abcNotation,
-			warnings: warnings,
-			fixes: numFixes, // TODO Update to an actual list up fixes made
-			generationDuration: timeSoFar,
-		};
-
-		const saveTuneResponse = await fetch(`${apiUrl}/saveTune`, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(body),
-		});
-
-		// Handle the response
-		const saveTuneBody = await saveTuneResponse.json();
-		const statusCode = saveTuneResponse.status;
-		if (statusCode === 200) {
-			Logger.log("Success:", saveTuneBody);
-		} else {
-			Logger.error("Error:", saveTuneBody.message);
-		}
-		Logger.log("Save Tune Response:", saveTuneBody);
-
-		setSaveStatusCode(statusCode);
-		setSaveState("Complete");
-	};
 
 	const toggleFeedback = () => {
 		setIsFeedbackOpen(!isFeedbackOpen);
