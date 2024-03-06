@@ -32,19 +32,27 @@ function Synthesizer({ abcNotation, index }) {
 			function SimpleCursorControl() {
 				var cursor;
 
-				this.onReady = function () {
-					// Remove existing highlights
-					var lastHighlights = document.querySelectorAll(
+				function resetAnimation() {
+					// Remove highlights
+					var highlights = document.querySelectorAll(
 						`#paper${index} svg .highlight`
 					);
-					lastHighlights.forEach(function (element) {
+					highlights.forEach(function (element) {
 						element.classList.remove("highlight");
 					});
+					// Remove cursor
+					if (cursor) {
+						cursor.setAttribute("x1", 0);
+						cursor.setAttribute("x2", 0);
+						cursor.setAttribute("y1", 0);
+						cursor.setAttribute("y2", 0);
+					}
+				}
 
-					// 
-				};
-
+				// Called when the play button is pressed
 				this.onStart = function () {
+					// Necessary for removing the previous cursor
+					resetAnimation();
 					// Create the cursor as an SVG line element
 					var svg = document.querySelector(`#paper${index} svg`);
 					cursor = document.createElementNS(
@@ -65,15 +73,9 @@ function Synthesizer({ abcNotation, index }) {
 					}
 				};
 
+				// Called when a new note is played
 				this.onEvent = function (ev) {
-					// Remove existing highlights
-					var lastHighlights = document.querySelectorAll(
-						`#paper${index} svg .highlight`
-					);
-					lastHighlights.forEach(function (element) {
-						element.classList.remove("highlight");
-					});
-
+					resetAnimation();
 					// Update the cursor position
 					if (cursor) {
 						cursor.setAttribute("x1", ev.left - 2);
@@ -91,19 +93,7 @@ function Synthesizer({ abcNotation, index }) {
 				};
 
 				this.onFinished = function () {
-					// Hide the cursor when the music finishes
-					if (cursor) {
-						cursor.setAttribute("x1", 0);
-						cursor.setAttribute("x2", 0);
-						cursor.setAttribute("y1", 0);
-						cursor.setAttribute("y2", 0);
-					}
-					var highlights = document.querySelectorAll(
-						`#paper${index} svg .highlight`
-					);
-					highlights.forEach(function (element) {
-						element.classList.remove("highlight");
-					});
+					resetAnimation();
 				};
 			}
 
@@ -165,7 +155,7 @@ function Synthesizer({ abcNotation, index }) {
 			<div ref={audioRef} id={`audio${index}`} />
 			<div ref={musicSheetRef} id={`paper${index}`} />
 			<Row className="mt-2">
-				<Col>
+				<Col className="d-flex justify-content-end">
 					<Button
 						className="primary-button mb-2"
 						size="sm"
