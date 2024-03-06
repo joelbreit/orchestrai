@@ -8,7 +8,6 @@ import {
 	DropdownItem,
 	DropdownMenu,
 	DropdownToggle,
-	Input,
 	Row,
 } from "reactstrap";
 import Logger from "../services/Logger";
@@ -33,16 +32,6 @@ const ABCCleaner = () => {
 	const [failed, setFailed] = useState(false);
 
 	const [selectedTune, setSelectedTune] = useState("Select a tune");
-
-	const handleInputChange1 = (e) => {
-		setAbcNotation1(e.target.value);
-		resetCleaner();
-	};
-
-	const handleInputChange2 = (e) => {
-		setAbcNotation2(e.target.value);
-		resetCleaner();
-	};
 
 	const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 

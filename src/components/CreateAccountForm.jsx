@@ -1,7 +1,5 @@
 // Import dependencies
 import React, { useContext, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
-import hash from "../services/Hash";
 import Logger from "../services/Logger";
 
 // Import components
@@ -14,142 +12,185 @@ import {
 	FormGroup,
 	Input,
 	Label,
+	Spinner,
+	UncontrolledTooltip,
 } from "reactstrap";
 
 // Import contexts
 import { AppContext } from "../contexts/AppContext";
 
 // Import parameters
-import { EMAIL_REGEX, PASSWORD_REGEX } from "../assets/Regex";
-const apiUrl = process.env.REACT_APP_API_URL;
+import { Email, Password } from "../assets/Validation";
+import GenerateId from "../services/GenerateId";
+import {
+	GenerateToken,
+	UpdateToken,
+	CreateAccount,
+} from "../services/APICalls";
 
 const CreateAccountForm = () => {
 	// App context
 	const { setAppState } = useContext(AppContext);
 
 	// Form fields
-	const [accountId, setAccountId] = useState(uuidv4());
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
-	const [emailPreference, setEmailPreference] = useState("critical");
 
 	// Validation state
-	const [emailValid, setEmailValid] = useState(null);
-	const [passwordValid, setPasswordValid] = useState(null);
-	const [confirmPasswordValid, setConfirmPasswordValid] = useState(null);
+	const [feedback, setFeedback] = useState({
+		email: "",
+		password: "",
+		confirmPassword: "",
+	});
+
+	// Form state
+	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState("");
 
-	const allOtherFieldsHaveValues = () => {
-		return (
-			email !== "" &&
-			password !== "" &&
-			confirmPassword !== "" &&
-			emailPreference !== ""
-		);
-	};
-
-	const handEmailChange = (emailInput) => {
-		if (allOtherFieldsHaveValues()) {
-			validateEmail(emailInput);
+	const handleEmailChange = (emailInput) => {
+		setError("");
+		setFeedback({
+			...feedback,
+			email: "",
+		});
+		if (emailInput.length > Email.MaxLength) {
+			setFeedback({
+				...feedback,
+				email: Email.MaxLengthFeedback,
+			});
 		}
-	};
-
-	const validateEmail = (emailInput) => {
-		const valid = EMAIL_REGEX.test(emailInput);
-		setEmailValid(valid || emailInput === "");
-		if (!valid && emailInput !== "") {
-			setError("Please enter a valid email address");
-		} else {
-			setError("");
+		if (Email.InvalidCharacterRegex.test(emailInput)) {
+			setFeedback({
+				...feedback,
+				email: Email.InvalidCharacterFeedback,
+			});
 		}
+		setEmail(emailInput);
 	};
 
 	const handlePasswordChange = (passwordInput) => {
-		if (allOtherFieldsHaveValues()) {
-			validatePassword(passwordInput);
+		setError("");
+		setFeedback({
+			...feedback,
+			password: "",
+		});
+		if (passwordInput.length > Password.MaxLength) {
+			setFeedback({
+				...feedback,
+				password: Password.MaxLengthFeedback,
+			});
 		}
+		if (Password.InvalidCharacterRegex.test(passwordInput)) {
+			setFeedback({
+				...feedback,
+				password: Password.InvalidCharacterFeedback,
+			});
+		}
+		if (feedback.confirmPassword === "Passwords do not match") {
+			if (passwordInput === confirmPassword) {
+				setFeedback({
+					...feedback,
+					password: "",
+					confirmPassword: "",
+				});
+			}
+		}
+		setPassword(passwordInput);
 	};
 
-	const validatePassword = (passwordInput) => {
-		// TODO errors should show up under the corresponding field
-		if (!allOtherFieldsHaveValues()) {
-			return;
+	const handleConfirmPasswordChange = (confirmPasswordInput) => {
+		setError("");
+		setFeedback({
+			...feedback,
+			confirmPassword: "",
+		});
+		if (confirmPasswordInput.length > Password.MaxLength) {
+			setFeedback({
+				...feedback,
+				confirmPassword: Password.MaxLengthFeedback,
+			});
 		}
-		const valid = PASSWORD_REGEX.test(passwordInput);
-		setPasswordValid(valid || passwordInput === "");
-		if (!valid && passwordInput !== "") {
-			setError("Passwords must be at least 8 characters long");
-		} else if (passwordInput !== confirmPassword && confirmPassword !== "") {
-			setConfirmPasswordValid(false);
-			setError("Passwords do not match");
-		} else {
-			setError("");
-			setConfirmPasswordValid(true);
+		if (Password.InvalidCharacterRegex.test(confirmPasswordInput)) {
+			setFeedback({
+				...feedback,
+				confirmPassword: Password.InvalidCharacterFeedback,
+			});
 		}
+		if (feedback.password === "Passwords do not match") {
+			if (password === confirmPasswordInput) {
+				setFeedback({
+					...feedback,
+					password: "",
+					confirmPassword: "",
+				});
+			}
+		}
+		setConfirmPassword(confirmPasswordInput);
 	};
 
 	const handleCreateAccount = async (e) => {
 		e.preventDefault();
 		setError("");
 
-		if (!emailValid || !passwordValid || !confirmPasswordValid) {
-			setError("Please correct the errors before submitting");
+		if (email.length < Email.MinLength) {
+			setFeedback({
+				...feedback,
+				email: Email.MinLengthFeedback,
+			});
+			return;
+		}
+		if (password.length < Password.MinLength) {
+			setFeedback({
+				...feedback,
+				password: Password.MinLengthFeedback,
+			});
+			return;
+		}
+		if (confirmPassword.length < Password.MinLength) {
+			setFeedback({
+				...feedback,
+				confirmPassword: Password.MinLengthFeedback,
+			});
+			return;
+		}
+		if (password !== confirmPassword) {
+			setFeedback({
+				...feedback,
+				password: "Passwords do not match",
+				confirmPassword: "Passwords do not match",
+			});
 			return;
 		}
 
-		try {
-			setAccountId(uuidv4());
+		setLoading(true);
 
-			const nycTime = new Date().toLocaleString("en-US", {
-				timeZone: "America/New_York",
-				hour12: false,
-				hour: "numeric",
-				minute: "numeric",
-				second: "numeric",
+		const accountId = GenerateId();
+
+		const status = await CreateAccount(accountId, email, password);
+		setLoading(false);
+		if (status === "Success") {
+			setAppState({
+				authenticated: true,
+				accountId: accountId,
+				email: email,
 			});
-			const dateAndTime = `${new Date()
-				.toISOString()
-				.slice(0, 10)} ${nycTime}`;
-			Logger.log("Creating account with accountId: ", accountId);
-			const hashedPassword = hash(password);
-			// Logger.debug("Hashed password: ", hashedPassword);
-			const response = await fetch(`${apiUrl}/createAccount`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					accountId: accountId,
-					email: email,
-					password: hashedPassword,
-					emailPreference: emailPreference,
-					creationDate: dateAndTime,
-				}),
-			});
-
-			// Handle the response
-			const body = await response.json();
-			const statusCode = response.status;
-
-			if (statusCode === 200) {
-				Logger.log("Account created successfully");
-				setAppState({
-					authenticated: true,
-					accountId: accountId,
-				});
+			let UserToken = localStorage.getItem("userToken");
+			if (UserToken) {
+				const statusCode = await UpdateToken(UserToken);
+				if (statusCode !== 200) {
+					Logger.warn("Failed to generate token");
+				}
 			} else {
-				Logger.error(
-					"Error during account creation: ",
-					body.error || statusCode
-				);
-				setError(
-					body.error ||
-						"An unexpected error occurred. Please try again."
-				);
+				const userToken = await GenerateToken(accountId);
+				localStorage.setItem("userToken", userToken);
 			}
-		} catch (error) {
-			Logger.error("Error:", error);
+		} else if (status === "Email taken") {
+			setFeedback({
+				...feedback,
+				email: `A user with the email "${email}" already exists. Please login instead or try a different email.`,
+			});
+		} else {
 			setError("An unexpected error occurred. Please try again.");
 		}
 	};
@@ -159,33 +200,50 @@ const CreateAccountForm = () => {
 			<p>Enter your information below to create an account.</p>
 
 			<FormGroup>
-				<Label for="email" md={4}>
-					Email
+				<Label for="email">
+					Email{" "}
+					<span className="icon-square flex-shrink-0">
+						<i id="emailTooltip" className={`bi bi-info-circle`} />
+					</span>
+					<UncontrolledTooltip
+						placement="right"
+						target="emailTooltip"
+					>
+						{Email.Tooltip}
+					</UncontrolledTooltip>
 				</Label>
 				<Col>
 					<Input
-						type="email"
+						type="text"
 						name="email"
 						id="email"
 						value={email}
-						invalid={emailValid === false}
-						onBlur={() => validateEmail(email)}
+						invalid={feedback.email !== ""}
 						placeholder="Enter email"
 						required
 						onChange={(e) => {
-							setEmail(e.target.value);
-							handEmailChange(e.target.value);
+							handleEmailChange(e.target.value);
 						}}
 					/>
-					<FormFeedback>
-						Please enter a valid email address.
-					</FormFeedback>
+					<FormFeedback>{feedback.email}</FormFeedback>
 				</Col>
 			</FormGroup>
 
 			<FormGroup>
-				<Label for="password" md={4}>
-					Password
+				<Label for="password">
+					Password{" "}
+					<span className="icon-square flex-shrink-0">
+						<i
+							id="passwordTooltip"
+							className={`bi bi-info-circle`}
+						/>
+					</span>
+					<UncontrolledTooltip
+						placement="right"
+						target="passwordTooltip"
+					>
+						{Password.Tooltip}
+					</UncontrolledTooltip>
 				</Label>
 				<Col>
 					<Input
@@ -193,24 +251,32 @@ const CreateAccountForm = () => {
 						name="password"
 						id="password"
 						value={password}
-						invalid={passwordValid === false}
-						onBlur={() => validatePassword(password)}
+						invalid={feedback.password !== ""}
 						placeholder="Enter password"
 						required
 						onChange={(e) => {
-							setPassword(e.target.value);
 							handlePasswordChange(e.target.value);
 						}}
 					/>
-					<FormFeedback>
-						Passwords must be at least 8 characters long.
-					</FormFeedback>
+					<FormFeedback>{feedback.password}</FormFeedback>
 				</Col>
 			</FormGroup>
 
 			<FormGroup>
-				<Label for="confirmPassword" md={4}>
-					Confirm Password
+				<Label for="confirmPassword">
+					Confirm Password{" "}
+					<span className="icon-square flex-shrink-0">
+						<i
+							id="confirmPasswordTooltip"
+							className={`bi bi-info-circle`}
+						/>
+					</span>
+					<UncontrolledTooltip
+						placement="right"
+						target="confirmPasswordTooltip"
+					>
+						{Password.Tooltip}
+					</UncontrolledTooltip>
 				</Label>
 				<Col>
 					<Input
@@ -218,68 +284,36 @@ const CreateAccountForm = () => {
 						name="confirmPassword"
 						id="confirmPassword"
 						value={confirmPassword}
-						invalid={confirmPasswordValid === false}
-						onBlur={() => validatePassword(confirmPassword)}
+						invalid={feedback.confirmPassword !== ""}
 						placeholder="Confirm password"
 						required
 						onChange={(e) => {
-							setConfirmPassword(e.target.value);
-							handlePasswordChange(e.target.value);
+							handleConfirmPasswordChange(e.target.value);
 						}}
 					/>
-					<FormFeedback>Passwords do not match.</FormFeedback>
+					<FormFeedback>{feedback.confirmPassword}</FormFeedback>
 				</Col>
 			</FormGroup>
 
-			<FormGroup tag="fieldset">
-				<Label>Email Preferences</Label>
-				<FormGroup check>
-					<Label check>
-						<Input
-							type="radio"
-							name="emailPreference"
-							value="critical"
-							checked={emailPreference === "critical"}
-							onChange={(e) => setEmailPreference(e.target.value)}
-						/>
-						<small>
-							{" "}
-							Only send address confirmation, password reset, and
-							<i> critical</i> update emails
-						</small>
-					</Label>
-				</FormGroup>
-				<FormGroup check>
-					<Label check>
-						<Input
-							type="radio"
-							name="emailPreference"
-							value="never"
-							checked={emailPreference === "never"}
-							onChange={(e) => setEmailPreference(e.target.value)}
-						/>
-						<small> Literally never email me</small>
-					</Label>
-				</FormGroup>
-			</FormGroup>
-
-			{error && <Alert color="danger">{error}</Alert>}
+			{error && (
+				<Alert color="danger" fade>
+					{error}
+				</Alert>
+			)}
 
 			<FormGroup>
-				<Col sm={{ size: 4, offset: 8 }}>
+				<Col sm={{ size: 5, offset: 7 }}>
 					<Button
 						type="submit"
 						color="primary"
+						className="primary-button"
 						block
 						disabled={
-							!email ||
-							!password ||
-							!confirmPassword ||
-							password !== confirmPassword ||
-							!!error
+							!email || !password || !confirmPassword || loading
 						}
 					>
-						Create Account
+						Create Account{" "}
+						{loading && <Spinner size="sm" color="light" />}
 					</Button>
 				</Col>
 			</FormGroup>

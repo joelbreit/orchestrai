@@ -1,4 +1,4 @@
-export default function hash(string) {
+export default function Hash(string) {
 	let hash = 0;
 	if (string.length === 0) return hash;
 	for (let i = 0; i < string.length; i++) {

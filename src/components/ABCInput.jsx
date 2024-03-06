@@ -59,23 +59,22 @@ const ABCInput = ({ parentText, placeholderText, onChange }) => {
 				<ABCBlock code={text} />
 			)}
 			<Row>
-				<Col className="d-flex justify-content-between">
+				<Col className="d-flex justify-content-end">
 					{isEditing && (
 						<Button
 							type="button"
-							color="secondary"
 							onClick={(e) => handleCancel(e)}
-							className="secondary-button"
+							className="secondary-button-outline"
 						>
 							Cancel
 						</Button>
 					)}
 					<Button
 						type="button"
-						color="primary"
 						onClick={(e) =>
 							isEditing ? handleSave(e) : handleEdit()
 						}
+						style={{ marginLeft: "10px" }}
 						className="primary-button"
 					>
 						{isEditing ? "Save" : "Edit"}

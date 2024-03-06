@@ -11,23 +11,13 @@ import {
 	Row,
 } from "reactstrap";
 
-import ABCNotations from "../assets/ABCNotations";
 import ABCEditorImage from "../assets/images/ABCEditor.png";
 import JuxComposeImage from "../assets/images/JuxCompose.png";
 import OrcasOpusImage from "../assets/images/OrcasOpusImage.png";
 import OrcheImage from "../assets/images/Orche.png";
 import VictoriousFanfareImage from "../assets/images/VictoriousFanfare.png";
-import ABCInput from "./ABCInput";
-
-const defaultContent = ABCNotations["3-part Pirates ABC"];
 
 const HomeContent = () => {
-	const [text, setText] = React.useState(defaultContent);
-
-	const onInputChange = (t) => {
-		setText(t);
-	};
-
 	return (
 		<Container className="mt-5">
 			{/* <ABCInput

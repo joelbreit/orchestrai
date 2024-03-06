@@ -1,5 +1,5 @@
 // Import dependencies
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { NavLink as RouterNavLink } from "react-router-dom";
 import {
 	Badge,
@@ -17,6 +17,7 @@ import { AppContext } from "../contexts/AppContext";
 
 // Import assets
 import OrcheImage from "../assets/images/Orche.png";
+import { CheckToken } from "../services/APICalls";
 
 const Header = (args) => {
 	// App context
@@ -30,6 +31,28 @@ const Header = (args) => {
 		setAppState((prevState) => ({ ...prevState, authenticated: false }));
 		localStorage.removeItem("userToken");
 	};
+
+	useEffect(() => {
+		const checkToken = async () => {
+			const userToken = localStorage.getItem("userToken");
+			if (!appState.authenticated && userToken) {
+				const { status, accountId, email } = await CheckToken(
+					userToken
+				);
+				if (status === "Success") {
+					setAppState((prevState) => ({
+						...prevState,
+						authenticated: true,
+						accountId: accountId,
+						email: email,
+					}));
+				} else {
+					localStorage.removeItem("userToken");
+				}
+			}
+		};
+		checkToken();
+	}, [appState.authenticated, setAppState]);
 
 	return (
 		<div>
@@ -118,30 +141,12 @@ const Header = (args) => {
 						{appState.authenticated ? (
 							<>
 								<NavItem>
-									<NavLink tag={RouterNavLink} to="/submit">
-										Submit{" "}
-										<span className="icon-square flex-shrink-0 d-none d-lg-inline">
-											<i
-												className={`bi bi-cloud-upload`}
-											/>
-										</span>
-									</NavLink>
-								</NavItem>
-								{/* <NavItem>
-								<NavLink tag={RouterNavLink} to="/results">
-									Results{" "}
-								<span className="icon-square flex-shrink-0 d-none d-lg-inline">
-										<i className={`bi bi-bar-chart-line`} />
-									</span>
-								</NavLink>
-							</NavItem> */}
-								<NavItem>
 									<NavLink
 										tag={RouterNavLink}
 										to="/profile"
 										maxwidth="100px"
 									>
-										{appState.username || "Profile"}{" "}
+										{appState.email || "Profile"}{" "}
 										<span className="icon-square flex-shrink-0 d-none d-lg-inline">
 											<i
 												className={`bi bi-person-circle`}

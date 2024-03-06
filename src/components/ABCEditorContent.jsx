@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Button, Col, Container, Input, Row, Spinner } from "reactstrap";
+import { Alert, Button, Col, Container, Row, Spinner } from "reactstrap";
 import ABCNotations from "../assets/ABCNotations";
 import Logger from "../services/Logger";
 import FileUploader from "./FileUploader";
@@ -101,10 +101,6 @@ const ABCEditorContent = ({ tuneId }) => {
 			reader.readAsText(file);
 		}
 	}, [file, tuneId]);
-
-	const handleInputChange = (e) => {
-		setAbcNotation(e.target.value);
-	};
 
 	return (
 		<div className="container px-4">
