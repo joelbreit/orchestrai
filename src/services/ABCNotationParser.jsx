@@ -14,7 +14,7 @@ class ABCNotation {
 		this.failed = false;
 		try {
 			this.abcNotation = this.cleanUpNotation(abcNotation);
-			// this.title = this.extractTitle();
+			this.title = this.extractTitle();
 			this.voices = new Map(); // map of voice names to all the text in that voice
 			this.measureTextMatrix = [];
 			this.measureBeatsMatrix = [];
@@ -110,8 +110,14 @@ class ABCNotation {
 	}
 
 	extractTitle() {
-		const titleMatch = this.abcNotation.match(/^T:(.*)$/m);
-		return titleMatch ? titleMatch[1].trim() : "Untitled";
+		try {
+			const titleMatch = this.abcNotation.match(/^T:(.*)$/m);
+			return titleMatch ? titleMatch[1].trim() : "Untitled";
+		} catch (error) {
+			Logger.error("Error in extractTitle: " + error);
+			this.warnings.push("Unexpected error in extractTitle: " + error);
+			return "Untitled";
+		}
 	}
 
 	/* 	Takes the entire ABC notation text and returns the lines that

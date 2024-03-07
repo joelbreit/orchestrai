@@ -25,6 +25,7 @@ function Synthesizer({ abcNotation, index }) {
 	};
 
 	useEffect(() => {
+		Logger.debug("Synthesizer useEffect");
 		if (!abcNotation) return;
 
 		if (ABCJS.synth.supportsAudio()) {
@@ -152,7 +153,9 @@ function Synthesizer({ abcNotation, index }) {
 
 	return (
 		<Container>
+			{/* Audio Player */}
 			<div ref={audioRef} id={`audio${index}`} />
+			{/* Visual Sheet Music Representation */}
 			<div ref={musicSheetRef} id={`paper${index}`} />
 			<Row className="mt-2">
 				<Col className="d-flex justify-content-end">

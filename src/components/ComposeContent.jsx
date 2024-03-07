@@ -6,6 +6,7 @@ import Logger from "../services/Logger";
 // Import components
 import {
 	Alert,
+	Badge,
 	Button,
 	Card,
 	CardBody,
@@ -62,7 +63,7 @@ const ComposeContent = () => {
 	// Loading state
 	const [isLoading, setIsLoading] = useState(false);
 	const [timeSoFar, setTimeSoFar] = useState(0);
-	const [percentComplete, setPercentComplete] = useState(0);
+	const [percentComplete, setPercentComplete] = useState(1);
 	const [loadingMessage, setLoadingMessage] = useState(LOADING_MESSAGES[0]);
 	const [hasGeneratedMusic, setHasGeneratedMusic] = useState(false);
 	const [errorMessage, setErrorMessage] = useState();
@@ -94,13 +95,14 @@ const ComposeContent = () => {
 		if (activeTab !== tab) setActiveTab(tab);
 	};
 
-	const handleNotationChange = (e) => {
-		setAbcNotation(e.target.value);
+	const handleNotationChange = (newNotation) => {
+		setAbcNotation(newNotation);
 	};
 	// Logger.log("tuneId:", tuneId);
 
 	// Calculate % complete
 	useEffect(() => {
+		Logger.debug("Calc % complete useEffect");
 		let raw = 0;
 		if (timeSoFar + 10 >= EXPECTED_DURATION) {
 			raw = (timeSoFar / (timeSoFar + 10)) * 100;
@@ -112,6 +114,7 @@ const ComposeContent = () => {
 	}, [timeSoFar]);
 
 	useEffect(() => {
+		Logger.debug("Set input useEffect");
 		if (activeTab === "1") {
 			setInput(vibe);
 		} else if (activeTab === "3") {
@@ -120,7 +123,9 @@ const ComposeContent = () => {
 	}, [activeTab, vibe, fullPrompt]);
 
 	useEffect(() => {
+		Logger.debug("Clean ABC Notation useEffect");
 		const cleanedNotation = new ABCNotation(abcNotation);
+		Logger.debug("Cleaned notation:", cleanedNotation);
 		setAbcNotation(cleanedNotation.abcNotation);
 		setHasCleaned(true);
 		setNumFixes(cleanedNotation.numFixes);
@@ -130,6 +135,7 @@ const ComposeContent = () => {
 
 	// When ready to save tune
 	useEffect(() => {
+		Logger.debug("Save tune useEffect");
 		const handleSaveTune = async () => {
 			setSaveState("Loading");
 
@@ -152,7 +158,7 @@ const ComposeContent = () => {
 				run: run,
 				// Get everything after 'T:' on the first line where that exists
 				// This is causing an error sometimes, so I'm commenting it out for now
-				// title: abcNotation.match(/^T:(.*)$/m)[1],
+				title: abcNotation.match(/^T:(.*)$/m)[1],
 				prompt: input,
 				description: description,
 				notation: abcNotation,
@@ -298,6 +304,7 @@ const ComposeContent = () => {
 						setRunStatus("In Progress");
 						break;
 					case "completed":
+						setPercentComplete(100);
 						setRunStatus("Completed");
 						break;
 					case "failed":
@@ -593,28 +600,34 @@ const ComposeContent = () => {
 						</TabContent>
 						{isLoading && (
 							<div>
-								{/* Badge that displays the run status */}
-								{runStatus && (
-									<div
-										className={`badge ${
-											runStatus === "Completed"
-												? "bg-success"
-												: runStatus === "Failed"
-												? "bg-danger"
-												: runStatus === "In Progress"
-												? "bg-warning"
-												: "bg-info"
-										}`}
-										style={{
-											marginRight: "10px",
-											marginBottom: "10px",
-										}}
-									>
-										{runStatus}
-									</div>
-								)}
-
-								<p>{loadingMessage}</p>
+								<Col className="d-flex justify-content-start">
+									{runStatus && (
+										// div prevents the Badge from stretching to the height of the <p>
+										<div>
+											<Badge
+												color={
+													runStatus === "Completed"
+														? "success"
+														: runStatus === "Failed"
+														? "danger"
+														: runStatus ===
+														  "In Progress"
+														? "warning"
+														: "info"
+												}
+												// pill
+												className="d-none d-md-inline"
+												style={{
+													marginRight: "10px",
+													marginBottom: "10px",
+												}}
+											>
+												{runStatus}
+											</Badge>
+										</div>
+									)}
+									<p>{loadingMessage}</p>
+								</Col>
 								<Progress
 									animated
 									value={percentComplete}

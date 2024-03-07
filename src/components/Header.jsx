@@ -12,6 +12,9 @@ import {
 	NavbarToggler,
 } from "reactstrap";
 
+// Import services
+import Logger from "../services/Logger";
+
 // Import contexts
 import { AppContext } from "../contexts/AppContext";
 
@@ -33,6 +36,7 @@ const Header = (args) => {
 	};
 
 	useEffect(() => {
+		Logger.debug("Check token useEffect");
 		const checkToken = async () => {
 			const userToken = localStorage.getItem("userToken");
 			if (!appState.authenticated && userToken) {
@@ -49,8 +53,11 @@ const Header = (args) => {
 				} else {
 					localStorage.removeItem("userToken");
 				}
+			} else if (!userToken) {
+				Logger.debug("No user token found");
 			}
 		};
+
 		checkToken();
 	}, [appState.authenticated, setAppState]);
 

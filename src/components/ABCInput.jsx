@@ -11,6 +11,8 @@ import {
 
 import ABCBlock from "./ABCBlock";
 
+import Logger from "../services/Logger";
+
 const ABCInput = ({ parentText, placeholderText, onChange }) => {
 	const [previousText, setPreviousText] = useState(parentText);
 	const [text, setText] = useState(parentText);
@@ -27,6 +29,7 @@ const ABCInput = ({ parentText, placeholderText, onChange }) => {
 		event.stopPropagation();
 		setPreviousText(text);
 		setIsEditing(false);
+		Logger.debug("Saving text", text);
 		onChange(text);
 	};
 
@@ -35,6 +38,7 @@ const ABCInput = ({ parentText, placeholderText, onChange }) => {
 	};
 
 	useEffect(() => {
+		Logger.debug("Set text and prev text useEffect");
 		setText(parentText);
 		setPreviousText(parentText);
 	}, [parentText]);

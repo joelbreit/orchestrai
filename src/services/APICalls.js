@@ -41,6 +41,7 @@ export async function Login(email, password) {
 					accountId: "",
 				};
 			} else if (statusCode === 500) {
+				Logger.error(error || "Internal Server Error");
 				response = {
 					status: "Internal Server Error",
 					accountId: "",
@@ -170,6 +171,7 @@ export async function CreateAccount(accountId, email, password) {
 			if (statusCode === 403) {
 				status = "Email taken";
 			} else if (statusCode === 500) {
+				Logger.error(error || "Internal Server Error");
 				status = "Internal Server Error";
 			} else {
 				status = "Unrecognized error";

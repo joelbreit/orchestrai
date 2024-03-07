@@ -42,6 +42,7 @@ const ProfileContent = () => {
 
 	useEffect(() => {
 		const getTunesByAccountId = async () => {
+			Logger.debug("Get tunes by account id useEffect");
 			setLoadingState("Loading");
 			try {
 				Logger.log("Loading tunes for accountId: ", appState.accountId);
