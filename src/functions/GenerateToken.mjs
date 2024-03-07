@@ -61,7 +61,7 @@ export const handler = async (event) => {
 		return {
 			statusCode: 500,
 			body: JSON.stringify({
-				error: "Unexpected error generating token",
+				error: `Internal server error generating token: ${error}`
 			}),
 		};
 	}

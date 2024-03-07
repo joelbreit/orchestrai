@@ -44,7 +44,7 @@ export const handler = async (event) => {
 		console.error("Error occurred:", error);
 		return {
 			statusCode: 500,
-			body: JSON.stringify({ error: "Internal Server Error" }),
+			body: JSON.stringify({ error: `Internal server error retrieving tune: ${error}` }),
 		};
 	}
 };

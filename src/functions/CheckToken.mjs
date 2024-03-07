@@ -88,7 +88,7 @@ export const handler = async (event) => {
 		return {
 			statusCode: 500,
 			body: JSON.stringify({
-				error: "Unexpected error verifying token.",
+				error: `Internal server error verifying token: ${error}`,
 			}),
 		};
 	}

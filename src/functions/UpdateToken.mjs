@@ -58,7 +58,7 @@ export const handler = async (event) => {
 		return {
 			statusCode: 500,
 			body: JSON.stringify({
-				error: "Internal server error.",
+				error: `Internal server error updating token: ${error}`
 			}),
 		};
 	}
