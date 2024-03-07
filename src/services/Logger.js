@@ -2,19 +2,17 @@ const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
 const Logger = (() => {
 	const print = (pieces, level) => {
-		if (pieces instanceof Array) {
-			pieces = pieces.join("");
-		}
-		const output = `[${new Date().toISOString()}] [${level}] ${pieces}`;
+		const timestampString = `[${new Date().toISOString()}]`;
+		const levelString = `[${level}]`;
 		if (level === "ERROR") {
-			console.error(output);
+			console.error(timestampString, levelString, ...pieces);
 		} else if (level === "WARN") {
-			console.warn(output);
+			console.warn(timestampString, levelString, ...pieces);
 		} else if (isDebugOn) {
 			if (level === "LOG") {
-				console.log(output);
+				console.log(timestampString, levelString, ...pieces);
 			} else if (level === "DEBUG") {
-				console.debug(output);
+				console.debug(timestampString, levelString, ...pieces);
 			}
 		}
 	};
