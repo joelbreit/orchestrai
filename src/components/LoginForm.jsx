@@ -115,7 +115,7 @@ const LoginForm = ({ redirect }) => {
 			if (redirect) {
 				redirect();
 			}
-			let UserToken = localStorage.getItem("userToken");
+			let UserToken = localStorage.getItem("OrchestrAIToken");
 			if (UserToken) {
 				const statusCode = await UpdateToken(UserToken);
 				if (statusCode !== 200) {
@@ -123,7 +123,7 @@ const LoginForm = ({ redirect }) => {
 				}
 			} else {
 				const userToken = await GenerateToken(accountId);
-				localStorage.setItem("userToken", userToken);
+				localStorage.setItem("OrchestrAIToken", userToken);
 			}
 		} else if (status === "Invalid credentials") {
 			setError("Invalid credentials. Please try again.");
@@ -159,6 +159,7 @@ const LoginForm = ({ redirect }) => {
 						invalid={feedback.email !== ""}
 						placeholder="Enter email"
 						required
+						autoComplete="username"
 						onChange={(e) => {
 							handleEmailChange(e.target.value);
 						}}
@@ -192,6 +193,7 @@ const LoginForm = ({ redirect }) => {
 						invalid={feedback.password !== ""}
 						placeholder="Enter password"
 						required
+						autoComplete="current-password"
 						onChange={(e) => {
 							handlePasswordChange(e.target.value);
 						}}

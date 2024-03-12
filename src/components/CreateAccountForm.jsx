@@ -175,7 +175,7 @@ const CreateAccountForm = () => {
 				accountId: accountId,
 				email: email,
 			});
-			let UserToken = localStorage.getItem("userToken");
+			let UserToken = localStorage.getItem("OrchestrAIToken");
 			if (UserToken) {
 				const statusCode = await UpdateToken(UserToken);
 				if (statusCode !== 200) {
@@ -183,7 +183,7 @@ const CreateAccountForm = () => {
 				}
 			} else {
 				const userToken = await GenerateToken(accountId);
-				localStorage.setItem("userToken", userToken);
+				localStorage.setItem("OrchestrAIToken", userToken);
 			}
 		} else if (status === "Email taken") {
 			setFeedback({
@@ -221,6 +221,7 @@ const CreateAccountForm = () => {
 						invalid={feedback.email !== ""}
 						placeholder="Enter email"
 						required
+						autoComplete="username"
 						onChange={(e) => {
 							handleEmailChange(e.target.value);
 						}}
@@ -254,6 +255,7 @@ const CreateAccountForm = () => {
 						invalid={feedback.password !== ""}
 						placeholder="Enter password"
 						required
+						autoComplete="new-password"
 						onChange={(e) => {
 							handlePasswordChange(e.target.value);
 						}}
@@ -287,6 +289,7 @@ const CreateAccountForm = () => {
 						invalid={feedback.confirmPassword !== ""}
 						placeholder="Confirm password"
 						required
+						autoComplete="new-password"
 						onChange={(e) => {
 							handleConfirmPasswordChange(e.target.value);
 						}}

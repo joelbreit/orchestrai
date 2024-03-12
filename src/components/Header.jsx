@@ -32,13 +32,13 @@ const Header = (args) => {
 
 	const handleLogout = () => {
 		setAppState((prevState) => ({ ...prevState, authenticated: false }));
-		localStorage.removeItem("userToken");
+		localStorage.removeItem("OrchestrAIToken");
 	};
 
 	useEffect(() => {
 		Logger.debug("Check token useEffect");
 		const checkToken = async () => {
-			const userToken = localStorage.getItem("userToken");
+			const userToken = localStorage.getItem("OrchestrAIToken");
 			if (!appState.authenticated && userToken) {
 				const { status, accountId, email } = await CheckToken(
 					userToken
@@ -51,7 +51,7 @@ const Header = (args) => {
 						email: email,
 					}));
 				} else {
-					localStorage.removeItem("userToken");
+					localStorage.removeItem("OrchestrAIToken");
 				}
 			} else if (!userToken) {
 				Logger.debug("No user token found");
