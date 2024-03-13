@@ -112,11 +112,18 @@ function Synthesizer({ abcNotation, index }) {
 			var cursorControl = new SimpleCursorControl();
 
 			synthControl.load(audioRef.current, cursorControl, {
-				displayLoop: true,
+				// displayLoop: true,
 				displayRestart: true,
 				displayPlay: true,
 				displayProgress: true,
-				displayWarp: true,
+				// displayWarp: true,
+			});
+
+			window.addEventListener("keydown", (event) => {
+				if (event.code === "Space") {
+					event.preventDefault();
+					synthControl.play();
+				}
 			});
 
 			var visualObj = ABCJS.renderAbc(
