@@ -108,6 +108,15 @@ export const PROMPT_SUGGESTIONS = [
 	`Compose a tune for an epic, fast paced boss battle in a video game`,
 	`Compose a catchy, yearning pop anthem arranged for trumpet, trombone, and tuba`,
 	`Compose a catchy pop anthem arranged for trumpet, trombone, and tuba`,
+	`Generate a score for an intense racing game finale, reflecting high speeds and tight competition`,
+	`Compose a piece for a peaceful village in a fantasy RPG, drawing on traditional folk influences`,
+	`Design a boss battle theme for a video game set in an ancient ruin, where the boss is a giant mechanized golem awakened from its slumber`,
+	`Compose a chase scene soundtrack for a cyberpunk thriller, emphasizing urgency, technological tension, and the protagonist's desperation`,
+	`Compose a score for the climax of an epic space odyssey, where heroes navigate a nebula to escape a collapsing star, blending awe-inspiring cosmic wonders with the adrenaline of a narrow escape`,
+	`Design a soundtrack for a journey through a digital utopia, where advanced technology and nature harmonize, creating a futuristic soundscape that blends electronic elements with an appealing melody`,
+	`Generate a piece for an interdimensional chase scene, where characters leap between realities, combining elements of suspense, wonder, and the unexpected twists of shifting worlds`,
+	`Create a theme for a secret society's ritual in a hidden temple, blending elements of mystery, solemnity, and the awe-inspiring sense of being part of something ancient and powerful`,
+	`Compose a piece for a cosmic dance of celestial bodies, evoking the majesty of the universe's vastness and the mesmerizing beauty of cosmic magnitude`,
 ];
 
 export const FEW_SHOT_EXAMPLES = [
