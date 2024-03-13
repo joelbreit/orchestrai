@@ -104,13 +104,18 @@ const LoginForm = ({ redirect }) => {
 
 		setLoading(true);
 
-		const { status, accountId } = await Login(email, password);
+		const { status, accountId, username, displayName } = await Login(
+			email,
+			password
+		);
 		setLoading(false);
 		if (status === "Success") {
 			setAppState({
 				authenticated: true,
 				accountId: accountId,
 				email: email,
+				username: username,
+				displayName: displayName,
 			});
 			if (redirect) {
 				redirect();

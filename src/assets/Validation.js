@@ -1,20 +1,10 @@
-export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-// At least 4 non-space characters
-export const PASSWORD_REGEX = /^[\S]{4,100}$/;
-// Letters, numbers, dashes, and underscores
-export const USERNAME_REGEX = /^[a-zA-Z0-9\-_]+$/;
-// Letters, numbers, dashes, underscores, and spaces
-export const ACCOUNTNAME_REGEX = /^[a-zA-Z0-9\-_\s]+$/;
-
-export const USERNAME_MIN_LENGTH = 4;
-export const USERNAME_MAX_LENGTH = 100;
-export const EMAIL_MIN_LENGTH = 4;
-export const EMAIL_MAX_LENGTH = 100;
-export const PASSWORD_MIN_LENGTH = 4;
-export const PASSWORD_MAX_LENGTH = 100;
-export const USERNAME_INVALID_CHARACTERS_REGEX = /[^a-zA-Z0-9\-_]/;
-export const PASSWORD_INVALID_CHARACTERS_REGEX = /[\s]/;
-export const EMAIL_INVALID_CHARACTERS_REGEX = /[\s]/;
+// export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// // At least 4 non-space characters
+// export const PASSWORD_REGEX = /^[\S]{4,100}$/;
+// // Letters, numbers, dashes, and underscores
+// export const USERNAME_REGEX = /^[a-zA-Z0-9\-_]+$/;
+// // Letters, numbers, dashes, underscores, and spaces
+// export const ACCOUNTNAME_REGEX = /^[a-zA-Z0-9\-_\s]+$/;
 
 export const Username = {
 	MinLength: 4,
@@ -26,6 +16,16 @@ export const Username = {
 		"Username can only contain letters, numbers, dashes, and underscores",
 	Tooltip:
 		"A username to identify your account. Can contain letters, numbers, dashes, and underscores.",
+};
+
+export const DisplayName = {
+	MinLength: 1,
+	MinLengthFeedback: "Display name must be at least 1 character",
+	MaxLength: 100,
+	MaxLengthFeedback: "Display name cannot be longer than 100 characters",
+	InvalidCharacterRegex: /[\\]/,
+	InvalidCharacterFeedback: "Display name cannot contain backslashes",
+	Tooltip: "A display name for other users to see.",
 };
 
 export const Email = {

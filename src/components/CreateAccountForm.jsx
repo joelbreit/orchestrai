@@ -20,7 +20,7 @@ import {
 import { AppContext } from "../contexts/AppContext";
 
 // Import parameters
-import { Email, Password } from "../assets/Validation";
+import { Email, Password, Username, DisplayName } from "../assets/Validation";
 import GenerateId from "../services/GenerateId";
 import {
 	GenerateToken,
@@ -36,12 +36,20 @@ const CreateAccountForm = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
+	const [username, setUsername] = useState("");
+	const [displayName, setDisplayName] = useState("");
+	const [emailPreference, setEmailPreference] = useState("critical");
+
+	const [usernameEdited, setUsernameEdited] = useState(false);
+	const [displayNameEdited, setDisplayNameEdited] = useState(false);
 
 	// Validation state
 	const [feedback, setFeedback] = useState({
 		email: "",
 		password: "",
 		confirmPassword: "",
+		username: "",
+		displayName: "",
 	});
 
 	// Form state
@@ -129,6 +137,50 @@ const CreateAccountForm = () => {
 		setConfirmPassword(confirmPasswordInput);
 	};
 
+	const handleUsernameChange = (usernameInput) => {
+		setError("");
+		setFeedback({
+			...feedback,
+			username: "",
+		});
+		if (usernameInput.length > Username.MaxLength) {
+			setFeedback({
+				...feedback,
+				username: Username.MaxLengthFeedback,
+			});
+		}
+		if (Username.InvalidCharacterRegex.test(usernameInput)) {
+			setFeedback({
+				...feedback,
+				username: Username.InvalidCharacterFeedback,
+			});
+		}
+		setUsername(usernameInput);
+		setUsernameEdited(true);
+	};
+
+	const handleDisplayNameChange = (displayNameInput) => {
+		setError("");
+		setFeedback({
+			...feedback,
+			displayName: "",
+		});
+		if (displayNameInput.length > DisplayName.MaxLength) {
+			setFeedback({
+				...feedback,
+				displayName: DisplayName.MaxLengthFeedback,
+			});
+		}
+		if (DisplayName.InvalidCharacterRegex.test(displayNameInput)) {
+			setFeedback({
+				...feedback,
+				displayName: DisplayName.InvalidCharacterFeedback,
+			});
+		}
+		setDisplayName(displayNameInput);
+		setDisplayNameEdited(true);
+	};
+
 	const handleCreateAccount = async (e) => {
 		e.preventDefault();
 		setError("");
@@ -162,18 +214,41 @@ const CreateAccountForm = () => {
 			});
 			return;
 		}
+		if (username.length < Username.MinLength) {
+			setFeedback({
+				...feedback,
+				username: Username.MinLengthFeedback,
+			});
+			return;
+		}
+		if (displayName.length < DisplayName.MinLength) {
+			setFeedback({
+				...feedback,
+				displayName: DisplayName.MinLengthFeedback,
+			});
+			return;
+		}
 
 		setLoading(true);
 
 		const accountId = GenerateId();
 
-		const status = await CreateAccount(accountId, email, password);
+		const status = await CreateAccount(
+			accountId,
+			email,
+			password,
+			username,
+			displayName,
+			emailPreference
+		);
 		setLoading(false);
 		if (status === "Success") {
 			setAppState({
 				authenticated: true,
 				accountId: accountId,
 				email: email,
+				username: username,
+				displayName: displayName,
 			});
 			let UserToken = localStorage.getItem("OrchestrAIToken");
 			if (UserToken) {
@@ -189,6 +264,11 @@ const CreateAccountForm = () => {
 			setFeedback({
 				...feedback,
 				email: `A user with the email "${email}" already exists. Please login instead or try a different email.`,
+			});
+		} else if (status === "Username taken") {
+			setFeedback({
+				...feedback,
+				username: `The username "${username}" is already taken. Please try a different username.`,
 			});
 		} else {
 			setError("An unexpected error occurred. Please try again.");
@@ -296,6 +376,106 @@ const CreateAccountForm = () => {
 					/>
 					<FormFeedback>{feedback.confirmPassword}</FormFeedback>
 				</Col>
+			</FormGroup>
+
+			<FormGroup>
+				<Label for="username">
+					Username{" "}
+					<span className="icon-square flex-shrink-0">
+						<i
+							id="usernameTooltip"
+							className={`bi bi-info-circle`}
+						/>
+					</span>
+					<UncontrolledTooltip
+						placement="right"
+						target="usernameTooltip"
+					>
+						{Username.Tooltip}
+					</UncontrolledTooltip>
+				</Label>
+				<Col>
+					<Input
+						type="text"
+						name="username"
+						id="username"
+						value={username}
+						invalid={feedback.username !== ""}
+						placeholder="Enter username"
+						required
+						autoComplete="username"
+						onChange={(e) => {
+							handleUsernameChange(e.target.value);
+						}}
+					/>
+					<FormFeedback>{feedback.username}</FormFeedback>
+				</Col>
+			</FormGroup>
+
+			<FormGroup>
+				<Label for="displayName">
+					Display Name{" "}
+					<span className="icon-square flex-shrink-0">
+						<i
+							id="displayNameTooltip"
+							className={`bi bi-info-circle`}
+						/>
+					</span>
+					<UncontrolledTooltip
+						placement="right"
+						target="displayNameTooltip"
+					>
+						{DisplayName.Tooltip}
+					</UncontrolledTooltip>
+				</Label>
+				<Col>
+					<Input
+						type="text"
+						name="displayName"
+						id="displayName"
+						value={displayName}
+						invalid={feedback.displayName !== ""}
+						placeholder="Enter display name"
+						required
+						autoComplete="name"
+						onChange={(e) => {
+							handleDisplayNameChange(e.target.value);
+						}}
+					/>
+					<FormFeedback>{feedback.displayName}</FormFeedback>
+				</Col>
+			</FormGroup>
+
+			<FormGroup tag="fieldset">
+				<Label>Email Preferences</Label>
+				<FormGroup check>
+					<Label check>
+						<Input
+							type="radio"
+							name="emailPreference"
+							value="critical"
+							checked={emailPreference === "critical"}
+							onChange={(e) => setEmailPreference(e.target.value)}
+						/>
+						<small>
+							{" "}
+							Only send address confirmation, password reset, and
+							<i> critical</i> update emails
+						</small>
+					</Label>
+				</FormGroup>
+				<FormGroup check>
+					<Label check>
+						<Input
+							type="radio"
+							name="emailPreference"
+							value="never"
+							checked={emailPreference === "never"}
+							onChange={(e) => setEmailPreference(e.target.value)}
+						/>
+						<small> Literally never email me</small>
+					</Label>
+				</FormGroup>
 			</FormGroup>
 
 			{error && (

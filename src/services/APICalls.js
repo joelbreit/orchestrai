@@ -7,6 +7,8 @@ export async function Login(email, password) {
 	let response = {
 		status: "",
 		accountId: "",
+		username: "",
+		displayName: "",
 	};
 	try {
 		const hashedPassword = Hash(password);
@@ -30,6 +32,8 @@ export async function Login(email, password) {
 			response = {
 				status: "Success",
 				accountId: body.accountId,
+				username: body.username,
+				displayName: body.displayName,
 			};
 		} else {
 			const error =
@@ -37,27 +41,27 @@ export async function Login(email, password) {
 			Logger.error(`/login returned status ${statusCode}:`, error);
 			if (statusCode === 401) {
 				response = {
+					...response,
 					status: "Invalid credentials",
-					accountId: "",
 				};
 			} else if (statusCode === 500) {
 				Logger.error(error || "Internal Server Error");
 				response = {
+					...response,
 					status: "Internal Server Error",
-					accountId: "",
 				};
 			} else {
 				response = {
+					...response,
 					status: "Unrecognized error",
-					accountId: "",
 				};
 			}
 		}
 	} catch (error) {
 		Logger.error(`Unexpected error logging in:`, error);
 		response = {
+			...response,
 			status: "Unexpected error",
-			accountId: "",
 		};
 	}
 	return response;
@@ -127,7 +131,14 @@ export async function UpdateToken(token) {
 	}
 }
 
-export async function CreateAccount(accountId, email, password) {
+export async function CreateAccount(
+	accountId,
+	email,
+	password,
+	username,
+	displayName,
+	emailPreference
+) {
 	let status = "";
 	try {
 		const nycTime = new Date().toLocaleString("en-US", {
@@ -151,6 +162,9 @@ export async function CreateAccount(accountId, email, password) {
 				email: email,
 				password: hashedPassword,
 				creationDate: dateAndTime,
+				username: username,
+				displayName: displayName,
+				emailPreference: emailPreference,
 			}),
 		});
 
@@ -169,7 +183,11 @@ export async function CreateAccount(accountId, email, password) {
 				error
 			);
 			if (statusCode === 403) {
-				status = "Email taken";
+				if (error === "Username already exists.") {
+					status = "Username taken";
+				} else if (error === "Email already exists.") {
+					status = "Email taken";
+				}
 			} else if (statusCode === 500) {
 				Logger.error(error || "Internal Server Error");
 				status = "Internal Server Error";
@@ -189,6 +207,8 @@ export async function CheckToken(token) {
 		status: "",
 		accountId: "",
 		email: "",
+		username: "",
+		displayName: "",
 	};
 
 	try {
@@ -212,6 +232,8 @@ export async function CheckToken(token) {
 				status: "Success",
 				accountId: body.accountId,
 				email: body.email,
+				username: body.username,
+				displayName: body.displayName,
 			};
 		} else {
 			Logger.error(
@@ -221,15 +243,13 @@ export async function CheckToken(token) {
 			);
 			if (statusCode === 440) {
 				response = {
-					status: "Token expired",
-					accountId: "",
-					email: "",
+					...response,
+					status: "Expired token",
 				};
 			} else {
 				response = {
+					...response,
 					status: "Invalid token",
-					accountId: "",
-					email: "",
 				};
 			}
 		}

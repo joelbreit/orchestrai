@@ -8,7 +8,7 @@ import {
 	NavLink,
 	Navbar,
 	NavbarBrand,
-	NavbarToggler
+	NavbarToggler,
 } from "reactstrap";
 
 // Import services
@@ -39,15 +39,16 @@ const Header = (args) => {
 		const checkToken = async () => {
 			const userToken = localStorage.getItem("OrchestrAIToken");
 			if (!appState.authenticated && userToken) {
-				const { status, accountId, email } = await CheckToken(
-					userToken
-				);
+				const { status, accountId, email, username, displayName } =
+					await CheckToken(userToken);
 				if (status === "Success") {
 					setAppState((prevState) => ({
 						...prevState,
 						authenticated: true,
 						accountId: accountId,
 						email: email,
+						username: username,
+						displayName: displayName,
 					}));
 					Logger.debug("User token found and valid");
 				} else {

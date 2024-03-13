@@ -52,6 +52,8 @@ export const handler = async (event) => {
 			body: JSON.stringify({
 				message: "Login successful",
 				accountId: account.accountId,
+				username: account.username,
+				displayName: account.displayName,
 			}),
 		};
 	} catch (error) {

@@ -121,7 +121,6 @@ function Synthesizer({ abcNotation, index }) {
 
 			window.addEventListener("keydown", (event) => {
 				if (event.code === "Space") {
-					event.preventDefault();
 					synthControl.play();
 				}
 			});

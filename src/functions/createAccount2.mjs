@@ -23,9 +23,15 @@ export const handler = async (event) => {
 	try {
 		console.log("Received event:", event);
 
-		const { accountId, email, password, emailPreference, creationDate } = JSON.parse(
-			event.body
-		);
+		const {
+			accountId,
+			email,
+			password,
+			username,
+			displayName,
+			emailPreference,
+			creationDate,
+		} = JSON.parse(event.body);
 		const hashedPassword = await hashPassword(password);
 
 		// Check if email exists
@@ -37,11 +43,22 @@ export const handler = async (event) => {
 			};
 		}
 
+		// Check if username exists
+		if (await checkIfExists("username", username)) {
+			console.log("Username already exists.");
+			return {
+				statusCode: 403,
+				body: JSON.stringify({ error: "Username already exists." }),
+			};
+		}
+
 		// Prepare item to insert
 		const newAccount = {
 			accountId: accountId,
 			email: email,
 			password: hashedPassword,
+			username: username,
+			displayName: displayName,
 			emailPreference: emailPreference,
 			creationDate: creationDate,
 		};
@@ -59,7 +76,9 @@ export const handler = async (event) => {
 		console.error("Error occurred:", error);
 		return {
 			statusCode: 500,
-			body: JSON.stringify({ error: `Internal server error creating account: ${error}` }),
+			body: JSON.stringify({
+				error: `Internal server error creating account: ${error}`,
+			}),
 		};
 	}
 };
