@@ -59,6 +59,12 @@ const ComposeContent = () => {
 	const [vibe, setVibe] = useState("");
 	const [fullPrompt, setFullPrompt] = useState("");
 	const [input, setInput] = useState("");
+	const [vibePromptIndex, setVibePromptIndex] = useState(
+		Math.floor(Math.random() * VIBE_SUGGESTIONS.length)
+	);
+	const [fullPromptIndex, setFullPromptIndex] = useState(
+		Math.floor(Math.random() * PROMPT_SUGGESTIONS.length)
+	);
 
 	// Loading state
 	const [isLoading, setIsLoading] = useState(false);
@@ -195,15 +201,15 @@ const ComposeContent = () => {
 	}, [hasGeneratedMusic, hasCleaned, tuneId]); // TODO seems I'm doing this wrong somehow
 
 	const suggestVibe = () => {
-		const randomIndex = Math.floor(Math.random() * VIBE_SUGGESTIONS.length);
-		setVibe(VIBE_SUGGESTIONS[randomIndex]);
+		const nextIndex = (vibePromptIndex + 1) % VIBE_SUGGESTIONS.length;
+		setVibe(VIBE_SUGGESTIONS[nextIndex]);
+		setVibePromptIndex(nextIndex);
 	};
 
 	const suggestFullPrompt = () => {
-		const randomIndex = Math.floor(
-			Math.random() * PROMPT_SUGGESTIONS.length
-		);
-		setFullPrompt(PROMPT_SUGGESTIONS[randomIndex]);
+		const nextIndex = (fullPromptIndex + 1) % PROMPT_SUGGESTIONS.length;
+		setFullPrompt(PROMPT_SUGGESTIONS[nextIndex]);
+		setFullPromptIndex(nextIndex);
 	};
 
 	const handleSubmit = async (e) => {
@@ -866,6 +872,7 @@ const ComposeContent = () => {
 								<CardBody>
 									<FeedbackForm
 										toggleFeedback={toggleFeedback}
+										tuneId={tuneId}
 									/>
 								</CardBody>
 								<CardFooter>

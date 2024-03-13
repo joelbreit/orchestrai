@@ -14,11 +14,11 @@ L:1/16
 Q:1/4=140
 K:D
 % The piece starts with a flowing melody representing the emergence of spring
-V:1 clef=treble name="Vibraphone" subname="Vibes"
+V:1 clef=treble name="Vibraphone"
 %%MIDI program 11
 |:"D" FA dA z2 FA| "G"G2 z2 BAGF|"Em"E2 G2 z2 F2|"A7"A4- A2 z2|
 "D" fd A2 z2 f2|"Bm"b4 z2 a2|"G"g2 fe z2 "A7"ce|"D"d4- d2 z2:|
-V:2 clef=bass name="Fretless Bass" subname="Bass"
+V:2 clef=bass name="Fretless Bass"
 %%MIDI program 35
 |:"D"D,4 F,4|"G"G,4 B,4|"Em"E,4 G,4|"A7"A,4 C4|
 "D"D,4 F,4|"Bm"B,4 D4|"G"G,4 B,4|"A7"A,4 E,4:|
@@ -36,7 +36,7 @@ M:4/4
 L:1/8
 Q:1/4=132
 K:Cmaj
-V:1 clef=treble name="Trumpet" subname="Trpt."
+V:1 clef=treble name="Trumpet"
 %%MIDI program 56
 |:"C"G6 E2|"G"D6 G2|"Am"E4 F2G2|"F"A6 c2|
 "C"G6 E2|"G"D6 G2|"F"E2F2 G3 A|"C"C8|
@@ -44,7 +44,7 @@ V:1 clef=treble name="Trumpet" subname="Trpt."
 "Em"G4 E2G2|"Am"c2B2 A2B2|"Dm"F2E2 D3 C|"G7"B,8|
 "C"G,4 C2E2|"G"D6 G2|"F"A4 c2e2|"C"c8|
 "C"G6E2|"G"D6 G2|"Am"E2F2 G3 A|"C"C8:|
-V:2 clef=treble name="Strings" subname="Str."
+V:2 clef=treble name="Strings"
 %%MIDI program 48
 |:"C"e6c2|"G"B6 e2|"Am"A4 c2d2|"F"c6 e2|
 "C"e6c2|"G"B6 e2|"F"c2d2 e3 f|"C"c8|
@@ -52,7 +52,7 @@ V:2 clef=treble name="Strings" subname="Str."
 "Em"g4 e2d2|"Am"A2 G2 z EG2|"Dm"d2c2 F3 E|"G7"D6 B,2|
 "C"E4 G2E2|"G"B6 e2|"F"d2f2 a2g2|"C"G4 G4|
 "C"E6C2|"G"B6 e2|"Am"A2G2 A3 B|"C"c8:|
-V:3 clef=bass name="Cello" subname="Cello"
+V:3 clef=bass name="Cello"
 %%MIDI program 42
 |:"C"C6C2|"G"G,4 D2D2|"Am"A,4 E2A2|"F"C4 C4|
 "C"E6E2|"G"B,4 D2D2|"F"A,2A,2 C3 E|"C"C6 C2|
@@ -74,19 +74,19 @@ L:1/8
 Q:1/4=160
 K:Dm
 % The introduction evokes the call to adventure on the high seas
-V:1 clef=treble name="Clarinet" subname="Cl."
+V:1 clef=treble name="Clarinet"
 %%MIDI program 71
 |:"Dm" A4 A2fe | "C" d6 c2 | "Bb" B4 B2AG | "A7" A6 z2 |
 "Dm" A4 "C"gfed | "Bb" c4 "A7"A2G2 | "Dm"F6 "A7"E2 | "Dm"d8 |
 "Dm"f2ef "C"gec2 | "Bb"d2cB "A7"A2G2 | "Dm"F2E2 "C"D2C2 | "Bb"B6 z2 |
 "Dm"f4 fefa | "Gm"g4 gbag | "A7"a4 a2gf | "Dm"d8 :|
-V:2 clef=treble name="Basoon" subname="Bsn."
+V:2 clef=treble name="Basoon"
 %%MIDI program 70
 |:"Dm" d4 d2c2 | "C" A6A2 | "Bb" G4 G2F2 | "A7" E6z2 |
 "Dm" d4 "C"edcB | "Bb" A4 "A7"G2F2 | "Dm"F6 "A7"E2 | "Dm"d8 |
 "Dm"A2A2 "C"GA_B2 | "Bb"F4 "A7"G2F2 | "Dm"D4 "C"C2D2 | "Bb"B6 z2 |
 "Dm"A2d2 "Gm"d2B2 | "A7"G2E2 E4 | "Dm"f4 "A7"A2G2 | "Dm"d8 :|
-V:3 clef=bass name="Accoustic Bass" subname="Bass"
+V:3 clef=bass name="Accoustic Bass"
 %%MIDI program 32
 |:"Dm" D,4 D,2F,2 | "C" C,6 G,2 | "Bb" B,,4 B,,2D,2 | "A7" A,6z2 |
 "Dm" A,4 "C"D,C,D,E, | "Bb" F,4 "A7"A,2F,2 | "Dm"D,6 "A7"A,2 | "Dm"D,8 |
@@ -106,22 +106,22 @@ M:4/4
 L:1/8
 Q:1/4=60
 K:Amaj
-V:1 clef=treble name="Synth Pad" subname="Pad"
+V:1 clef=treble name="Synth Pad"
 %% MIDI program 91
 |: "A"A6 E2 | "F#m"F4 E4 | "D" D6 F2 | "E"E4 z4 |
 "A"A3 B c4 | "E"B6 G2 | "A"A3 F E4 | "D"D4 F4 |
 "A"A6 E2 | "Bm7"E4 D4 | "E7sus4"G6 A2 | "A"A4 z4 :|
-V:2 clef=treble name="Synth Pad" subname="Pad"
+V:2 clef=treble name="Synth Pad"
 %% MIDI program 91
 |: "A"C4 E4 | "F#m"A4 G4 | "D"F4 A4 | "E"E4 z4 |
 "A"A4 c2 B2 | "E"G4 E4 | "A"A4 F4 | "D"E4 F4 |
 "A"C6 E2 | "Bm7"F4 D4 | "E7sus4"G4 A4 | "A"A4 z4 :|
-V:3 clef=bass name="Synth Pad" subname="Pad"
+V:3 clef=bass name="Synth Pad"
 %% MIDI program 91
 |: "A"A,4 E3 C | "F#m"F,4 A4 | "D"D,4 F4 | "E"E,4 z4 |
 "A"A,4 C4 | "E"E4 G3 E | "A"A,4 E3 F | "D"D4 F4 |
 "A"A,4 E4 | "Bm7"B,4 D4 | "E7sus4"E4 G4 | "A"A,4 z4 :|
-V:4 clef=bass name="Synth Pad" subname="Pad"
+V:4 clef=bass name="Synth Pad"
 %% MIDI program 91
 |: "A"E2 A4 z2 | "F#m"C4 A4 | "D"A2 D4 F2 | "E"E4 z4 |
 "A"E4 A3 B | "E"C4 F3 G | "A"A3 E2 F2 z | "D"F4 z4 |

@@ -5,6 +5,7 @@ import React, { useContext, useState } from "react";
 import {
 	Button,
 	Col,
+	Container,
 	Modal,
 	ModalBody,
 	ModalFooter,
@@ -31,7 +32,7 @@ const ProtectedContent = ({ children }) => {
 			{appState.authenticated || LOGGED_IN ? (
 				children
 			) : (
-				<>
+				<Container className="mb-3">
 					<div>
 						<strong>This feature is completely free</strong>, but
 						you will need to login or create an account to use it:{" "}
@@ -87,7 +88,7 @@ const ProtectedContent = ({ children }) => {
 							)}
 						</ModalFooter>
 					</Modal>
-				</>
+				</Container>
 			)}
 		</>
 	);

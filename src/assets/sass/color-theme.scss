@@ -16,6 +16,8 @@ $danger-hover: #e57373;
 $succes: #aedf8e;
 $succes-hover: #8ecf6e;
 
+$light-border: #dee2e6;
+
 .primary-navbar {
 	background-color: $primary !important;
 }
@@ -89,4 +91,34 @@ $succes-hover: #8ecf6e;
 
 .quaternary-background {
 	background-color: $quaternary !important;
+}
+
+.abcjs-inline-audio {
+	// background-color: #FFF !important;
+	height: 48px !important;
+}
+
+// .abcjs-midi-progress-background {
+// 	background-color: $primary-hover !important;
+// }
+
+// .abcjs-inline-audio .abcjs-btn {
+// 	background-color: $primary !important;
+// 	border-color: $primary !important;
+// 	border-radius: 5px !important;
+// 	min-width: 48px !important;
+// 	padding: 10px 10px 10px 10px !important;
+// 	// margin: 5px !important;
+// 	// hover
+// 	&:hover {
+// 		background-color: $primary-hover !important;
+// 		border-color: $primary-hover !important;
+// 	}
+// }
+
+.bordered-tab-pane {
+	border: 1px solid $light-border !important;
+	border-radius: 0 0 10px 10px;
+	border-top: none !important;
+	padding: 10px;
 }

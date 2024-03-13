@@ -239,3 +239,47 @@ export async function CheckToken(token) {
 		return response;
 	}
 }
+
+export async function SaveTuneScore(scoreData) {
+	let response = {
+		statusCode: 0,
+		message: "",
+	};
+
+	try {
+		response = await fetch(`${apiUrl}/SaveTuneScore`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(scoreData),
+		});
+
+		// Handle the response
+		const body = await response.json();
+		const statusCode = response.status;
+
+		if (statusCode === 200) {
+			Logger.log("Score added successfully");
+			response = {
+				statusCode: 200,
+				message: "Score added successfully",
+			};
+		} else {
+			const error = body.error || "SaveTuneScore encountered an error";
+			Logger.error(`SaveTuneScore returned status ${statusCode}:`, error);
+			response = {
+				statusCode: statusCode,
+				message: error,
+			};
+		}
+	} catch (error) {
+		Logger.error(`Unexpected error saving score:`, error);
+		response = {
+			statusCode: 500,
+			message: "Unexpected error",
+		};
+	} finally {
+		return response;
+	}
+}

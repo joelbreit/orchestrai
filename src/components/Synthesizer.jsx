@@ -1,9 +1,14 @@
-import "abcjs/abcjs-audio.css";
-import "../assets/sass/music.scss";
-
-import React, { useEffect, useRef } from "react";
-import { Button, Container, Row, Col } from "reactstrap";
 import { saveAs } from "file-saver";
+import React, { useEffect, useRef } from "react";
+import {
+	Button,
+	Card,
+	CardBody,
+	CardText,
+	CardTitle,
+	Col,
+	Row,
+} from "reactstrap";
 
 import Logger from "../services/Logger";
 
@@ -152,23 +157,50 @@ function Synthesizer({ abcNotation, index }) {
 	}, [abcNotation, index]);
 
 	return (
-		<Container>
-			{/* Audio Player */}
-			<div ref={audioRef} id={`audio${index}`} />
-			{/* Visual Sheet Music Representation */}
-			<div ref={musicSheetRef} id={`paper${index}`} />
+		<div>
+			{abcNotation ? (
+				// Audio Player
+				<div ref={audioRef} id={`audio${index}`} />
+			) : (
+				// Placeholder for Audio Player
+				<p class="placeholder-glow">
+					<span
+						class="placeholder col-12"
+						style={{ height: "38px" }}
+					></span>
+				</p>
+			)}
+			{abcNotation ? (
+				// Sheet Music
+				<div ref={musicSheetRef} id={`paper${index}`} />
+			) : (
+				// Placeholder for Sheet Music
+				<Card>
+					<CardBody>
+						<CardTitle className="placeholder-glow">
+							<span class="placeholder col-6 offset-3" />
+						</CardTitle>
+						<CardText className="placeholder-glow">
+							<span class="placeholder col-12" />
+							<span class="placeholder col-12" />
+							<span class="placeholder col-12" />
+						</CardText>
+					</CardBody>
+				</Card>
+			)}
 			<Row className="mt-2">
 				<Col className="d-flex justify-content-end">
 					<Button
 						className="primary-button mb-2"
 						size="sm"
 						onClick={downloadMIDI}
+						disabled={!abcNotation}
 					>
 						Download MIDI
 					</Button>
 				</Col>
 			</Row>
-		</Container>
+		</div>
 	);
 }
 

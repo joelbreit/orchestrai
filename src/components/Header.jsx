@@ -2,14 +2,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { NavLink as RouterNavLink } from "react-router-dom";
 import {
-	Badge,
 	Collapse,
 	Nav,
 	NavItem,
 	NavLink,
 	Navbar,
 	NavbarBrand,
-	NavbarToggler,
+	NavbarToggler
 } from "reactstrap";
 
 // Import services
@@ -50,6 +49,7 @@ const Header = (args) => {
 						accountId: accountId,
 						email: email,
 					}));
+					Logger.debug("User token found and valid");
 				} else {
 					localStorage.removeItem("OrchestrAIToken");
 				}
@@ -96,13 +96,13 @@ const Header = (args) => {
 								<span className="icon-square flex-shrink-0 d-none d-lg-inline">
 									<i className={`bi bi-music-note-beamed`} />
 								</span>{" "}
-								<Badge
+								{/* <Badge
 									color="success"
 									pill
 									className="d-none d-md-inline"
 								>
 									Try It!
-								</Badge>
+								</Badge> */}
 							</NavLink>
 						</NavItem>
 						<NavItem>
