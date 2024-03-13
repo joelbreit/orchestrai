@@ -27,7 +27,7 @@ import FeedbackForm from "./FeedbackForm";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
-const TuneViewerComponent = ({ tuneId }) => {
+const TuneViewerComponent = ({ tuneId, setPageTitle }) => {
 	const [abcNotation, setAbcNotation] = useState("");
 	const [description, setDescription] = useState("");
 	const [title, setTitle] = useState("");
@@ -67,6 +67,7 @@ const TuneViewerComponent = ({ tuneId }) => {
 					setAbcNotation(body.notation);
 					setDescription(body.description);
 					setTitle(body.title);
+					if (body.title) setPageTitle(body.title);
 					setCreationDate(body.date);
 					setPrompt(body.prompt);
 					setFixes(body.fixes);
