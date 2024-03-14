@@ -138,9 +138,7 @@ const LoginForm = ({ redirect }) => {
 	};
 
 	return (
-		<Form className="p-3" onSubmit={handleLogin}>
-			<p>Enter your information below to login.</p>
-
+		<Form className="px-3" onSubmit={handleLogin}>
 			<FormGroup>
 				<Label for="email">
 					Email{" "}

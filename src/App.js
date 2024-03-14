@@ -1,15 +1,17 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import ABCEditorPage from "./pages/ABCEditorPage";
-import JuxComposePage from "./pages/JuxComposePage";
-import ComposePage from "./pages/ComposePage";
-import ProfilePage from "./pages/ProfilePage";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AppProvider } from "./contexts/AppContext";
-import PortfolioPage from "./pages/PortfolioPage";
-import ResearchPage from "./pages/ResearchPage";
-import TunePage from "./pages/TunePage";
+import ABCEditorPage from "./pages/ABCEditorPage";
+import ComposePage from "./pages/ComposePage";
+import HomePage from "./pages/HomePage";
+import JuxComposePage from "./pages/JuxComposePage";
+import LoginPage from "./pages/LoginPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import PortfolioPage from "./pages/PortfolioPage";
+import ProfilePage from "./pages/ProfilePage";
+import ResearchPage from "./pages/ResearchPage";
+import SignupPage from "./pages/SignupPage";
+import TunePage from "./pages/TunePage";
 
 function App() {
 	return (
@@ -24,6 +26,8 @@ function App() {
 					<Route path="/portfolio" element={<PortfolioPage />} />
 					<Route path="/research" element={<ResearchPage />} />
 					<Route path="/tunes/:tuneId" element={<TunePage />} />
+					<Route path="/login" element={<LoginPage />} />
+					<Route path="/signup" element={<SignupPage />} />
 					<Route path="*" element={<NotFoundPage />} />
 				</Routes>
 			</BrowserRouter>

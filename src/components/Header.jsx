@@ -37,10 +37,10 @@ const Header = (args) => {
 	useEffect(() => {
 		Logger.debug("Check token useEffect");
 		const checkToken = async () => {
-			const userToken = localStorage.getItem("OrchestrAIToken");
-			if (!appState.authenticated && userToken) {
+			const existingToken = localStorage.getItem("OrchestrAIToken");
+			if (!appState.authenticated && existingToken) {
 				const { status, accountId, email, username, displayName } =
-					await CheckToken(userToken);
+					await CheckToken(existingToken);
 				if (status === "Success") {
 					setAppState((prevState) => ({
 						...prevState,
@@ -54,7 +54,7 @@ const Header = (args) => {
 				} else {
 					localStorage.removeItem("OrchestrAIToken");
 				}
-			} else if (!userToken) {
+			} else if (!existingToken) {
 				Logger.debug("No user token found");
 			}
 		};
@@ -65,7 +65,7 @@ const Header = (args) => {
 	return (
 		<div>
 			<Navbar
-				expand="sm"
+				expand="md"
 				color="primary"
 				dark
 				{...args}
@@ -79,9 +79,7 @@ const Header = (args) => {
 							height="30"
 							alt="Orche"
 						/>{" "}
-						<span className="d-sm-none d-md-inline d-inline">
-							OrchestrAI
-						</span>
+						<span>OrchestrAI</span>
 					</span>{" "}
 				</NavbarBrand>
 				<NavbarToggler onClick={toggle} />
@@ -90,20 +88,13 @@ const Header = (args) => {
 					navbar
 					className="justify-content-end"
 				>
-					<Nav className="" navbar>
+					<Nav navbar>
 						<NavItem>
 							<NavLink tag={RouterNavLink} to="/compose">
 								Compose{" "}
 								<span className="icon-square flex-shrink-0 d-none d-lg-inline">
 									<i className={`bi bi-music-note-beamed`} />
 								</span>{" "}
-								{/* <Badge
-									color="success"
-									pill
-									className="d-none d-md-inline"
-								>
-									Try It!
-								</Badge> */}
 							</NavLink>
 						</NavItem>
 						<NavItem>
@@ -180,16 +171,38 @@ const Header = (args) => {
 								</NavItem>
 							</>
 						) : (
-							<NavItem>
-								{/* <NavLink tag={RouterNavLink} to="/login">
-									Login{" "}
-									<span className="icon-square flex-shrink-0 d-none d-lg-inline">
-										<i
-											className={`bi bi-box-arrow-in-right`}
-										/>
-									</span>
-								</NavLink> */}
-							</NavItem>
+							<>
+								<NavItem>
+									<div className="navbar-button-outline btn btn-secondary">
+										<NavLink
+											tag={RouterNavLink}
+											to="/login"
+										>
+											Sign In{" "}
+											<span className="icon-square flex-shrink-0 d-none d-lg-inline">
+												<i
+													className={`bi bi-box-arrow-in-right`}
+												/>
+											</span>
+										</NavLink>
+									</div>
+								</NavItem>
+								<NavItem>
+									<div className="navbar-button btn">
+										<NavLink
+											tag={RouterNavLink}
+											to="/signup"
+										>
+											Sign Up{" "}
+											<span className="icon-square flex-shrink-0 d-none d-lg-inline">
+												<i
+													className={`bi bi-person-plus`}
+												/>
+											</span>
+										</NavLink>
+									</div>
+								</NavItem>
+							</>
 						)}
 					</Nav>
 				</Collapse>

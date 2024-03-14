@@ -32,37 +32,35 @@ const ProtectedContent = ({ children }) => {
 			{appState.authenticated || LOGGED_IN ? (
 				children
 			) : (
-				<Container className="mb-3">
-					<div>
-						<strong>This feature is completely free</strong>, but
-						you will need to login or create an account to use it:{" "}
-						<Col className="mt-2">
-							<Button
-								onClick={() => {
-									setHasAccount(true);
-									toggleLoginModal();
-								}}
-								className="primary-button-outline"
-							>
-								Login{" "}
-								<span role="img" aria-label="checkmark">
-									✅
-								</span>
-							</Button>{" "}
-							<Button
-								onClick={() => {
-									setHasAccount(false);
-									toggleLoginModal();
-								}}
-								className="primary-button"
-							>
-								Create an Account!{" "}
-								<span role="img" aria-label="checkmark">
-									✅
-								</span>
-							</Button>
-						</Col>
-					</div>
+				<div className="mb-3">
+					<strong>This feature is completely free</strong>, but you
+					will need to login or create an account to use it:{" "}
+					<Col className="mt-2">
+						<Button
+							onClick={() => {
+								setHasAccount(true);
+								toggleLoginModal();
+							}}
+							className="primary-button-outline"
+						>
+							Login{" "}
+							<span className="icon-square flex-shrink-0">
+								<i className={`bi bi-box-arrow-in-right`} />
+							</span>
+						</Button>{" "}
+						<Button
+							onClick={() => {
+								setHasAccount(false);
+								toggleLoginModal();
+							}}
+							className="primary-button"
+						>
+							Create an Account!{" "}
+							<span className="icon-square flex-shrink-0">
+								<i className={`bi bi-person-plus`} />
+							</span>
+						</Button>
+					</Col>
 					<Modal isOpen={isLoginModalOpen} toggle={toggleLoginModal}>
 						<ModalHeader toggle={toggleLoginModal}>
 							{hasAccount ? "Login" : "Create Account"}
@@ -88,7 +86,7 @@ const ProtectedContent = ({ children }) => {
 							)}
 						</ModalFooter>
 					</Modal>
-				</Container>
+				</div>
 			)}
 		</>
 	);

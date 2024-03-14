@@ -12,6 +12,7 @@ import {
 	FormGroup,
 	Input,
 	Label,
+	Row,
 	Spinner,
 	UncontrolledTooltip,
 } from "reactstrap";
@@ -250,15 +251,15 @@ const CreateAccountForm = () => {
 				username: username,
 				displayName: displayName,
 			});
-			let UserToken = localStorage.getItem("OrchestrAIToken");
-			if (UserToken) {
-				const statusCode = await UpdateToken(UserToken);
+			let existingToken = localStorage.getItem("OrchestrAIToken");
+			if (existingToken) {
+				const statusCode = await UpdateToken(existingToken);
 				if (statusCode !== 200) {
 					Logger.warn("Failed to generate token");
 				}
 			} else {
-				const userToken = await GenerateToken(accountId);
-				localStorage.setItem("OrchestrAIToken", userToken);
+				const generatedToken = await GenerateToken(accountId);
+				localStorage.setItem("OrchestrAIToken", generatedToken);
 			}
 		} else if (status === "Email taken") {
 			setFeedback({
@@ -276,9 +277,11 @@ const CreateAccountForm = () => {
 	};
 
 	return (
-		<Form className="p-3" onSubmit={handleCreateAccount}>
-			<p>Enter your information below to create an account.</p>
-
+		<Form className="px-3" onSubmit={handleCreateAccount}>
+			<p className="text-muted" style={{ fontStyle: "italic" }}>
+				Accounts are free, and they allow you to use all of our
+				features.
+			</p>
 			<FormGroup>
 				<Label for="email">
 					Email{" "}
@@ -309,74 +312,81 @@ const CreateAccountForm = () => {
 					<FormFeedback>{feedback.email}</FormFeedback>
 				</Col>
 			</FormGroup>
-
-			<FormGroup>
-				<Label for="password">
-					Password{" "}
-					<span className="icon-square flex-shrink-0">
-						<i
-							id="passwordTooltip"
-							className={`bi bi-info-circle`}
-						/>
-					</span>
-					<UncontrolledTooltip
-						placement="right"
-						target="passwordTooltip"
-					>
-						{Password.Tooltip}
-					</UncontrolledTooltip>
-				</Label>
+			
+			<Row>
 				<Col>
-					<Input
-						type="password"
-						name="password"
-						id="password"
-						value={password}
-						invalid={feedback.password !== ""}
-						placeholder="Enter password"
-						required
-						autoComplete="new-password"
-						onChange={(e) => {
-							handlePasswordChange(e.target.value);
-						}}
-					/>
-					<FormFeedback>{feedback.password}</FormFeedback>
+					<FormGroup>
+						<Label for="password">
+							Password{" "}
+							<span className="icon-square flex-shrink-0">
+								<i
+									id="passwordTooltip"
+									className={`bi bi-info-circle`}
+								/>
+							</span>
+							<UncontrolledTooltip
+								placement="right"
+								target="passwordTooltip"
+							>
+								{Password.Tooltip}
+							</UncontrolledTooltip>
+						</Label>
+						<Col>
+							<Input
+								type="password"
+								name="password"
+								id="password"
+								value={password}
+								invalid={feedback.password !== ""}
+								placeholder="Enter password"
+								required
+								autoComplete="new-password"
+								onChange={(e) => {
+									handlePasswordChange(e.target.value);
+								}}
+							/>
+							<FormFeedback>{feedback.password}</FormFeedback>
+						</Col>
+					</FormGroup>
 				</Col>
-			</FormGroup>
-
-			<FormGroup>
-				<Label for="confirmPassword">
-					Confirm Password{" "}
-					<span className="icon-square flex-shrink-0">
-						<i
-							id="confirmPasswordTooltip"
-							className={`bi bi-info-circle`}
-						/>
-					</span>
-					<UncontrolledTooltip
-						placement="right"
-						target="confirmPasswordTooltip"
-					>
-						{Password.Tooltip}
-					</UncontrolledTooltip>
-				</Label>
 				<Col>
-					<Input
-						type="password"
-						name="confirmPassword"
-						id="confirmPassword"
-						value={confirmPassword}
-						invalid={feedback.confirmPassword !== ""}
-						placeholder="Confirm password"
-						required
-						autoComplete="new-password"
-						onChange={(e) => {
-							handleConfirmPasswordChange(e.target.value);
-						}}
-					/>
-					<FormFeedback>{feedback.confirmPassword}</FormFeedback>
+					<FormGroup>
+						<Label for="confirmPassword">
+							Confirm Password{" "}
+							<span className="icon-square flex-shrink-0">
+								<i
+									id="confirmPasswordTooltip"
+									className={`bi bi-info-circle`}
+								/>
+							</span>
+							<UncontrolledTooltip
+								placement="right"
+								target="confirmPasswordTooltip"
+							>
+								{Password.Tooltip}
+							</UncontrolledTooltip>
+						</Label>
+						<Col>
+							<Input
+								type="password"
+								name="confirmPassword"
+								id="confirmPassword"
+								value={confirmPassword}
+								invalid={feedback.confirmPassword !== ""}
+								placeholder="Confirm password"
+								required
+								autoComplete="new-password"
+								onChange={(e) => {
+									handleConfirmPasswordChange(e.target.value);
+								}}
+							/>
+							<FormFeedback>
+								{feedback.confirmPassword}
+							</FormFeedback>
+						</Col>
+					</FormGroup>
 				</Col>
-			</FormGroup>
+			</Row>
 
 			<FormGroup>
 				<Label for="username">
