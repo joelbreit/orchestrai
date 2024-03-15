@@ -1,9 +1,16 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient, QueryCommand } from "@aws-sdk/lib-dynamodb";
+import {
+	DynamoDBDocumentClient,
+	QueryCommand,
+	GetCommand,
+} from "@aws-sdk/lib-dynamodb";
 
 // Initialize DynamoDB Document Client
 const client = new DynamoDBClient({ region: "us-east-1" });
 const ddbDocClient = DynamoDBDocumentClient.from(client);
+
+const TUNES_TABLE_NAME = "OrchestrAI_Tunes";
+const ACCOUNTS_TABLE_NAME = "OrchestrAI_Accounts";
 
 console.log("DynamoDB Document Client initialized.");
 
@@ -26,6 +33,21 @@ export const handler = async (event) => {
 			};
 		}
 
+		try {
+			// Get the user's displayName from the accounts table
+			// Use tune.accountId to retrieve the user's displayName
+			const { displayName } = await getAccountById(tune.accountId);
+			tune.displayName = displayName;
+		} catch (error) {
+			console.error("Error occurred:", error);
+			return {
+				statusCode: 500,
+				body: JSON.stringify({
+					error: `Internal server error retrieving account: ${error}`,
+				}),
+			};
+		}
+
 		console.log("Tune retrieved successfully.");
 
 		// Return success response
@@ -38,13 +60,19 @@ export const handler = async (event) => {
 				prompt: tune.prompt,
 				description: tune.description,
 				notation: tune.notation,
+				fixes: tune.fixes,
+				warnings: tune.warnings,
+				accoutId: tune.accountId,
+				displayName: tune.displayName,
 			}),
 		};
 	} catch (error) {
 		console.error("Error occurred:", error);
 		return {
 			statusCode: 500,
-			body: JSON.stringify({ error: `Internal server error retrieving tune: ${error}` }),
+			body: JSON.stringify({
+				error: `Internal server error retrieving tune: ${error}`,
+			}),
 		};
 	}
 };
@@ -54,7 +82,7 @@ async function getTuneById(tuneId) {
 	console.log(`Retrieving tune by tuneId: ${tuneId}`);
 
 	const params = {
-		TableName: "OrchestrAI_Tunes",
+		TableName: TUNES_TABLE_NAME,
 		IndexName: "tuneId-index",
 		KeyConditionExpression: "tuneId = :tuneId",
 		ExpressionAttributeValues: {
@@ -67,3 +95,23 @@ async function getTuneById(tuneId) {
 	console.log("Tune retrieved:", Items.length === 1 ? Items[0] : null);
 	return Items.length === 1 ? Items[0] : null;
 }
+
+// Function to retrieve account by accountId
+async function getAccountById(accountId) {
+	console.log(`Retrieving account by accountId: ${accountId}`);
+
+	const params = {
+		TableName: ACCOUNTS_TABLE_NAME,
+		Key: {
+			accountId,
+		},
+	};
+
+	const command = new GetCommand(params);
+	const { Item } = await ddbDocClient.send(command);
+	console.log("Account retrieved:", Item);
+	return Item;
+}
+// Path: src/functions/getTune.mjs
+// Function: OrchestrAI_Get-Tune
+// Endpoint: POST /getTune

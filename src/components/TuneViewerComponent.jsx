@@ -8,6 +8,9 @@ import {
 	CardTitle,
 	Col,
 	Container,
+	Modal,
+	ModalBody,
+	ModalHeader,
 	Nav,
 	NavItem,
 	NavLink,
@@ -15,9 +18,6 @@ import {
 	Spinner,
 	TabContent,
 	TabPane,
-	Modal,
-	ModalHeader,
-	ModalBody,
 } from "reactstrap";
 import Logger from "../services/Logger";
 import Synthesizer from "./Synthesizer";
@@ -36,6 +36,7 @@ const TuneViewerComponent = ({ tuneId, setPageTitle }) => {
 	const [fixes, setFixes] = useState(null);
 	const [warnings, setWarnings] = useState([]);
 	const [creatorAccountId, setCreatorAccountId] = useState("");
+	const [creatorDisplayName, setCreatorDisplayName] = useState("");
 
 	// Tune retrieval state
 	const [retrievalState, setRetrievalState] = useState("");
@@ -73,6 +74,8 @@ const TuneViewerComponent = ({ tuneId, setPageTitle }) => {
 					setFixes(body.fixes);
 					setWarnings(body.warnings);
 					setCreatorAccountId(body.accountId);
+					setCreatorDisplayName(body.displayName);
+
 
 					setRetrievalState("Success");
 				} else {
@@ -235,10 +238,11 @@ const TuneViewerComponent = ({ tuneId, setPageTitle }) => {
 												</Col>
 												<Col>
 													<h3>Creator</h3>
-													{creatorAccountId ? (
+													{creatorDisplayName ? (
 														<p>
-															{creatorAccountId}
+															{creatorDisplayName}
 														</p>
+														// TODO Add link to creator's profile using creatorAccountId
 													) : (
 														<p>
 															No creator provided
