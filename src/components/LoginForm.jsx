@@ -129,6 +129,7 @@ const LoginForm = ({ redirect }) => {
 			} else {
 				const userToken = await GenerateToken(accountId);
 				localStorage.setItem("OrchestrAIToken", userToken);
+				Logger.debug(`User token generated: ${userToken}`);
 			}
 		} else if (status === "Invalid credentials") {
 			setError("Invalid credentials. Please try again.");

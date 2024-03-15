@@ -145,7 +145,7 @@ function Synthesizer({ abcNotation, index }) {
 							cursorControl
 						)
 						.then(function () {
-							Logger.log("Audio successfully loaded.");
+							Logger.debug("Audio successfully loaded.");
 						})
 						.catch(function (error) {
 							Logger.warn("Audio problem:", error);
@@ -169,9 +169,9 @@ function Synthesizer({ abcNotation, index }) {
 				<div ref={audioRef} id={`audio${index}`} />
 			) : (
 				// Placeholder for Audio Player
-				<p class="placeholder-glow">
+				<p className="placeholder-glow">
 					<span
-						class="placeholder col-12"
+						className="placeholder col-12"
 						style={{ height: "38px" }}
 					></span>
 				</p>
@@ -184,12 +184,12 @@ function Synthesizer({ abcNotation, index }) {
 				<Card>
 					<CardBody>
 						<CardTitle className="placeholder-glow">
-							<span class="placeholder col-6 offset-3" />
+							<span className="placeholder col-6 offset-3" />
 						</CardTitle>
 						<CardText className="placeholder-glow">
-							<span class="placeholder col-12" />
-							<span class="placeholder col-12" />
-							<span class="placeholder col-12" />
+							<span className="placeholder col-12" />
+							<span className="placeholder col-12" />
+							<span className="placeholder col-12" />
 						</CardText>
 					</CardBody>
 				</Card>

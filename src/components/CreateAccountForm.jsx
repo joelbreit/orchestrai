@@ -260,6 +260,7 @@ const CreateAccountForm = () => {
 			} else {
 				const generatedToken = await GenerateToken(accountId);
 				localStorage.setItem("OrchestrAIToken", generatedToken);
+				Logger.debug(`Token generated: ${generatedToken}`);
 			}
 		} else if (status === "Email taken") {
 			setFeedback({
@@ -502,7 +503,7 @@ const CreateAccountForm = () => {
 						className="primary-button"
 						block
 						disabled={
-							!email || !password || !confirmPassword || loading
+							!email || !password || !confirmPassword || loading || !username || !displayName
 						}
 					>
 						Create Account{" "}

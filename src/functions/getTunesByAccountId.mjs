@@ -21,11 +21,12 @@ export const handler = async (event) => {
 		// Query DynamoDB using the accountId
 		const params = {
 			TableName: "OrchestrAI_Tunes",
-			IndexName: "accountId-index", // Replace with your actual index name
+			IndexName: "accountId-date-index",
 			KeyConditionExpression: "accountId = :accountId",
 			ExpressionAttributeValues: {
 				":accountId": accountId,
 			},
+			ScanIndexForward: false, // Sort in descending order
 			Limit: 25, // Limit to 25 items
 		};
 
@@ -40,7 +41,12 @@ export const handler = async (event) => {
 		console.error(error);
 		return {
 			statusCode: 500,
-			body: JSON.stringify({ error: `Internal server error retrieving tunes: ${error}` }),
+			body: JSON.stringify({
+				error: `Internal server error retrieving tunes: ${error}`,
+			}),
 		};
 	}
 };
+// Path:		src/functions/getTune.mjs
+// Function:	OrchestrAI_Get-Tunes-By-AccountId
+// Endpoint:	POST /getTunesByAccountId

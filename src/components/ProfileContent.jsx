@@ -3,17 +3,12 @@ import React, { useContext, useEffect, useState } from "react";
 import Logger from "../services/Logger";
 
 // Import components
-import { Link } from "react-router-dom"; // Import Link
 import {
 	Alert,
-	Button,
-	Card,
-	CardBody,
-	CardText,
-	CardTitle,
 	Col,
 	Container,
-	Row,
+	ListGroup,
+	ListGroupItem,
 	Spinner,
 } from "reactstrap";
 
@@ -21,6 +16,7 @@ import {
 import { AppContext } from "../contexts/AppContext";
 
 import OrcheImage from "../assets/images/Orche.png";
+import { formatDate } from "../services/FormatDate";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -32,12 +28,16 @@ const ProfileContent = () => {
 	const [loadingState, setLoadingState] = useState("");
 	const [tunes, setTunes] = useState([]);
 
-	// Helper function to truncate text
-	const truncateText = (text, maxLength) => {
-		if (!text) return "";
-		return text.length > maxLength
-			? text.substring(0, maxLength) + "..."
-			: text;
+	const groupByDay = (tunes) => {
+		const groupedTunes = {};
+		tunes.forEach((tune) => {
+			const date = new Date(tune.date).toLocaleDateString();
+			if (!groupedTunes[date]) {
+				groupedTunes[date] = [];
+			}
+			groupedTunes[date].push(tune);
+		});
+		return groupedTunes;
 	};
 
 	useEffect(() => {
@@ -60,8 +60,8 @@ const ProfileContent = () => {
 
 				if (statusCode === 200) {
 					Logger.log("Tunes loaded successfully");
-					// Body contains a list of up to 10 objects with theses keys:
-					// tuneId, title, description, date, prompt, notation
+					// Body contains a list of up to 25 objects with theses keys:
+					// tuneId, title, description, date, prompt, notation,...
 					setTunes(body);
 					setLoadingState("Success");
 				} else {
@@ -81,6 +81,7 @@ const ProfileContent = () => {
 	return (
 		<Container className="mt-5">
 			<h1>Profile</h1>
+			<hr />
 			<p>Username: {appState.username}</p>
 			<p>Display Name: {appState.displayName}</p>
 
@@ -91,49 +92,73 @@ const ProfileContent = () => {
 				<Alert color="danger">Error loading tunes.</Alert>
 			)}
 			{loadingState === "Success" && (
-				<Row>
-					{tunes.map((tune) => (
-						<Col md={4} key={tune.tuneId}>
-							<Card className="mb-2">
-								<CardBody>
-									<CardTitle tag="h5">
-										{truncateText(tune.title, 30)}
-									</CardTitle>
-									<CardText>
-										{truncateText(tune.description, 100)}
-									</CardText>
-									{/* Link to tune */}
-									<Link to={`/tunes/${tune.tuneId}`}>
-										<Button className="primary-button">
-											View Tune
-										</Button>
-									</Link>
-								</CardBody>
-							</Card>
-						</Col>
-					))}
-					{tunes.length === 0 && (
-						<Col>
-							<Alert color="info">
-								<div
-									style={{
-										display: "flex",
-										alignItems: "center",
-										// justifyContent: "center",
-									}}
-								>
-									<img
-										src={OrcheImage}
-										width="30"
-										height="30"
-										alt="Orche"
-									/>{" "}
-									You haven't created any tunes yet.
-								</div>
-							</Alert>
-						</Col>
+				<>
+					{tunes.length > 0 ? (
+						<>
+							{Object.entries(groupByDay(tunes)).map(
+								([date, tunes]) => (
+									<Col key={date}>
+										<h3 className="mt-4 mb-2">
+											{formatDate(date)}
+										</h3>
+										<ListGroup>
+											{tunes.map((tune) => (
+												<ListGroupItem
+													key={tune.tuneId}
+													action
+													onClick={() => {
+														window.location.href = `/tunes/${tune.tuneId}`;
+													}}
+													className="d-flex justify-content-between align-items-center"
+												>
+													<span
+														className="text-truncate"
+														style={{
+															maxWidth: "80%",
+															fontStyle: "bold",
+														}}
+													>
+														{tune.title}
+													</span>
+													<small className="text-muted">
+														{new Date(
+															tune.date
+														).toLocaleTimeString(
+															"en-US",
+															{
+																hour: "numeric",
+																minute: "numeric",
+																hour12: true,
+															}
+														)}
+													</small>
+												</ListGroupItem>
+											))}
+										</ListGroup>
+									</Col>
+								)
+							)}
+						</>
+					) : (
+						<Alert color="info">
+							<div
+								style={{
+									display: "flex",
+									alignItems: "center",
+									// justifyContent: "center",
+								}}
+							>
+								<img
+									src={OrcheImage}
+									width="30"
+									height="30"
+									alt="Orche"
+								/>{" "}
+								You haven't created any tunes yet.
+							</div>
+						</Alert>
 					)}
-				</Row>
+				</>
 			)}
 		</Container>
 	);

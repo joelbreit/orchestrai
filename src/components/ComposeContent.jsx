@@ -131,7 +131,6 @@ const ComposeContent = () => {
 	useEffect(() => {
 		Logger.debug("Clean ABC Notation useEffect");
 		const cleanedNotation = new ABCNotation(abcNotation);
-		Logger.debug("Cleaned notation:", cleanedNotation);
 		setAbcNotation(cleanedNotation.abcNotation);
 		setHasCleaned(true);
 		setNumFixes(cleanedNotation.numFixes);

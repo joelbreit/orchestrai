@@ -322,13 +322,13 @@ const TuneViewerComponent = ({ tuneId, setPageTitle }) => {
 					<Card>
 						<CardBody>
 							<CardTitle className="placeholder-glow">
-								<span class="placeholder col-2" />
-								<span class="placeholder col-2 offset-1" />
-								<span class="placeholder col-2 offset-1" />
-								<span class="placeholder col-2 offset-1" />
+								<span className="placeholder col-2" />
+								<span className="placeholder col-2 offset-1" />
+								<span className="placeholder col-2 offset-1" />
+								<span className="placeholder col-2 offset-1" />
 							</CardTitle>
 							<CardText className="placeholder-glow">
-								<span class="placeholder col-12" />
+								<span className="placeholder col-12" />
 							</CardText>
 						</CardBody>
 					</Card>

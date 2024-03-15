@@ -52,10 +52,12 @@ const Header = (args) => {
 					}));
 					Logger.debug("User token found and valid");
 				} else {
+					Logger.debug("User token found but invalid");
 					localStorage.removeItem("OrchestrAIToken");
 				}
 			} else if (!existingToken) {
 				Logger.debug("No user token found");
+				Logger.debug(`existingToken: ${existingToken}`);
 			}
 		};
 
@@ -145,7 +147,7 @@ const Header = (args) => {
 										to="/profile"
 										maxwidth="100px"
 									>
-										{appState.email || "Profile"}{" "}
+										{appState.displayName || "Profile"}{" "}
 										<span className="icon-square flex-shrink-0 d-none d-lg-inline">
 											<i
 												className={`bi bi-person-circle`}
