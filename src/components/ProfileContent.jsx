@@ -81,8 +81,8 @@ const ProfileContent = () => {
 	return (
 		<Container className="mt-5">
 			<h1>Profile</h1>
-			<p>Here you can find your profile information.</p>
-			<p>accountId: {appState.accountId}</p>
+			<p>Username: {appState.username}</p>
+			<p>Display Name: {appState.displayName}</p>
 
 			{/* Tune List */}
 			<h2>Your Tunes</h2>
