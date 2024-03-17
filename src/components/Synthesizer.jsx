@@ -14,7 +14,7 @@ import Logger from "../services/Logger";
 
 import ABCJS from "abcjs";
 
-function Synthesizer({ abcNotation, index }) {
+function Synthesizer({ abcNotation, index, animate }) {
 	const musicSheetRef = useRef(null);
 	const audioRef = useRef(null);
 
@@ -119,11 +119,11 @@ function Synthesizer({ abcNotation, index }) {
 				// displayWarp: true,
 			});
 
-			window.addEventListener("keydown", (event) => {
-				if (event.code === "Space") {
-					synthControl.play();
-				}
-			});
+			// window.addEventListener("keydown", (event) => {
+			// 	if (event.code === "Space") {
+			// 		synthControl.play();
+			// 	}
+			// });
 
 			var visualObj = ABCJS.renderAbc(
 				musicSheetRef.current,
@@ -169,7 +169,11 @@ function Synthesizer({ abcNotation, index }) {
 				<div ref={audioRef} id={`audio${index}`} />
 			) : (
 				// Placeholder for Audio Player
-				<p className="placeholder-glow">
+				<p
+					className={
+						animate ? "placeholder-glow" : "placeholder-block"
+					}
+				>
 					<span
 						className="placeholder col-12"
 						style={{ height: "38px" }}
@@ -183,10 +187,22 @@ function Synthesizer({ abcNotation, index }) {
 				// Placeholder for Sheet Music
 				<Card>
 					<CardBody>
-						<CardTitle className="placeholder-glow">
+						<CardTitle
+							className={
+								animate
+									? "placeholder-glow"
+									: "placeholder-block"
+							}
+						>
 							<span className="placeholder col-6 offset-3" />
 						</CardTitle>
-						<CardText className="placeholder-glow">
+						<CardText
+							className={
+								animate
+									? "placeholder-glow"
+									: "placeholder-block"
+							}
+						>
 							<span className="placeholder col-12" />
 							<span className="placeholder col-12" />
 							<span className="placeholder col-12" />

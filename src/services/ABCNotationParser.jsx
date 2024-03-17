@@ -10,15 +10,20 @@ const voiceLineStartRegex = /^[a-gz{|%w"()}[]/i;
 
 class ABCNotation {
 	constructor(abcNotation) {
+		Logger.debug("ABCNotationParser: ", this);
 		this.warnings = [];
 		this.failed = false;
 		try {
+			Logger.debug("abcNotation: ", abcNotation);
 			this.abcNotation = this.cleanUpNotation(abcNotation);
+			Logger.debug("Cleaned abcNotation: ", this.abcNotation);
 			this.title = this.extractTitle();
 			this.voices = new Map(); // map of voice names to all the text in that voice
+			Logger.debug("Voices: ", this.voices);
 			this.measureTextMatrix = [];
 			this.measureBeatsMatrix = [];
 			this.parse();
+			Logger.debug("measureTextMatrix: ", this.measureTextMatrix);
 			// TODO log if there are any outstanding issues
 
 			this.numFixes = 0;
@@ -28,6 +33,7 @@ class ABCNotation {
 				(measures) =>
 					measures.length === this.measureTextMatrix[0].length
 			);
+			Logger.debug("sameNumMeasures: ", sameNumMeasures);
 			if (!sameNumMeasures) {
 				const measureNumbers = this.measureTextMatrix.map(
 					(measures) => measures.length
@@ -38,6 +44,7 @@ class ABCNotation {
 			}
 
 			if (this.measureTextMatrix.length > 1) {
+				Logger.debug("Multiple voices");
 				// There are multiple voices
 
 				for (const voice of this.measureTextMatrix) {
@@ -64,7 +71,9 @@ class ABCNotation {
 			this.failed = true;
 			Logger.debug("ABCNotationParser: ", this);
 			Logger.error("Error in ABCNotationParser: " + error);
-			this.warnings.push("Unexpected error in ABCNotationParser: " + error);
+			this.warnings.push(
+				"Unexpected error in ABCNotationParser: " + error
+			);
 		}
 	}
 
@@ -79,10 +88,22 @@ class ABCNotation {
 	}
 
 	cleanUpNotation(text) {
+		Logger.debug("cleanUpNotation function");
 		let lines = text.split("\n");
 		const originalNumLines = lines.length;
 		// Add new lines after ] characters if they appear in the first 10 characters
-		for (const line of lines) {
+		// for (const line of lines) {
+		// 	Logger.debug("line: ", line);
+		// 	if (line.slice(0, 10).includes("]")) {
+		// 		const index = line.indexOf("]");
+		// 		lines.splice(lines.indexOf(line) + 1, 0, line.slice(index + 1));
+		// 		lines[lines.indexOf(line)] = line.slice(0, index + 1);
+		// 	}
+		// }
+
+		let linesCopy = [...lines];
+		for (const line of linesCopy) {
+			Logger.debug("line: ", line);
 			if (line.slice(0, 10).includes("]")) {
 				const index = line.indexOf("]");
 				lines.splice(lines.indexOf(line) + 1, 0, line.slice(index + 1));
@@ -110,6 +131,7 @@ class ABCNotation {
 	}
 
 	extractTitle() {
+		Logger.debug("extractTitle function");
 		try {
 			const titleMatch = this.abcNotation.match(/^T:(.*)$/m);
 			return titleMatch ? titleMatch[1].trim() : "Untitled";
@@ -123,6 +145,7 @@ class ABCNotation {
 	/* 	Takes the entire ABC notation text and returns the lines that
 		aren't comments, words, or redundant voice names */
 	getRelevantLines() {
+		Logger.debug("getRelevantLines function");
 		let lines = this.abcNotation.split("\n");
 		// Remove empty lines
 		lines = lines.filter((line) => line !== "");
@@ -152,6 +175,7 @@ class ABCNotation {
 	/*
 	 */
 	organizeVoices(lines) {
+		Logger.debug("organizeVoices function");
 		let line = "";
 		// Break up
 		for (let i = 0; i < lines.length; i++) {
@@ -163,6 +187,7 @@ class ABCNotation {
 	}
 
 	populateTextMatrix() {
+		Logger.debug("populateTextMatrix function");
 		for (let [, voice] of this.voices) {
 			const measures = this.breakVoiceIntoMeasures(voice);
 			this.measureTextMatrix.push(measures);
@@ -170,6 +195,7 @@ class ABCNotation {
 	}
 
 	populateBeatsMatrix() {
+		Logger.debug("populateBeatsMatrix function");
 		for (let i = 0; i < this.measureTextMatrix.length; i++) {
 			// For each voice
 			const measures = this.measureTextMatrix[i];
@@ -237,6 +263,7 @@ class ABCNotation {
 	}
 
 	readVoiceSection(lines, index) {
+		Logger.debug("readVoiceSection function");
 		let text = "";
 		let name = lines[index];
 		// Up to the first space is the voice name
@@ -268,6 +295,7 @@ class ABCNotation {
 	}
 
 	breakVoiceIntoMeasures(voiceText) {
+		Logger.debug("breakVoiceIntoMeasures function");
 		let buffer = "";
 		let measures = [];
 		for (let i = 0; i < voiceText.length; i++) {
@@ -293,6 +321,7 @@ class ABCNotation {
 	}
 
 	getMostCommonMeasureLength() {
+		Logger.debug("getMostCommonMeasureLength function");
 		let lengths = [];
 		for (let i = 0; i < this.measureBeatsMatrix.length; i++) {
 			const beats = this.measureBeatsMatrix[i];
@@ -326,6 +355,7 @@ class ABCNotation {
 	}
 
 	fixBadMeasures() {
+		Logger.debug("fixBadMeasures function");
 		this.getMostCommonMeasureLength();
 		let pickupMeasures = [];
 		let shortMeasures = [];
@@ -490,6 +520,7 @@ class ABCNotation {
 	}
 
 	fixMismatchedRepeats() {
+		Logger.debug("fixMismatchedRepeats function");
 		// loop through all voices simultaneously
 		// For each measure
 		// if any voice's measure has a ':'
@@ -564,6 +595,7 @@ class ABCNotation {
 		this.parse();
 
 		const countMismatchedRepeats = () => {
+			Logger.debug("countMismatchedRepeats function");
 			Logger.debug("measureTextMatrix: ", this.measureTextMatrix);
 			let numMismatchedRepeats = 0;
 			let measuresWithRepeats = [];

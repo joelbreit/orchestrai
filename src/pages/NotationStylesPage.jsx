@@ -2,18 +2,18 @@ import React from "react";
 import { Container } from "reactstrap";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import JuxComposeContent from "../components/JuxComposeContent";
+import NotationStylesContent from "../components/NotationStylesContent";
 
-const JuxComposePage = () => {
+const NotationStylesPage = () => {
 	return (
 		<div>
 			<Header />
-			<Container className="col-12 col-xl-8 mt-4">
-				<JuxComposeContent />
+			<Container className="col-12 col-lg-8 mt-4">
+				<NotationStylesContent />
 			</Container>
 			<Footer />
 		</div>
 	);
 };
 
-export default JuxComposePage;
+export default NotationStylesPage;

@@ -5,6 +5,7 @@ import ABCEditorPage from "./pages/ABCEditorPage";
 import ComposePage from "./pages/ComposePage";
 import HomePage from "./pages/HomePage";
 import JuxComposePage from "./pages/JuxComposePage";
+import NotationStylesPage from "./pages/NotationStylesPage";
 import LoginPage from "./pages/LoginPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import PortfolioPage from "./pages/PortfolioPage";
@@ -22,6 +23,7 @@ function App() {
 					<Route path="/compose" element={<ComposePage />} />
 					<Route path="/abcEditor" element={<ABCEditorPage />} />
 					<Route path="/juxcompose" element={<JuxComposePage />} />
+					<Route path="/notationStyles" element={<NotationStylesPage />} />
 					<Route path="/profile" element={<ProfilePage />} />
 					<Route path="/portfolio" element={<PortfolioPage />} />
 					<Route path="/research" element={<ResearchPage />} />

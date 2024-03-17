@@ -22,6 +22,7 @@ const TunePage = () => {
 				<TuneViewerComponent
 					tuneId={tuneId}
 					setPageTitle={setPageTitle}
+					animate={true}
 				/>
 			</Container>
 			<Footer />

@@ -1,24 +1,11 @@
 import React, { useState } from "react";
-import {
-	Col,
-	Dropdown,
-	DropdownItem,
-	DropdownMenu,
-	DropdownToggle,
-	Input,
-	Nav,
-	NavItem,
-	NavLink,
-	Row,
-	TabContent,
-	TabPane,
-} from "reactstrap";
+import { Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 
 // import tunes from "../assets/Tunes";
 import GeneratedTunes from "../assets/GeneratedTunes";
 // import ABCNotations from "../assets/ABCNotations";
 import ABCCleaner from "./ABCCleaner";
-import Synthesizer from "./Synthesizer";
+import CompositionComparisonContent from "./CompositionComparisonContent";
 
 const JuxComposeContent = () => {
 	const [activeTab, setActiveTab] = useState("1");
@@ -54,7 +41,12 @@ const JuxComposeContent = () => {
 
 	return (
 		<div>
-			<Nav tabs>
+			<h1>JuxCompose</h1>
+			<p>
+				This page contains various tools for comparing compositions made
+				with ABC music notation.
+			</p>
+			<Nav tabs className="mb-3">
 				<NavItem>
 					<NavLink
 						className={activeTab === "1" ? "active" : ""}
@@ -62,9 +54,9 @@ const JuxComposeContent = () => {
 							toggleTab("1");
 						}}
 					>
-						Notation Styles{" "}
+						Notation Cleaner{" "}
 						<span className="icon-square flex-shrink-0">
-							<i className={`bi bi-pencil-square`}></i>
+							<i className={`bi bi-brush`}></i>
 						</span>
 					</NavLink>
 				</NavItem>
@@ -75,73 +67,20 @@ const JuxComposeContent = () => {
 							toggleTab("2");
 						}}
 					>
-						Notation Cleaner{" "}
+						Composition Comparison{" "}
 						<span className="icon-square flex-shrink-0">
-							<i className={`bi bi-brush`}></i>
+							<i className={`bi bi-music-note-beamed`}></i>
 						</span>
 					</NavLink>
 				</NavItem>
 			</Nav>
 			<TabContent activeTab={activeTab}>
 				<TabPane tabId="1">
-					<h1>JuxCompose</h1>
-					<Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
-						<DropdownToggle caret className="primary-dropdown">
-							{selectedTune}
-						</DropdownToggle>
-						<DropdownMenu>
-							{Object.keys(GeneratedTunes).map((tuneKey) => (
-								<DropdownItem
-									key={tuneKey}
-									onClick={() => selectTune(tuneKey)}
-								>
-									{tuneKey}{" "}
-									{/* Extracts the title of the tune */}
-								</DropdownItem>
-							))}
-						</DropdownMenu>
-					</Dropdown>
-					<h2>Generated Tunes for: {prompt}</h2>
-					<Row>
-						<Col sm="6">
-							<Input
-								type="textarea"
-								value={abcNotation1}
-								onChange={handleInputChange1}
-								placeholder="Enter ABC notation here"
-								rows={10}
-							/>
-							<Col>
-								<h2>ABC Notation Output:</h2>
-								<Synthesizer
-									abcNotation={abcNotation1}
-									index={1}
-								/>
-								<div id="paper1"></div>
-								<div id="audio1"></div>
-							</Col>
-						</Col>
-						<Col sm="6">
-							<Input
-								type="textarea"
-								value={abcNotation2}
-								onChange={handleInputChange2}
-								placeholder="Enter ABC notation here"
-								rows={10}
-							/>
-							<Col>
-								<h2>Note Duration Pairs Output:</h2>
-								<Synthesizer
-									abcNotation={abcNotation2}
-									index={2}
-								/>
-							</Col>
-						</Col>
-					</Row>
+					<ABCCleaner />
 				</TabPane>
 
 				<TabPane tabId="2">
-					<ABCCleaner />
+					<CompositionComparisonContent />
 				</TabPane>
 			</TabContent>
 		</div>

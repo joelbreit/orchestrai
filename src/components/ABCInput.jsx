@@ -52,8 +52,11 @@ const ABCInput = ({ parentText, placeholderText, onChange }) => {
 						value={text}
 						onChange={(e) => setText(e.target.value)}
 						placeholder={placeholderText}
-						// match height of ABCBlock
-						style={{ height: `${text.split("\n").length * 25}px` }}
+						// rows={10}
+						style={{
+							minHeight: "100px",
+							height: `${text.split("\n").length * 25}px`,
+						}}
 					/>
 					<FormFeedback>
 						Please enter a valid ABC notation.

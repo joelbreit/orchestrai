@@ -22,6 +22,28 @@ import ABCNotation from "../services/ABCNotationParser";
 import OrcheImage from "../assets/images/Orche.png";
 import ABCInput from "./ABCInput";
 
+const example = `
+abc
+X:1
+T:Final Confrontation Overture
+C:OrchestrAI
+M:4/4
+L:1/16
+Q:1/4=180
+K:Bmin
+V:1 clef=treble name="Lead Synth" subname="Lead"
+%%MIDI program 81
+|: "Bm"fdfb afbf f4 e4 | "A"gagf e2c2 cdec B2A2 | "G"f2d2 d2F2 G4 A4 | "F#"B4 A4 F4 E4 |
+"Bm"D2F2 B4 d9   | "A"E2C2 A4 e9   | "G"GABc d4 B4 c4 |1 "F#"B2F2 D4 B,4 E4 :|2 "F#"B2F2 D4 F4 z4 ||
+V:2 clef=treble name="Rhythm Synth" subname="Chords"
+%%MIDI program 81
+|: "Bm"B,2F2 B,2F2 B,4 B,4 | "A"A,2E2 A,2C2 C4 E4 | "G"G,2D2 G,2B,2 D4 G4 | "F#"F,2A,2 C4 F,4 z4 |
+"Bm"B,2F2 B,4 B,4 B,4 | "A"A,4 E4 A,4 E4 | "G"D,4 G,4 B,4 D4 |1 "F#"A,4 A,4 F,4 C4 :|2 "F#"A,4 A,4 F,4 z4 ||
+V:3 clef=bass name="Bass Synth" subname="Bass"
+%%MIDI program 38
+|: "Bm"B,8 B,8 B,  | "A"A,8 A,8 A,  | "G"G,8 G,8 G,  | "F#"F,8 F,8 F,  |
+"Bm"B,8 B,8 B,  | "A"A,8 A,8 A,  | "G"G,8 G,8 G,  |1 "F#"F,8 F,8 F,  :|2 "F#"F,8 F,8 F,  ||`;
+
 const ABCCleaner = () => {
 	const [abcNotation1, setAbcNotation1] = useState("");
 	const [abcNotation2, setAbcNotation2] = useState("");
@@ -35,19 +57,26 @@ const ABCCleaner = () => {
 
 	const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
-	const selectTune = (tuneKey) => {
-		const contents = GeneratedTunes[tuneKey];
+	// const selectTune = (tuneKey) => {
+	// 	const contents = GeneratedTunes[tuneKey];
 
-		setSelectedTune(tuneKey);
-		// setSelectedTune(GeneratedTunes[tuneKey].split("\n")[1].substring(2)); // To get the title (T:TuneName)
+	// 	setSelectedTune(tuneKey);
+	// 	// setSelectedTune(GeneratedTunes[tuneKey].split("\n")[1].substring(2)); // To get the title (T:TuneName)
 
-		setAbcNotation1(contents[0].output);
-		setAbcNotation2(contents[1].output);
+	// 	setAbcNotation1(contents[0].output);
+	// 	setAbcNotation2(contents[1].output);
+	// 	resetCleaner();
+	// 	Logger.log(
+	// 		"New tune selected. Resetting cleaner. hasCleaned: ",
+	// 		hasCleaned
+	// 	);
+	// };
+
+	const loadExample = () => {
+		setAbcNotation1(example);
+		setAbcNotation2("");
+
 		resetCleaner();
-		Logger.log(
-			"New tune selected. Resetting cleaner. hasCleaned: ",
-			hasCleaned
-		);
 	};
 
 	const resetCleaner = () => {
@@ -59,55 +88,172 @@ const ABCCleaner = () => {
 
 	return (
 		<Container>
-			<h1>JuxCompose</h1>
-			<Dropdown
-				isOpen={dropdownOpen}
-				toggle={toggleDropdown}
-				className="mb-2"
-			>
-				<DropdownToggle caret className="primary-dropdown">
-					{selectedTune}
-				</DropdownToggle>
-				<DropdownMenu>
-					{Object.keys(GeneratedTunes).map((tuneKey) => (
-						<DropdownItem
-							key={tuneKey}
-							onClick={() => selectTune(tuneKey)}
-						>
-							{tuneKey} {/* Extracts the title of the tune */}
-						</DropdownItem>
-					))}
-				</DropdownMenu>
-			</Dropdown>
+			<p>
+				The
+				<span className="fw-bold"> OrchestrAI Notation Cleaner </span>
+				is a tool that helps you clean up ABC notation compositions.
+				Compositions created with LLMs frequently contain notation
+				errors that can turn an impressive piece of music into a jumbled
+				mess. This small mistakes often cause vioces to get out of sync
+				which can be particularly detrimental to the overall quality of
+				the composition. This is especially noticable on this platform
+				as we animate the music sheet as it plays.
+			</p>
+			<p>
+				The cleaner will help you fix these errors and get your
+				composition back on track. Simply paste your ABC notation into
+				the input box on the left and click the "Clean" button. If the
+				cleaner is able to fix the notation, the cleaned version will
+				appear in the right input box. You can also select a tune from
+				the dropdown to see a pre-generated tune and its cleaned
+				version.
+			</p>
+			<p>
+				This tool is a work in progress. In our experience, it works
+				between 70-80% of the time for small issues, and 20-30% of the
+				time for compositions with a lot of issues. We are working to
+				improve the accuracy of the cleaner as well as making
+				improvements to the LLM that help improve its ability to stay on
+				track with the notation.
+			</p>
+
 			<Row>
+				{hasCleaned &&
+					(failed ? (
+						<Alert color="danger">
+							<div
+								style={{
+									display: "flex",
+									alignItems: "center",
+									// justifyContent: "center",
+								}}
+							>
+								<img
+									src={OrcheImage}
+									width="30"
+									height="30"
+									alt="Orche"
+								/>{" "}
+								<span>
+									Sorry, but we couldn't clean up this tune.{" "}
+									{warnings.length} warnings were issued. See
+									something strange? Let us know on our{" "}
+									<a
+										href="https://discord.gg/e3nNUGVA7A"
+										target="_blank"
+										rel="noreferrer"
+									>
+										Discord
+									</a>
+									.
+								</span>
+							</div>
+						</Alert>
+					) : warnings.length > 0 ? (
+						<Alert color="warning">
+							<div
+								style={{
+									display: "flex",
+									alignItems: "center",
+									// justifyContent: "center",
+								}}
+							>
+								<img
+									src={OrcheImage}
+									width="30"
+									height="30"
+									alt="Orche"
+								/>{" "}
+								Notation successfully cleaned! {numFixes} fixes
+								were made, but {warnings.length} warnings were
+								issued.
+							</div>
+						</Alert>
+					) : numFixes > 0 ? (
+						<Alert color="success">
+							<div
+								style={{
+									display: "flex",
+									alignItems: "center",
+									// justifyContent: "center",
+								}}
+							>
+								<img
+									src={OrcheImage}
+									width="30"
+									height="30"
+									alt="Orche"
+								/>{" "}
+								Notation successfully cleaned! {numFixes} fixes
+								were made!
+							</div>
+						</Alert>
+					) : (
+						<Alert color="info">
+							<div
+								style={{
+									display: "flex",
+									alignItems: "center",
+									// justifyContent: "center",
+								}}
+							>
+								<img
+									src={OrcheImage}
+									width="30"
+									height="30"
+									alt="Orche"
+								/>{" "}
+								Notation successfully cleaned! No fixes were
+								needed.
+							</div>
+						</Alert>
+					))}
 				<Col sm="6">
-					{/* <Input
-						type="textarea"
-						value={abcNotation1}
-						onChange={handleInputChange1}
-						placeholder="Enter ABC notation here"
-						rows={10}
-					/> */}
 					<ABCInput
 						parentText={abcNotation1}
 						placeholderText="Enter ABC notation here"
 						onChange={setAbcNotation1}
 					/>
+					{/* <Dropdown
+						isOpen={dropdownOpen}
+						toggle={toggleDropdown}
+						className="mb-2"
+					>
+						<DropdownToggle caret className="primary-dropdown">
+							{selectedTune}
+						</DropdownToggle>
+						<DropdownMenu>
+							{Object.keys(GeneratedTunes).map((tuneKey) => (
+								<DropdownItem
+									key={tuneKey}
+									onClick={() => selectTune(tuneKey)}
+								>
+									{tuneKey}{" "}
+								</DropdownItem>
+							))}
+						</DropdownMenu>
+					</Dropdown> */}
+					<Button
+						onClick={() => {
+							Logger.debug("Example loaded");
+							loadExample();
+						}}
+						className="primary-button mb-2"
+					>
+						Load Example{" "}
+						<span className="icon-square flex-shrink-0">
+							<i className={`bi bi-code-square`}></i>
+						</span>
+					</Button>
+
 					<Col>
-						<h2>Rendered Music Sheet:</h2>
+						<h2>Original Composition</h2>
 						<Synthesizer abcNotation={abcNotation1} index={1} />
 						<div id="paper1"></div>
 						<div id="audio1"></div>
 					</Col>
 				</Col>
 				<Col sm="6">
-					{/* <Input
-						type="textarea"
-						value={abcNotation2}
-						onChange={handleInputChange2}
-						placeholder="Enter ABC notation here"
-						rows={10}
-					/> */}
 					<ABCInput
 						parentText={abcNotation2}
 						placeholderText="Enter ABC notation here"
@@ -115,9 +261,11 @@ const ABCCleaner = () => {
 					/>
 					<Button
 						onClick={() => {
+							Logger.debug("Cleaning notation");
 							const cleanedNotation = new ABCNotation(
 								abcNotation1
 							);
+							Logger.debug("Cleaned notation: ", cleanedNotation);
 							setAbcNotation2(cleanedNotation.abcNotation);
 							setHasCleaned(true);
 							setNumFixes(cleanedNotation.numFixes);
@@ -125,106 +273,16 @@ const ABCCleaner = () => {
 							setFailed(cleanedNotation.failed);
 						}}
 						disabled={!abcNotation1}
-						className="primary-button my-2"
+						className="primary-button mb-2"
 					>
 						Clean{" "}
-						<span role="img" aria-label="clean emoji">
-							🧹
+						<span className="icon-square flex-shrink-0">
+							<i className={`bi bi-wrench`}></i>
 						</span>
 					</Button>
-					{hasCleaned &&
-						(failed ? (
-							<Alert color="danger">
-								<div
-									style={{
-										display: "flex",
-										alignItems: "center",
-										// justifyContent: "center",
-									}}
-								>
-									<img
-										src={OrcheImage}
-										width="30"
-										height="30"
-										alt="Orche"
-									/>{" "}
-									<span>
-										Sorry, but we couldn't clean up this
-										tune. {warnings.length} warnings were
-										issued. See something strange? Let us
-										know on our{" "}
-										<a
-											href="https://discord.gg/e3nNUGVA7A"
-											target="_blank"
-											rel="noreferrer"
-										>
-											Discord
-										</a>
-										.
-									</span>
-								</div>
-							</Alert>
-						) : warnings.length > 0 ? (
-							<Alert color="warning">
-								<div
-									style={{
-										display: "flex",
-										alignItems: "center",
-										// justifyContent: "center",
-									}}
-								>
-									<img
-										src={OrcheImage}
-										width="30"
-										height="30"
-										alt="Orche"
-									/>{" "}
-									Notation successfully cleaned! {numFixes}{" "}
-									fixes were made, but {warnings.length}{" "}
-									warnings were issued.
-								</div>
-							</Alert>
-						) : numFixes > 0 ? (
-							<Alert color="success">
-								<div
-									style={{
-										display: "flex",
-										alignItems: "center",
-										// justifyContent: "center",
-									}}
-								>
-									<img
-										src={OrcheImage}
-										width="30"
-										height="30"
-										alt="Orche"
-									/>{" "}
-									Notation successfully cleaned! {numFixes}{" "}
-									fixes were made!
-								</div>
-							</Alert>
-						) : (
-							<Alert color="info">
-								<div
-									style={{
-										display: "flex",
-										alignItems: "center",
-										// justifyContent: "center",
-									}}
-								>
-									<img
-										src={OrcheImage}
-										width="30"
-										height="30"
-										alt="Orche"
-									/>{" "}
-									Notation successfully cleaned! No fixes were
-									needed.
-								</div>
-							</Alert>
-						))}
+
 					<Col>
-						<h2>Rendered Music Sheet:</h2>
+						<h2>Cleaned Composition</h2>
 						<Synthesizer abcNotation={abcNotation2} index={2} />
 					</Col>
 				</Col>

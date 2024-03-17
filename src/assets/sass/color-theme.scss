@@ -175,3 +175,9 @@ $light-border: #dee2e6;
 	}
 }
 
+.clickable-card {
+	cursor: pointer;
+	&:hover {
+		opacity: 0.75;
+	}
+}

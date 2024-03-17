@@ -10,7 +10,9 @@ import {
 	Row,
 } from "reactstrap";
 
+import BossBattleBlitz from "../assets/images/BossBattleBlitz.png";
 import ColorsOfSpringImage from "../assets/images/ColorsOfSpring.png";
+import GloriousBattleRhapsodyImage from "../assets/images/GloriousBattleRhapsody.png";
 import OceanRaidersOvertureImage from "../assets/images/OceanRaidersOverture.png";
 import StarryNightSerenadeImage from "../assets/images/StarryNightSerenade.png";
 import VictoriousFanfareImage from "../assets/images/VictoriousFanfare.png";
@@ -19,14 +21,19 @@ const PortfolioContent = () => {
 	// Sample data, replace with actual data
 	const featuredTunes = [
 		{
+			tuneId: "lthu2uei",
+			title: "Glorious Battle Rhapsody",
+			image: GloriousBattleRhapsodyImage,
+		},
+		{
 			tuneId: "cd0d6744-0bdd-4b0d-9a21-bbc46b4c7c8e",
 			title: "Colors of Spring",
 			image: ColorsOfSpringImage,
 		},
 		{
-			tuneId: "5ed0af7c-1175-4194-bba5-229304e76dd1",
-			title: "Victorious Fanfare",
-			image: VictoriousFanfareImage,
+			tuneId: "lthrpzzq",
+			title: "Boss Battle Blitz",
+			image: BossBattleBlitz,
 		},
 		{
 			tuneId: "9e232f94-8210-42c4-924e-169d529a11b5",
@@ -38,11 +45,11 @@ const PortfolioContent = () => {
 			title: "Starry Night Serenade",
 			image: StarryNightSerenadeImage,
 		},
-		// {
-		// 	tuneId: "b7b35e9e-26cd-4b92-8c01-693cb6426f09",
-		// 	title: "The Quaint Village Street",
-		// 	image: "https://via.placeholder.com/300x300",
-		// },
+		{
+			tuneId: "5ed0af7c-1175-4194-bba5-229304e76dd1",
+			title: "Victorious Fanfare",
+			image: VictoriousFanfareImage,
+		},
 	];
 
 	return (
@@ -60,28 +67,47 @@ const PortfolioContent = () => {
 						md={6}
 						style={{ display: "flex" }}
 					>
-						<Card className="my-2" style={{ flex: 1 }}>
-							<CardImg
-								top
-								width="100%"
-								src={tune.image}
-								alt={tune.title}
-							/>
-							<CardBody>
-								<CardTitle tag="h5">{tune.title}</CardTitle>
-								<Button
-									href={`/tunes/${tune.tuneId}`}
-									className="primary-button"
-									rel="noopener noreferrer"
-									target="_blank"
-								>
-									View Tune{" "}
-									<span role="img" aria-label="music emoji">
-										🎵
-									</span>
-								</Button>
-							</CardBody>
-						</Card>
+						{" "}
+						<a
+							href={`/tunes/${tune.tuneId}`}
+							rel="noopener noreferrer"
+							target="_blank"
+							className="text-decoration-none text-dark"
+						>
+							<Card
+								className="my-2 clickable-card"
+								style={{ flex: 1 }}
+							>
+								<CardImg
+									bottom
+									// width="100%"
+									src={tune.image}
+									alt={tune.title}
+									style={{
+										maxHeight: "150px",
+										objectFit: "cover",
+										// only crop the bottom of the image
+										objectPosition: "center top",
+									}}
+								/>
+								<CardBody>
+									<CardTitle tag="h5">{tune.title}</CardTitle>
+									{/* <Button
+										href={`/tunes/${tune.tuneId}`}
+										className="primary-button"
+										rel="noopener noreferrer"
+										target="_blank"
+									>
+										View Tune{" "}
+										<span className="icon-square flex-shrink-0">
+											<i
+												className={`bi bi-arrow-right`}
+											/>
+										</span>
+									</Button> */}
+								</CardBody>
+							</Card>
+						</a>
 					</Col>
 				))}
 			</Row>

@@ -77,6 +77,7 @@ const ComposeContent = () => {
 
 	// Music generation state
 	const [abcNotation, setAbcNotation] = useState("");
+	const [uncleanedNotation, setUncleanedNotation] = useState("");
 	const [description, setDescription] = useState("");
 
 	// ABC Cleaner state
@@ -161,8 +162,6 @@ const ComposeContent = () => {
 				date: dateAndTime,
 				thread: thread,
 				run: run,
-				// Get everything after 'T:' on the first line where that exists
-				// This is causing an error sometimes, so I'm commenting it out for now
 				title: abcNotation.match(/^T:(.*)$/m)[1],
 				prompt: input,
 				description: description,
@@ -170,6 +169,7 @@ const ComposeContent = () => {
 				warnings: warnings,
 				fixes: numFixes, // TODO Update to an actual list up fixes made
 				generationDuration: timeSoFar,
+				uncleanedNotation: uncleanedNotation,
 			};
 
 			const saveTuneResponse = await fetch(`${apiUrl}/saveTune`, {
@@ -366,7 +366,19 @@ const ComposeContent = () => {
 			Logger.log("Output:", output);
 
 			setHasCleaned(false);
-			setAbcNotation(output.match(/```([^`]*)```/)[1]);
+			let parsedNotation;
+			try {
+				parsedNotation = output.match(/```([^`]*)```/)[1];
+			} catch (error) {
+				Logger.error("Error parsing notation:", error);
+				setErrorMessage(
+					"Unable to find ABC notation in the response. Please try again."
+				);
+				setIsLoading(false);
+				return;
+			}
+			setAbcNotation(parsedNotation);
+			setUncleanedNotation(parsedNotation);
 			setDescription(output.replace(/```([^`]*)```/, ""));
 			setHasGeneratedMusic(true);
 			setTuneId(GenerateId());
@@ -542,6 +554,7 @@ const ComposeContent = () => {
 											></i>
 										</Button>
 									</FormGroup>
+									{/* TODO Compose whatever you want button */}
 								</Form>
 							</TabPane>
 							<TabPane tabId="3">

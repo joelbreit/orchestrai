@@ -25,6 +25,7 @@ export const handler = async (event) => {
 			warnings,
 			fixes,
 			generationDuration,
+			uncleanedNotation,
 		} = JSON.parse(event.body);
 
 		// Prepare item to insert
@@ -41,6 +42,7 @@ export const handler = async (event) => {
 			warnings,
 			fixes,
 			generationDuration,
+			uncleanedNotation,
 		};
 
 		console.log("New tune prepared:", newTune);
@@ -56,7 +58,9 @@ export const handler = async (event) => {
 		console.error("Error occurred:", error);
 		return {
 			statusCode: 500,
-			body: JSON.stringify({ error: `Internal server error saving tune: ${error}` }),
+			body: JSON.stringify({
+				error: `Internal server error saving tune: ${error}`,
+			}),
 		};
 	}
 };
@@ -73,3 +77,6 @@ async function createTune(Tune) {
 	await ddbDocClient.send(new PutCommand(params));
 	console.log("Tune created successfully.");
 }
+// Path: src/functions/saveTune.mjs
+// Function: OrchestrAI_SaveTune
+// Endpoint: POST /saveTune

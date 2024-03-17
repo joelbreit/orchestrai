@@ -4,30 +4,35 @@ const FEW_SHOT_EXAMPLES = [
 	{
 		prompt: "Compose a tune that expresses the following vibe: Vibrant colors of a spring garden",
 		response: `To embody the vibrant colors of a spring garden in a musical composition, I will create a tune that reflects the freshness and brightness of spring with a light and uplifting melody. The use of major tonality will be predominant to give a sense of cheer. I will mix in occasional seventh and sixth chords to add color, depicting the variety of hues in a garden. This tune will be in a brisk 2/4 time expressing the lively nature of spring's arrival. Syncopated rhythms may be included to give the feeling of the playful and unpredictable movement of butterflies and birds.
-I hope you enjoy:
 \`\`\`abc
 X:1
-T:Colors of Spring
+T:Colors of Spring - Extended
 C:OrchestrAI
 M:2/4
 L:1/16
 Q:1/4=140
 K:D
-% The piece starts with a flowing melody representing the emergence of spring
 V:1 clef=treble name="Vibraphone"
 %%MIDI program 11
-|:"D" FA dA z2 FA| "G"G2 z2 BAGF|"Em"E2 G2 z2 F2|"A7"A4- A2 z2|
-"D" fd A2 z2 f2|"Bm"b4 z2 a2|"G"g2 fe z2 "A7"ce|"D"d4- d2 z2:|
+|:"D" FAdA z2 FA| "G" G2 z2 BAGF|"Em" E2G2 z2 F2|"A7" A4- A2 z2|
+"D" fdA2 z2 f2|"Bm" b4 z2 a2|"G" g2fe z2 "A7" ce|"D" d4- d2 z2:|
+|:"A" e2c2 E2C2| "D" F2D2 F2AF| "Bm" g2f2 g2bg| "A7" a4 a2z2|
+"G" G2B2 d2G2| "D/A" A2F2 A2d2| "Em" G2E2 C2E2| "A7" A4- A2 z2:|
+| "D" FDFA d2F2|"G" GBAG B2d2|"Em" E2EF G2A2|"A7" c2B2 A4|
+"D" d2df a2fd|"G" b2a2 g2f2|"A7" e2c2 A2c2|"D" d8:|
 V:2 clef=bass name="Fretless Bass"
 %%MIDI program 35
 |:"D"D,4 F,4|"G"G,4 B,4|"Em"E,4 G,4|"A7"A,4 C4|
 "D"D,4 F,4|"Bm"B,4 D4|"G"G,4 B,4|"A7"A,4 E,4:|
+|:"A"C4 E,4|"D"F4 A,4|"Bm"D4 F4|"A7"E4 C4|
+"G"B,4 D4|"D/A"A,4 E4|"Em"G,4 B,4|"A7"E4 A,4:|
+| "D" D,4 A,4|"G" B,4 D4|"Em" F,4 A,4|"A7" E,4 C4|
+"D" D,4 F,4|"G" G,4 B,4|"A7" A,4 C4|"D" D,8:|
 \`\`\``,
 	},
 	{
 		prompt: "Compose a tune that expresses the following vibe: A grand, inspiring, celebratory victory song!",
 		response: `To create a grand and inspiring tune that captures the spirit of a celebratory victory, I will compose a piece that starts with a bold statement, builds up enthusiastically, and reaches a triumphant climax. I will use strong, bright chords and rhythms to reflect the energy and magnificence of the occasion. This composition will be in a major key, with a brisk tempo, and feature a full, robust sound to provide a sense of grandeur. The following piece uses the key of C major to give a clear and bright sound, a tempo set to a lively 132 BPM to convey the excitement of victory, and a consistent rhythmic drive to maintain the celebratory mood throughout the composition. This victorious fanfare captures the intensity and grandeur of a victory celebration with its strong melodies, harmonically rich textures, and resounding rhythms. Enjoy the robust horns and strings indicated by the MIDI presets which resonate with the feelings of triumph and inspiration.
-I hope you enjoy:
 \`\`\`abc
 X:1
 T:Victorious Fanfare
@@ -64,7 +69,7 @@ V:3 clef=bass name="Cello"
 	},
 	{
 		prompt: "Please create a tune for this prompt: create a grand and inspiring tune that captures the spirit of a pirates on the open sea",
-		response: `To convey the grandeur and inspiration associated with pirates on the open sea, I will compose a piece that evokes feelings of adventure, freedom, and courage. The tune will be in a minor key to capture the danger and unpredictability of the sea, but it will have major elements to bring out the sense of grandeur and triumph. The piece will have a driving rhythm to mimic the movement of waves and the bustling activity on a pirate ship. It will blend the excitement of setting sail with the thrill of exploration and discovery. I will use a fast tempo of 160 bpm to represent the energy and animation of pirate life. The 4/4 time signature provides a strong, marching beat that can create the sensation of moving forward towards adventure. Here is the composition, entitled "Ocean Raiders Overture":
+		response: `To convey the grandeur and inspiration associated with pirates on the open sea, I will compose a piece that evokes feelings of adventure, freedom, and courage. The tune will be in a minor key to capture the danger and unpredictability of the sea, but it will have major elements to bring out the sense of grandeur and triumph. The piece will have a driving rhythm to mimic the movement of waves and the bustling activity on a pirate ship. It will blend the excitement of setting sail with the thrill of exploration and discovery. I will use a fast tempo of 160 bpm to represent the energy and animation of pirate life. The 4/4 time signature provides a strong, marching beat that can create the sensation of moving forward towards adventure.
 \`\`\`abc
 X:1
 T:Ocean Raiders Overture
@@ -97,7 +102,6 @@ V:3 clef=bass name="Accoustic Bass"
 	{
 		prompt: "Please create a tune for this prompt: A gentle, calming melody that evokes the feeling of gazing at a clear night sky, with twinkling stars and a tranquil atmosphere.",
 		response: `For the "Starry Night Serenade," I will compose a gentle and calming melody that utilizes a slower tempo and legato phrasing to evoke the tranquil atmosphere of gazing at a star-filled night sky. The composition will be in 4/4 time to provide a steady, soothing rhythm, and I will use a tempo of 60 bpm to reflect the peacefulness of the night. Musical features will include sustained notes, and smooth voice leading. The choice of instruments will also contribute to the serene mood. Soft synth pads will be indicated for all voices to create an aural setting that conjures the vast, open expanse of the night sky. To achieve harmonic richness, the chord choices will include some seventh chords and suspended chords to provide a sense of openness and wonder.
-I hope you enjoy:
 \`\`\`abc
 X:1
 T:Starry Night Serenade
@@ -128,86 +132,34 @@ V:4 clef=bass name="Synth Pad"
 "A"E6 A2 | "Bm7"D4 B4 | "E7sus4"G3 F E4 | "A"A4 z4 :|
 \`\`\``,
 	},
-];
-
-const OLD_FEW_SHOT_EXAMPLES = [
 	{
-		prompt: "Compose a tune that expresses the following vibe: A dance under the stars",
-		response: `To compose a tune that captures the essence of a dance under the stars, I will try to incorporate smooth voice leading, counterpoint principles such as contrary and oblique motion, careful interval management, avoidance of parallel fifths and octaves, imitative counterpoint, logical harmonic progression, rhythmic variety, avoidance of voice crossings and overlaps, and culmination in cadence.
-I will use a major key to convey a sense of joy and light-heartedness associated with dancing. I've chosen the tempo of 120 bpm to suggest a lively dance and the 3/4 meter in order to capture the rhythmic feel of a waltz which is often associated with traditional dances that one could envision taking place under an open, starlit sky. I will try to incorporate some minor harmonies or dissonant intervals, creating tension that could represent the mysterious and awe-inspiring aspect of the stars before resolving back to the major key for a sense of warmth and resolution.
-The music will feature intricate interplay between voices, making each line melodically interesting and rhythmically engaging. I will also ensure that the rhythmic patterns enhance the feeling of dancing and include syncopation to add a playful character to the music.
-I hope you enjoy:
+		prompt: "Please create a tune for this prompt: Compose a tune for an epic, fast paced boss battle in a video game",
+		response: `To craft an epic and fast-paced tune suitable for a boss battle in a video game, I will use driving rhythms, exciting melodies, and intense harmonies to capture the thrill and tension of the confrontation. The composition will incorporate a fast tempo to reflect the high energy of the encounter, and I will weave in minor tonalities to convey the sense of danger and urgency. I will also make use of rhythmic ostinatos and dynamic changes to amplify the drama of the battle. For the instrumentation, I will assign voices that are commonly used to evoke intensity in soundtracks, such as strong brass for the main melody, strings for rapid ostinato patterns, and wind instruments for counter melodies.
 \`\`\`abc
 X:1
-T:Dance Under the Stars
-C:OrchestrAI
-M:3/4
-L:1/8
-Q:1/4=120
-K:Gmaj
-V:1 clef=treble
-%% MIDI program 44
-|:"G"B2 BAGF|"C"E3 FG2|"D"A3 FED|"G"B4 z2|
-"G"G3 A B2|"C"E3 DCB,|"Am"A,2 A,4|"D7"G,2 F,4|
-"D"D3 FED|"G"B,4 D2|"Em"GAB AGF|"D7"E3 FED|
-"G"B2 B3 A|"Am"B3 cBA|"G"B2 G4|"G"G6:|
-V:2 clef=treble
-%% MIDI program 44
-|"G"D2 D3 E|"C"C3 D E2|"D"F3 ED2|"G"D4 z2|
-"D"D3 FED|"C"C3 DC2|"Am"A,2 A,4|"D7" F,3 E,3|
-"D"D3 FED|"G"G,3 B,3|"Em"G3 GFE|"D7"D3 EDE|
-"G"D2 D3 E|"Am"E3 FGA|"G"G2 D4|"G"D6:|
-V:3 clef=bass
-%% MIDI program 43
-|"G"G,2 B,4|"C"C2 E4|"D"F2 D4|"G"G,2 B,4|
-"D"A,2 D4|"C"E2 C4|"Am"A,2 C4|"D7"F2 A,4|
-"D"F2 A,4|"G"G,2 B,4|"Em"E2 G4|"D7"F2 A,4|
-"G"G,2 D4|"Am"E2 C4|"G"G,2 B,4|"G"G,6:|
-\`\`\``,
-	},
-	{
-		prompt: "Please create a tune for this prompt: create a song about the joy of reuniting with old friends",
-		response: `For a tune expressing the joy of reuniting with old friends, we will aim for an upbeat melody, using major tonality, bright chord progressions, and a lively tempo to evoke the warmth and happiness of such an occasion. The composition will feature contrasting sections to reflect the different aspects of joyful reunions: the surprise and excitement of seeing friends, the warm embrace, and the cheerful conversations.
-        It is composed in a major key which helps associate it with warmth and happiness. I will set the tempo to a lively 120 bpm, suitable for expressing joy and excitement.
-        I hope you enjoy:
-\`\`\`abc        
-X:1
-T:Reunion Rhapsody
+T:Boss Battle Blitz
 C:OrchestrAI
 M:4/4
-L:1/8
-Q:1/4=120
-K:G
-% The introduction symbolizes the anticipation of the reunion
-V:1
-%% MIDI program 3
-|: "G" B2D2 G2B2 | "D" A6 B2 | "C" c6 E2 | "D7" D6 D2 | 
-"G" B2D2 G2B2 | "D" A6 B2 | "C" e6 c2 | "D7" d6 z2 :|
-V:2
-|: [G,B,]3 B3B,2 | [A,E,]3 A3A,2 | [CE]3 E3E,2 | [DF]3 F3F,2 | 
-[G,B,]3 B3B,2 | [A,E,]3 A3A,2 | [CE]3 E3E,2 | [DF]3 F3F,2 :|
-% The next section represents the joyous greeting between friends
-V:1
-%% MIDI program 3
-|: "G" d4 B2G2 | "Em" B4 A2G2 | "Am" A4 c3e | "D7" d6 z2 |
-"G" B4 d3B | "C" e4 c2A2 | "G" D4 G2B2 | "D7" A6 z2 :|
-V:2
-|: [GD]3 G,3D2 | [EB]3 E3B,2 | [A,E,]3 A,3E2 | [DA,]3 D3A,2 | 
-[GD]3 G,3D2 | [CG]3 C3G,2 | [GD]3 G,3D2 | [DA,]3 D3A,2 :|
-% The middle section reflects the warmth and affection in the embrace
-V:1
-|: "Em" E6 G2 | "Am" A6 c2 | "D" D6 F2 | "G" G6 B2 |
-"C" E6 G2 | "Am" A2c2 A2G2 | "Em" G6 E2 | "D7" D6 z2 :|
-V:2
-|: [EG]3 E3G,2 | [AC]3 A3A,2 | [DF]3 D3D,2 | [GB,]3 G3G,2 | 
-[EG]3 E3G,2 | [AC]3 A3A,2 | [EG]3 E3E,2 | [DF]3 D3F,2 :|
-% The final section symbolizes the lively chatter and catch-up
-V:1
-|: "G" d2B2 G2D2 | "C" c2E2 A2c2 | "G" B2d2 G2B2 | "D7" A4 F2D2 |
-"G" G2B2 D2G2 | "C" c2E2 G2c2 | "G" B2d2 "D7" F2A2 | "G" G8 :|
-V:2
-|: [G,B,]3 B3D2 | [CE,]3 E3A,2 | [G,B,]3 B3D2 | [DF]3 F3A,2 | 
-[G,B,]3 B3D2 | [CE,]3 E3G,2 | [G,B,]3 B3D2 | [G,2B,2] z2 z4 :|
+L:1/16
+Q:1/4=180
+K:Dmin
+% Multiple instruments combine for a powerful and rapid soundscape
+V:1 clef=treble name="Brass" subname="Main Theme"
+%%MIDI program 61
+|: "Dm"d2af d2af d4 c2A2 | "C"c2eg c2eg c4 B2G2 | "Bb"d2Bb d2Bb d4 c2A2 | "A"A2ce A2ce A8 |
+"Dm"d2af d2af d4 c2A2 | "C"c2eg c2eg c4 B2G2 | "Bb"d2Bb d2Bb d4 c2A2 | "A7"A2ce A2ce A8:|
+V:2 clef=treble name="Strings" subname="Rhythm"
+%%MIDI program 49
+|: "Dm"A4 A4 f4 f4 | "C"G4 G4 e4 e4 | "Bb"F4 F4 d4 d4 | "A"E4 E4 c4 c4 |
+"Dm"A4 A4 f4 f4 | "C"G4 G4 e4 e4 | "Bb"F4 F4 d4 d4 | "A7"E4 E4 c4 c4 :|
+V:3 clef=treble name="Woodwind" subname="Counter"
+%%MIDI program 74
+|: "Dm"f2d2 f2d2 AcBA z4 | "C"e2c2 e2c2 GFGA z4 | "Bb"B2F2 B2F2 DEDF z4 | "A"c2A2 c2A2 E4 z4 |
+"Dm"f2d2 f2d2 AcBA z4 | "C"e2c2 e2c2 GFGA z4 | "Bb"B2F2 B2F2 DEDF z4 | "A7"c2A2 c2A2 E4 z4 :|
+V:4 clef=bass name="Bass" octave=-1
+%%MIDI program 43
+|: "Dm"D8 D8 | "C"C8 C8 | "Bb"B B7 B B7 | "A"A,8 A,8 |
+"Dm"D8 D8 | "C"C8 C8 | "Bb"B B7 B B7 | "A7"A,8 A,8 :|
 \`\`\``,
 	},
 ];
@@ -266,7 +218,12 @@ export const handler = async (event) => {
 		console.error(error);
 		return {
 			statusCode: 500,
-			body: JSON.stringify({ error: `Internal server error creating music: ${error}` }),
+			body: JSON.stringify({
+				error: `Internal server error creating music: ${error}`,
+			}),
 		};
 	}
 };
+// Path: src/functions/genereateMusic.mjs
+// Function: OrchestrAI_Generate-Music-Function
+// Endpoint: POST /generateMusic
