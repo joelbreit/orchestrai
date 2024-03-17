@@ -22,8 +22,7 @@ import ABCNotation from "../services/ABCNotationParser";
 import OrcheImage from "../assets/images/Orche.png";
 import ABCInput from "./ABCInput";
 
-const example = `
-abc
+const example = `abc
 X:1
 T:Final Confrontation Overture
 C:OrchestrAI

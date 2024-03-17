@@ -81,6 +81,8 @@ export const handler = async (event) => {
 				accountId: tokenData.accountId,
 				expirationDate: tokenData.expirationDate,
 				email: account.email,
+				username: account.username,
+				displayName: account.displayName,
 			}),
 		};
 	} catch (error) {
@@ -126,3 +128,6 @@ async function getTableEntryById(tableName, fieldName, id) {
 		return null;
 	}
 }
+// Path: src/functions/CheckToken.mjs
+// Function: OrchestrAI_Check-Token
+// Endpoint: POST /CheckToken

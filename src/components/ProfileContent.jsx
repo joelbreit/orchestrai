@@ -5,10 +5,12 @@ import Logger from "../services/Logger";
 // Import components
 import {
 	Alert,
+	Button,
 	Col,
 	Container,
 	ListGroup,
 	ListGroupItem,
+	Row,
 	Spinner,
 } from "reactstrap";
 
@@ -80,7 +82,31 @@ const ProfileContent = () => {
 
 	return (
 		<Container className="mt-5">
-			<h1>Profile</h1>
+			<Row className="d-flex justify-content-between">
+				<Col>
+					<h1>
+						<span className="icon-square flex-shrink-0 d-none d-md-inline">
+							<i className={`bi bi-person-circle`} />
+						</span>{" "}
+						{appState.username || "Profile"}
+					</h1>
+				</Col>
+				<Col className="d-flex justify-content-end align-items-center">
+					<Button
+						color="primary"
+						className="primary-button-outline"
+						onClick={() => {
+							Logger.debug("Edit profile clicked");
+						}}
+						disabled
+					>
+						Edit Profile{" "}
+						<span className="icon-square flex-shrink-0">
+							<i className={`bi bi-pencil-square`} />
+						</span>
+					</Button>
+				</Col>
+			</Row>
 			<hr />
 			<p>Username: {appState.username}</p>
 			<p>Display Name: {appState.displayName}</p>

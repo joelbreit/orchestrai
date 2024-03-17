@@ -51,6 +51,7 @@ const Header = (args) => {
 						displayName: displayName,
 					}));
 					Logger.debug("User token found and valid");
+					Logger.debug(`status: ${status}, accountId: ${accountId}, email: ${email}, username: ${username}, displayName: ${displayName}`);
 				} else {
 					Logger.debug("User token found but invalid");
 					localStorage.removeItem("OrchestrAIToken");
