@@ -29,7 +29,7 @@ import {
 	CreateAccount,
 } from "../services/APICalls";
 
-const CreateAccountForm = () => {
+const CreateAccountForm = ({ redirect }) => {
 	// App context
 	const { setAppState } = useContext(AppContext);
 
@@ -261,6 +261,9 @@ const CreateAccountForm = () => {
 				const generatedToken = await GenerateToken(accountId);
 				localStorage.setItem("OrchestrAIToken", generatedToken);
 				Logger.debug(`Token generated: ${generatedToken}`);
+			}
+			if (redirect) {
+				redirect();
 			}
 		} else if (status === "Email taken") {
 			setFeedback({
