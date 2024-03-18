@@ -129,7 +129,12 @@ $light-border: #dee2e6;
 	border-color: $primary !important;
 	border-radius: 5px !important;
 	padding: 0px 5px 0px 5px !important;
-	margin-left: 10px;
+	@media (min-width: 768px) {
+		margin-left: 10px;
+	}
+	@media (max-width: 767px) {
+		margin-top: 10px;
+	}
 	// hover
 	&:hover {
 		background-color: $primary-hover !important;
@@ -150,7 +155,12 @@ $light-border: #dee2e6;
 	color: $primary !important;
 	border-radius: 5px !important;
 	padding: 0px 5px 0px 5px !important;
-	margin-left: 10px;
+	@media (min-width: 768px) {
+		margin-left: 10px;
+	}
+	@media (max-width: 767px) {
+		margin-top: 10px;
+	}
 	// hover
 	&:hover {
 		background-color: $primary !important;
