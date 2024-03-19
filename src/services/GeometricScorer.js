@@ -45,7 +45,9 @@ class Tune {
 	// loss function
 	lose(opponent) {
 		const weight = experienceWeight(opponent.experience);
-		this.lossesWeight += opponent.rating * weight;
+		const opponentRating = opponent.rating;
+		const weightedLoss = (1 - opponentRating) * weight;
+		this.lossesWeight += weightedLoss;
 		this.losses++;
 		this.lossesList.push(opponent.shortName);
 	}
@@ -157,7 +159,7 @@ let tunes = [
 ];
 
 // Create Tune objects
-tunes = tunes.map((tune) => new Tune(0.2, 0.2, tune.trueValue, tune.name));
+tunes = tunes.map((tune) => new Tune(0.2, 0.4, tune.trueValue, tune.name));
 
 const numRounds = 100;
 
@@ -181,4 +183,8 @@ for (let i = 0; i < numRounds; i++) {
 		// console.log(tune.name, tune.rating);
 		console.log(tune.prettify());
 	}
+	// average rating
+	let averageRating = tunes.reduce((acc, tune) => acc + tune.rating, 0);
+	averageRating /= tunes.length;
+	console.log("Average rating:", averageRating);
 }

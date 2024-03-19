@@ -303,3 +303,64 @@ export async function SaveTuneScore(scoreData) {
 		return response;
 	}
 }
+
+// GET /GetCompareTunes
+// Returns a JSON object with two tunes to compare
+export async function GetCompareTunes() {
+	let response = {
+		statusCode: 0,
+		message: "",
+		tune1: {
+			tuneId: "",
+			title: "",
+		},
+		tune2: {
+			tuneId: "",
+			title: "",
+		},
+	};
+
+	try {
+		const apiResponse = await fetch(`${apiUrl}/GetCompareTunes`, {
+			method: "GET",
+		});
+
+		// Handle the response
+		const body = await apiResponse.json();
+		const statusCode = apiResponse.status;
+
+		if (statusCode === 200) {
+			Logger.log("Tunes retrieved successfully");
+			response = {
+				statusCode: 200,
+				message: "Tunes retrieved successfully",
+				tune1: {
+					tuneId: body.tune1.tuneId,
+					title: body.tune1.title,
+				},
+				tune2: {
+					tuneId: body.tune2.tuneId,
+					title: body.tune2.title,
+				},
+			};
+		} else {
+			const error = body.error || "GetCompareTunes encountered an error";
+			Logger.error(
+				`GetCompareTunes returned status ${statusCode}:`,
+				error
+			);
+			response = {
+				statusCode: statusCode,
+				message: error,
+			};
+		}
+	} catch (error) {
+		Logger.error(`Unexpected error retrieving tunes:`, error);
+		response = {
+			statusCode: 500,
+			message: "Unexpected error",
+		};
+	} finally {
+		return response;
+	}
+}

@@ -38,10 +38,15 @@ const TuneViewerComponent = ({ tuneId, setPageTitle, animate }) => {
 	const [prompt, setPrompt] = useState("");
 	const [fixes, setFixes] = useState(null);
 	const [warnings, setWarnings] = useState([]);
+	const [fixesList, setFixesList] = useState([]);
 	const [showToast, setShowToast] = useState(false);
 	const [link, setLink] = useState("");
 	const [creatorAccountId, setCreatorAccountId] = useState("");
 	const [creatorDisplayName, setCreatorDisplayName] = useState("");
+	const [score, setScore] = useState(0);
+	const [numScores, setNumScores] = useState(0);
+
+	Logger.debug(`Tune ID: ${tuneId}`);
 
 	// Tune retrieval state
 	const [retrievalState, setRetrievalState] = useState("");
@@ -78,8 +83,11 @@ const TuneViewerComponent = ({ tuneId, setPageTitle, animate }) => {
 					setPrompt(body.prompt);
 					setFixes(body.fixes);
 					setWarnings(body.warnings);
+					setFixesList(body.fixesList);
 					setCreatorAccountId(body.accountId);
 					setCreatorDisplayName(body.displayName);
+					setScore(body.score);
+					setNumScores(body.numScores);
 
 					setRetrievalState("Success");
 				} else {
@@ -131,7 +139,7 @@ const TuneViewerComponent = ({ tuneId, setPageTitle, animate }) => {
 							// Copy the URL to the clipboard
 							// const url = window.location.href;
 							// navigator.clipboard.writeText(url);
-							const url = `https://www.OrchestrAI.site/tunes/${tuneId}`
+							const url = `https://www.OrchestrAI.site/tunes/${tuneId}`;
 							// alert(`Link copied to clipboard!\n${url}`);
 							setShowToast(true);
 							setLink(url);
@@ -156,7 +164,7 @@ const TuneViewerComponent = ({ tuneId, setPageTitle, animate }) => {
 					zIndex: "1000",
 				}}
 			>
-				<ToastHeader toggle={() => setShowToast(false)}>
+				<ToastHeader toggle={() => setShowToast(false)} icon="success">
 					Link Copied
 				</ToastHeader>
 				<ToastBody>
@@ -293,6 +301,23 @@ const TuneViewerComponent = ({ tuneId, setPageTitle, animate }) => {
 													<p>No creator provided</p>
 												)}
 											</Col>
+											<Col>
+												<h3>Score</h3>
+												{score ? (
+													<p>
+														{score.toFixed(2)} /
+														5.00
+														{" ("}
+														{numScores}{" "}
+														{numScores === 1
+															? "rating"
+															: "ratings"}
+														{")"}
+													</p>
+												) : (
+													<p>No score provided</p>
+												)}
+											</Col>
 										</Row>
 									</Col>
 								</Row>
@@ -323,10 +348,22 @@ const TuneViewerComponent = ({ tuneId, setPageTitle, animate }) => {
 							</TabPane>
 							<TabPane tabId="4" className="bordered-tab-pane">
 								<Row>
-									<Col>
+									{/* <Col>
 										<h3>Number of Fixes Made</h3>
 										{fixes ? (
 											<p>{fixes}</p>
+										) : (
+											<p>No fixes made</p>
+										)}
+									</Col> */}
+									<Col>
+										<h3>Fixes</h3>
+										{fixesList && fixesList.length > 0 ? (
+											<ul>
+												{fixesList.map((fix) => (
+													<li>{fix}</li>
+												))}
+											</ul>
 										) : (
 											<p>No fixes made</p>
 										)}

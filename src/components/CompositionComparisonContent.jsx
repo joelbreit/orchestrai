@@ -1,122 +1,175 @@
 import React, { useState } from "react";
-import {
-	Alert,
-	Button,
-	Col,
-	Container,
-	Dropdown,
-	DropdownItem,
-	DropdownMenu,
-	DropdownToggle,
-	Row,
-	Spinner,
-} from "reactstrap";
-import Logger from "../services/Logger";
-import GeneratedTunes from "../assets/GeneratedTunes";
-import Synthesizer from "./Synthesizer";
-import ProtectedContent from "./ProtectedContent";
-import ConstructionComponent from "./ConstructionComponent";
-import TuneViewerComponent from "./TuneViewerComponent";
-import ABCNotation from "../services/ABCNotationParser";
+import { Alert, Button, Col, Container, Row, Spinner } from "reactstrap";
 import OrcheImage from "../assets/images/Orche.png";
-import ABCInput from "./ABCInput";
+import { GetCompareTunes } from "../services/APICalls";
+import Logger from "../services/Logger";
+import ProtectedContent from "./ProtectedContent";
+import TuneViewerComponent from "./TuneViewerComponent";
+
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const CompositionComparisonContent = () => {
-	const [abcNotation1, setAbcNotation1] = useState("");
-	const [abcNotation2, setAbcNotation2] = useState("");
-	const [dropdownOpen, setDropdownOpen] = useState(false);
-	const [hasCleaned, setHasCleaned] = useState(false);
-	const [numFixes, setNumFixes] = useState(0);
-	const [warnings, setWarnings] = useState([]);
-	const [failed, setFailed] = useState(false);
+	const [tuneId1, setTuneId1] = useState("");
+	const [tuneId2, setTuneId2] = useState("");
+	const [message, setMessage] = useState({
+		text: "",
+		color: "primary",
+	});
 
 	// States: welcome, loading, loaded, error, submitting, submitted
 	const [pageState, setPageState] = useState("welcome");
 
-	const [selectedTune, setSelectedTune] = useState("Select a tune");
+	Logger.debug("pageState: ", pageState);
 
-	const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
-
-	const selectTune = (tuneKey) => {
-		const contents = GeneratedTunes[tuneKey];
-
-		setSelectedTune(tuneKey);
-		// setSelectedTune(GeneratedTunes[tuneKey].split("\n")[1].substring(2)); // To get the title (T:TuneName)
-
-		setAbcNotation1(contents[0].output);
-		setAbcNotation2(contents[1].output);
-		resetCleaner();
-		Logger.log(
-			"New tune selected. Resetting cleaner. hasCleaned: ",
-			hasCleaned
-		);
-	};
-
-	const resetCleaner = () => {
-		setHasCleaned(false);
-		setNumFixes(0);
-		setWarnings([]);
-		setFailed(false);
-	};
-
-	const handleLoadTunes = () => {
+	const handleLoadTunes = async () => {
 		Logger.log("Loading tunes...");
 		setPageState("loading");
-		// Load tunes
-		setTimeout(() => {
+		setMessage({ text: "Loading tunes...", color: "info" });
+		const response = await GetCompareTunes();
+		Logger.log("Response: ", response);
+		if (response.statusCode === 200) {
+			setTuneId1(response.tune1.tuneId);
+			setTuneId2(response.tune2.tuneId);
+			Logger.debug(`Tune 1: ${response.tune1.title}, <${tuneId1}>`);
+			Logger.debug(`Tune 2: ${response.tune2.title}, <${tuneId2}>`);
 			setPageState("loaded");
-		}, 1000);
+			setMessage({ text: "Tunes loaded", color: "success" });
+		} else {
+			setPageState("error");
+			setMessage({
+				text: `Error loading tunes: ${response.message}`,
+				color: "danger",
+			});
+		}
+	};
+
+	const handleSelectTune = async (winnerId, loserId) => {
+		Logger.debug("Tune selected: ", winnerId);
+		setPageState("submitting");
+		setMessage({ text: "Submitting comparison...", color: "info" });
+
+		try {
+			const response = await fetch(`${apiUrl}/submitTuneComparison`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					winnerId,
+					loserId,
+				}),
+			});
+
+			Logger.debug("Response: ", response);
+
+			setPageState("submitted");
+			setMessage({
+				text: "Comparison submitted! Feel free to compare more tunes.",
+				color: "success",
+			});
+		} catch (error) {
+			Logger.error("Error submitting tune comparison: ", error);
+			setPageState("error");
+			setMessage({
+				text: `Error submitting tune comparison: ${error}`,
+				color: "danger",
+			});
+		}
 	};
 
 	return (
 		<Container>
 			<ProtectedContent>
 				<p>Pick your favorite tune and compare the compositions.</p>
-				<ConstructionComponent>
-					<Row className="justify-content-center">
-						<Col
-							sm="12"
-							md="6"
-							className="d-flex justify-content-center"
+				<Row className="justify-content-center">
+					<Col
+						sm="12"
+						md="6"
+						className="d-flex justify-content-center"
+					>
+						<Button
+							onClick={handleLoadTunes}
+							className="primary-button"
 						>
-							<Button
-								onClick={handleLoadTunes}
-								className="primary-button"
-							>
-								{pageState === "loading" && (
-									<>
-										<Spinner
-											as="span"
-											animation="border"
-											size="sm"
-											role="status"
-											aria-hidden="true"
-											className="mr-2"
-										/>{" "}
-									</>
-								)}
-								Get Compositions to Compare{" "}
-								<span className="icon-square flex-shrink-0">
-									<i className={`bi bi-arrow-repeat`} />
-								</span>
-							</Button>
-						</Col>
-					</Row>
-					<hr />
-					{/* Alert */}
-					<Row className="mt-2">
-						<Col sm="12" md="6">
-							<TuneViewerComponent
-								animate={pageState === "loading"}
-							/>
-						</Col>
-						<Col sm="12" md="6">
-							<TuneViewerComponent
-								animate={pageState === "loading"}
-							/>
-						</Col>
-					</Row>
-				</ConstructionComponent>
+							{pageState === "loading" && (
+								<>
+									<Spinner
+										as="span"
+										animation="border"
+										size="sm"
+										role="status"
+										aria-hidden="true"
+										className="mr-2"
+									/>{" "}
+								</>
+							)}
+							Get Compositions to Compare{" "}
+							<span className="icon-square flex-shrink-0">
+								<i className={`bi bi-arrow-repeat`} />
+							</span>
+						</Button>
+					</Col>
+				</Row>
+
+				<hr />
+				{message.text && (
+					<Alert color={message.color}>
+						<div
+							style={{
+								display: "flex",
+								alignItems: "center",
+							}}
+						>
+							<img
+								src={OrcheImage}
+								width="30"
+								height="30"
+								alt="Orche"
+							/>{" "}
+							<span>{message.text}</span>
+						</div>
+					</Alert>
+				)}
+
+				<Row className="mt-2">
+					<Col sm="12" md="6">
+						<Button
+							color="success"
+							className="w-100 mb-2"
+							disabled={pageState !== "loaded"}
+							onClick={() => handleSelectTune(tuneId1, tuneId2)}
+						>
+							Choose this tune{" "}
+							<span className="icon-square flex-shrink-0">
+								<i className={`bi bi-check-circle`} />
+							</span>
+						</Button>
+						<TuneViewerComponent
+							tuneId={tuneId1}
+							animate={pageState === "loading"}
+							setPageTitle={() => {}}
+						/>
+					</Col>
+					<Col sm="12" md="6">
+						<Button
+							color="success"
+							className="w-100 mb-2"
+							disabled={pageState !== "loaded"}
+							onClick={() => handleSelectTune(tuneId2, tuneId1)}
+						>
+							Choose this tune{" "}
+							<span className="icon-square flex-shrink-0">
+								<i className={`bi bi-check-circle`} />
+							</span>
+						</Button>
+
+						<TuneViewerComponent
+							tuneId={tuneId2}
+							animate={pageState === "loading"}
+							setPageTitle={() => {}}
+						/>
+					</Col>
+				</Row>
 			</ProtectedContent>
 		</Container>
 	);
