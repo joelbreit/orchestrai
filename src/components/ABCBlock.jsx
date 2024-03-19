@@ -13,11 +13,6 @@ const ABCBlock = ({ code }) => {
 	return (
 		<pre
 			className="language-abc"
-			style={{
-				border: "1px solid #dee2e6",
-				padding: "10px",
-				borderRadius: "5px",
-			}}
 		>
 			<code
 				style={{

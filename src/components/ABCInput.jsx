@@ -1,94 +1,65 @@
-import React, { useEffect, useState } from "react";
-import {
-	Button,
-	Col,
-	Form,
-	FormFeedback,
-	FormGroup,
-	Input,
-	Row,
-} from "reactstrap";
-
+import React, { useRef, useState } from "react";
+import { Button, Form, FormFeedback, FormGroup, Input } from "reactstrap";
+import useOutsideAlerter from "../hooks/useOutsideAlerter";
+import Logger from "../services/Logger";
 import ABCBlock from "./ABCBlock";
 
-import Logger from "../services/Logger";
-
 const ABCInput = ({ parentText, placeholderText, onChange }) => {
-	const [previousText, setPreviousText] = useState(parentText);
-	const [text, setText] = useState(parentText);
-
 	const [isEditing, setIsEditing] = useState(false);
+	const formRef = useRef(null); // Reference to the form wrapper
 
-	const handleCancel = (event) => {
-		event.stopPropagation();
-		setText(previousText);
-		setIsEditing(false);
-	};
+	// Custom hook to detect clicks outside the form
+	useOutsideAlerter(formRef, () => {
+		if (isEditing) handleFormat();
+	});
 
-	const handleSave = (event) => {
-		event.stopPropagation();
-		setPreviousText(text);
+	const handleFormat = (event) => {
+		if (event) event.stopPropagation();
 		setIsEditing(false);
-		Logger.debug("Saving text", text);
-		onChange(text);
+		Logger.debug("Exiting edit mode", parentText);
+		// No need to call onChange here if no changes are made
 	};
 
 	const handleEdit = () => {
 		setIsEditing(true);
 	};
 
-	useEffect(() => {
-		Logger.debug("Set text and prev text useEffect");
-		setText(parentText);
-		setPreviousText(parentText);
-	}, [parentText]);
-
 	return (
-		<Form onClick={handleEdit} className="mb-4">
-			{isEditing ? (
-				<FormGroup>
-					<Input
-						type="textarea"
-						value={text}
-						onChange={(e) => setText(e.target.value)}
-						placeholder={placeholderText}
-						// rows={10}
-						style={{
-							minHeight: "100px",
-							height: `${text.split("\n").length * 25}px`,
-						}}
-					/>
-					<FormFeedback>
-						Please enter a valid ABC notation.
-					</FormFeedback>
-				</FormGroup>
-			) : (
-				<ABCBlock code={text} />
-			)}
-			<Row>
-				<Col className="d-flex justify-content-end">
-					{isEditing && (
+		<div ref={formRef}>
+			<Form onClick={handleEdit} className="mb-4 ABCForm">
+				{isEditing ? (
+					<FormGroup>
+						<Input
+							type="textarea"
+							value={parentText}
+							onChange={(e) => onChange(e.target.value)}
+							placeholder={placeholderText}
+							style={{
+								height: `${
+									parentText.split("\n").length * 23
+								}px`,
+							}}
+							className="ABCInput"
+						/>
+						<FormFeedback>
+							Please enter a valid ABC notation.
+						</FormFeedback>
 						<Button
 							type="button"
-							onClick={(e) => handleCancel(e)}
-							className="secondary-button-outline"
+							onClick={handleFormat}
+							className="primary-button ABCFormButton"
 						>
-							Cancel
+							Format{" "}
+							<span className="icon-square flex-shrink-0">
+								<i className={`bi bi-braces`}></i>
+							</span>
 						</Button>
-					)}
-					<Button
-						type="button"
-						onClick={(e) =>
-							isEditing ? handleSave(e) : handleEdit()
-						}
-						style={{ marginLeft: "10px" }}
-						className="primary-button"
-					>
-						{isEditing ? "Save" : "Edit"}
-					</Button>
-				</Col>
-			</Row>
-		</Form>
+					</FormGroup>
+				) : (
+					<ABCBlock code={parentText} />
+				)}
+			</Form>
+		</div>
 	);
 };
 
