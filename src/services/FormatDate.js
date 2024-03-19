@@ -14,7 +14,7 @@ export function formatDate(dateString) {
 		return "Today";
 	} else if (date.toDateString() === yesterday.toDateString()) {
 		return "Yesterday";
-	} else if (date > yesterday) {
+	} else if (date > new Date(today.setDate(today.getDate() - 6))) {
 		return date.toLocaleDateString("en-US", { weekday: "long" });
 	} else {
 		return date.toLocaleDateString("en-US", {
