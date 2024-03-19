@@ -65,6 +65,7 @@ const ComposeContent = () => {
 	const [fullPromptIndex, setFullPromptIndex] = useState(
 		Math.floor(Math.random() * PROMPT_SUGGESTIONS.length)
 	);
+	const [keepPrivate, setKeepPrivate] = useState(false);
 
 	// Loading state
 	const [isLoading, setIsLoading] = useState(false);
@@ -84,6 +85,7 @@ const ComposeContent = () => {
 	const [hasCleaned, setHasCleaned] = useState(false);
 	const [numFixes, setNumFixes] = useState(0);
 	const [warnings, setWarnings] = useState([]);
+	const [fixesList, setFixesList] = useState([]);
 	const [failed, setFailed] = useState(false);
 
 	// File download information
@@ -136,6 +138,7 @@ const ComposeContent = () => {
 		setHasCleaned(true);
 		setNumFixes(cleanedNotation.numFixes);
 		setWarnings(cleanedNotation.warnings);
+		setFixesList(cleanedNotation.fixes);
 		setFailed(cleanedNotation.failed);
 	}, [abcNotation]);
 
@@ -167,7 +170,8 @@ const ComposeContent = () => {
 				description: description,
 				notation: abcNotation,
 				warnings: warnings,
-				fixes: numFixes, // TODO Update to an actual list up fixes made
+				fixes: numFixes,
+				fixesList: fixesList,
 				generationDuration: timeSoFar,
 				uncleanedNotation: uncleanedNotation,
 			};
@@ -527,9 +531,6 @@ const ComposeContent = () => {
 											{vibe.length}/100
 										</span>
 									</FormGroup>
-									<FormFeedback>
-										You must enter a vibe and an API key.
-									</FormFeedback>
 									<FormGroup>
 										<Button
 											type="submit"
@@ -585,9 +586,13 @@ const ComposeContent = () => {
 											className="mt-2"
 										/>
 									</FormGroup>
-									<FormFeedback>
-										You must enter a vibe and an API key.
-									</FormFeedback>
+									{/* Checkbox to keep tune private */}
+									{/* <FormGroup check>
+										<Label check>
+											<Input type="checkbox" /> Keep tune
+											private
+										</Label>
+									</FormGroup> */}
 									<FormGroup>
 										<Button
 											type="submit"

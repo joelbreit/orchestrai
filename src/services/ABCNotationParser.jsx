@@ -11,22 +11,29 @@ const voiceLineStartRegex = /^[a-gz{|%w"()}[]/i;
 class ABCNotation {
 	constructor(abcNotation) {
 		Logger.debug("ABCNotationParser: ", this);
+
+		// Initialize all the properties
 		this.warnings = [];
 		this.failed = false;
+		this.fixes = [];
+		this.abcNotation = "";
+		this.title = "";
+		this.voices = new Map(); // map of voice names to all the text in that voice
+		this.measureTextMatrix = [];
+		this.measureBeatsMatrix = [];
+
+		// Do the hard work
 		try {
 			Logger.debug("abcNotation: ", abcNotation);
 			this.abcNotation = this.cleanUpNotation(abcNotation);
 			Logger.debug("Cleaned abcNotation: ", this.abcNotation);
 			this.title = this.extractTitle();
-			this.voices = new Map(); // map of voice names to all the text in that voice
 			Logger.debug("Voices: ", this.voices);
 			this.measureTextMatrix = [];
 			this.measureBeatsMatrix = [];
 			this.parse();
 			Logger.debug("measureTextMatrix: ", this.measureTextMatrix);
 			// TODO log if there are any outstanding issues
-
-			this.numFixes = 0;
 
 			// TODO deal with mismatched # of measures
 			const sameNumMeasures = this.measureTextMatrix.every(
@@ -90,17 +97,8 @@ class ABCNotation {
 	cleanUpNotation(text) {
 		Logger.debug("cleanUpNotation function");
 		let lines = text.split("\n");
-		const originalNumLines = lines.length;
-		// Add new lines after ] characters if they appear in the first 10 characters
-		// for (const line of lines) {
-		// 	Logger.debug("line: ", line);
-		// 	if (line.slice(0, 10).includes("]")) {
-		// 		const index = line.indexOf("]");
-		// 		lines.splice(lines.indexOf(line) + 1, 0, line.slice(index + 1));
-		// 		lines[lines.indexOf(line)] = line.slice(0, index + 1);
-		// 	}
-		// }
 
+		// Add new lines after ] characters if they appear in the first 10 characters
 		let linesCopy = [...lines];
 		for (const line of linesCopy) {
 			Logger.debug("line: ", line);
@@ -108,26 +106,36 @@ class ABCNotation {
 				const index = line.indexOf("]");
 				lines.splice(lines.indexOf(line) + 1, 0, line.slice(index + 1));
 				lines[lines.indexOf(line)] = line.slice(0, index + 1);
+				this.fixes.push(`Added new line after ]`);
 			}
 		}
+
 		// Remove leading and trailing whitespace
-		lines = lines.map((line) => line.trim());
+		linesCopy = [...lines];
+		for (const line of linesCopy) {
+			if (line !== line.trim()) {
+				lines[lines.indexOf(line)] = line.trim();
+				this.fixes.push(`Removed leading and trailing whitespace`);
+			}
+		}
+
 		// Remove empty lines
-		lines = lines.filter((line) => line !== "");
+		linesCopy = [...lines];
+		for (const line of linesCopy) {
+			if (line === "") {
+				lines.splice(lines.indexOf(line), 1);
+				this.fixes.push(`Removed empty line`);
+			}
+		}
 		// Lines that start with "w" are words, not notes
 		// lines = lines.filter((line) => !line.startsWith("w"));
 
 		const cleanedText = lines.join("\n");
-		const newNumLines = cleanedText.split("\n").length;
-		const numLinesRemoved = originalNumLines - newNumLines;
-		if (numLinesRemoved > 0) {
-			// TODO log each line that was removed
-			Logger.debug(
-				`Cleaned up notation: removed ${numLinesRemoved} lines`
-			);
-			this.numFixes += numLinesRemoved;
-		}
 		return cleanedText;
+	}
+
+	get numFixes() {
+		return this.fixes.length;
 	}
 
 	extractTitle() {
@@ -393,7 +401,7 @@ class ABCNotation {
 			for (let j = 0; j < this.measureBeatsMatrix.length; j++) {
 				if (this.measureBeatsMatrix[j][measureIndex] !== beats) {
 					// allMatch = false;
-					const error = `Error: pickup measure found with mismatched length in voices ${voiceIndex} and ${j}`;
+					const error = `Error: pickup measure found with mismatched length in voices ${voiceIndex} and ${j} at measure ${measureIndex}`;
 					this.warnings.push(error);
 					Logger.error(error);
 					break;
@@ -437,7 +445,9 @@ class ABCNotation {
 			this.measureTextMatrix[voiceIndex][measureIndex] = newMeasure;
 			Logger.log(`Fixed short measure: ${originalText} -> ${newMeasure}`);
 
-			this.numFixes++;
+			this.fixes.push(
+				`Fixed short measure: ${originalText} -> ${newMeasure}`
+			);
 		}
 		for (let i = 0; i < longMeasures.length; i++) {
 			const measure = longMeasures[i];
@@ -515,7 +525,9 @@ class ABCNotation {
 			this.measureTextMatrix[voiceIndex][measureIndex] = newMeasure;
 			Logger.log(`Fixed long measure: ${originalText} -> ${newMeasure}`);
 
-			this.numFixes++;
+			this.fixes.push(
+				`Fixed long measure: ${originalText} -> ${newMeasure}`
+			);
 		}
 	}
 
@@ -583,7 +595,9 @@ class ABCNotation {
 									Logger.log(
 										`Fixed mismatched repeat: ${originalText} -> ${newText}`
 									);
-									this.numFixes++;
+									this.fixes.push(
+										`Fixed mismatched repeat: ${originalText} -> ${newText}`
+									);
 								}
 							}
 						}
@@ -731,8 +745,9 @@ class ABCNotation {
 					Logger.log(
 						`Fixed mismatched repeat: ${measure.originalText} -> ${measure.newText}`
 					);
-					Logger.debug(`abcNotation: ${this.abcNotation}`);
-					this.numFixes++;
+					this.fixes.push(
+						`Fixed mismatched repeat: ${measure.originalText} -> ${measure.newText}`
+					);
 
 					Logger.log(
 						"Successfully replaced mismatched repeat: ",
