@@ -129,10 +129,21 @@ const TuneViewerComponent = ({ tuneId, setPageTitle, animate }) => {
 						<span className="icon-square flex-shrink-0 d-none d-md-inline">
 							<i className={`bi bi-music-note`} />
 						</span>{" "}
-						{title || "Tune Viewer"}
+						{/* {title || "Tune Viewer"} */}
+						{title ? (
+							<a 
+							href={`/tunes/${tuneId}`}
+							target="_blank"
+							rel="noreferrer"
+							style={{color: "inherit"}}
+							
+							>{title}</a>
+						) : (
+							"Tune Viewer"
+						)}
 					</h1>
 				</Col>
-				<Col className="d-flex justify-content-end align-items-center">
+				{/* <Col className="d-flex justify-content-end align-items-center">
 					<Button
 						className="primary-button-outline"
 						onClick={() => {
@@ -150,7 +161,7 @@ const TuneViewerComponent = ({ tuneId, setPageTitle, animate }) => {
 							<i className={`bi bi-share`} />
 						</span>
 					</Button>
-				</Col>
+				</Col> */}
 			</Row>
 			<hr />
 
