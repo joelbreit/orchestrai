@@ -47,7 +47,7 @@ const ABCInput = ({ parentText, placeholderText, onChange }) => {
 						<Button
 							type="button"
 							onClick={handleFormat}
-							className="primary-button ABCFormButton"
+							className="primary-button-outline ABCFormButton btn-sm"
 						>
 							Format{" "}
 							<span className="icon-square flex-shrink-0">

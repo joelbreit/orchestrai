@@ -13,6 +13,7 @@
    7. `npm install axios` (HTTP requests)Only works for servers or backend
    8. ~~`npm install react-popper` (tooltips)~~
    9. ~~`npm install bcryptjs` (password hashing)~~
+   10. `npm install node-fetch` (fetch API for Lambda functions)
 4. Run `npm install` and `npm update`
 5. Run `npm start`
 

@@ -6,28 +6,28 @@ const FEW_SHOT_EXAMPLES = [
 		response: `To embody the vibrant colors of a spring garden in a musical composition, I will create a tune that reflects the freshness and brightness of spring with a light and uplifting melody. The use of major tonality will be predominant to give a sense of cheer. I will mix in occasional seventh and sixth chords to add color, depicting the variety of hues in a garden. This tune will be in a brisk 2/4 time expressing the lively nature of spring's arrival. Syncopated rhythms may be included to give the feeling of the playful and unpredictable movement of butterflies and birds.
 \`\`\`abc
 X:1
-T:Colors of Spring - Extended
+T:Colors of Spring
 C:OrchestrAI
 M:2/4
 L:1/16
-Q:1/4=140
+Q:1/4=132
 K:D
 V:1 clef=treble name="Vibraphone"
 %%MIDI program 11
-|:"D" FAdA z2 FA| "G" G2 z2 BAGF|"Em" E2G2 z2 F2|"A7" A4- A2 z2|
-"D" fdA2 z2 f2|"Bm" b4 z2 a2|"G" g2fe z2 "A7" ce|"D" d4- d2 z2:|
-|:"A" e2c2 E2C2| "D" F2D2 F2AF| "Bm" g2f2 g2bg| "A7" a4 a2z2|
-"G" G2B2 d2G2| "D/A" A2F2 A2d2| "Em" G2E2 C2E2| "A7" A4- A2 z2:|
-| "D" FDFA d2F2|"G" GBAG B2d2|"Em" E2EF G2A2|"A7" c2B2 A4|
-"D" d2df a2fd|"G" b2a2 g2f2|"A7" e2c2 A2c2|"D" d8:|
+|:"D" F2Ad (3AFA d2| "G" G2Bd (3gfe d2|"Em" E2Gb (3agf e2|"A7" A2ce (3dcB A2|
+"D" f2ad (3fga f2|"Bm" b2fd' (3bag f2|"G" g2bg "A7" (3agf e2|"D" d4- d2 z2:|
+|:"A" e2ac (3efg a2| "D" F2Ad (3fga b2| "Bm" (3gab fd' (3bag f2| "A7" a2ec' (3agf e2|
+"G" G2Bd (3gfe d2| "D/A" A2df (3agf d2| "Em" G2eg (3bag e2| "A7" (3cBA (3AGF E2 z2:|
+|: "D" (3FAd (3fad' f'2d2|"G" (3GBd (3gbd' g'2d2|"Em" (3EGB (3egb e'2B2|"A7" (3Ace (3ace' a2e2|
+"D" d2df (3ada f2|"G" b2ag (3fed B2|"A7" (3efg (3agf (3edc A2|"D" d4- d2 z2:|
 V:2 clef=bass name="Fretless Bass"
 %%MIDI program 35
-|:"D"D,4 F,4|"G"G,4 B,4|"Em"E,4 G,4|"A7"A,4 C4|
-"D"D,4 F,4|"Bm"B,4 D4|"G"G,4 B,4|"A7"A,4 E,4:|
-|:"A"C4 E,4|"D"F4 A,4|"Bm"D4 F4|"A7"E4 C4|
-"G"B,4 D4|"D/A"A,4 E4|"Em"G,4 B,4|"A7"E4 A,4:|
-| "D" D,4 A,4|"G" B,4 D4|"Em" F,4 A,4|"A7" E,4 C4|
-"D" D,4 F,4|"G" G,4 B,4|"A7" A,4 C4|"D" D,8:|
+|:"D"D,2F,A, D2F,2|"G"G,2B,D G2B,2|"Em"E,2G,B, E2G,2|"A7"A,2CE A2C2|
+"D"D,2F,A, D2F,2|"Bm"B,,2D,F, B,2D,2|"G"G,2B,D "A7"A,2C2|"D"D,2A,,2 D,2 z2:|
+|:"A"A,,2C,E, A,2C2|"D"D,2F,A, D2F,2|"Bm"B,,2D,F, B,2D,2|"A7"A,,2C,E, A,2C2|
+"G"G,,2B,,D, G,2B,2|"D/A"A,,2D,F, A,2D2|"Em"E,2G,B, E2G,2|"A7"A,,2C,E, A,2 z2:|
+|: "D" D,2F,A, D2F,2|"G" G,2B,D G2B,2|"Em" E,2G,B, E2G,2|"A7" A,2CE A2C2|
+"D" D,2F,A, D2F,2|"G" G,2B,D G2B,2|"A7" A,2CE A2C2|"D" D,2A,,2 D,4:|
 \`\`\``,
 	},
 	{
@@ -43,28 +43,28 @@ Q:1/4=132
 K:Cmaj
 V:1 clef=treble name="Trumpet"
 %%MIDI program 56
-|:"C"G6 E2|"G"D6 G2|"Am"E4 F2G2|"F"A6 c2|
-"C"G6 E2|"G"D6 G2|"F"E2F2 G3 A|"C"C8|
-"E7"G3 A B2G2|"A"A6 B2|"Dm"D4 F2A2|"G7"B6 d2|
-"Em"G4 E2G2|"Am"c2B2 A2B2|"Dm"F2E2 D3 C|"G7"B,8|
-"C"G,4 C2E2|"G"D6 G2|"F"A4 c2e2|"C"c8|
-"C"G6E2|"G"D6 G2|"Am"E2F2 G3 A|"C"C8:|
+|:"C"G6 E2|"G"D6 G2|"Am"E4 F2G2|"F"A4 c2A2|
+"C"G4 (3EFG c2|"G"D4 B2G2|"F"E2F2 G3 A|"C"C6 z2|
+"E7"G3 A B2G2|"Am"A4 c2B2|"Dm"D4 F2A2|"G7"B4 d2B2|
+"Em"G4 E2G2|"Am"c2B2 A2B2|"Dm"F2E2 D3 C|"G7"B,6 z2|
+"C"G,4 C2E2|"G"D4 G2B2|"F"A4 c2e2|"C"c6 G2|
+"C"[Gc]4 [Ec]2[Ec]2|"G"[DB]4 [DG]2[DG]2|"Am"[EA]2[FA]2 [EG]3 [FA]|"C"[Cc]8:|
 V:2 clef=treble name="Strings"
 %%MIDI program 48
-|:"C"e6c2|"G"B6 e2|"Am"A4 c2d2|"F"c6 e2|
-"C"e6c2|"G"B6 e2|"F"c2d2 e3 f|"C"c8|
-"E7"g4 g2f2|"A"a6 c'2|"Dm" f4 a2f2|"G7"d2d2 B3 A|
-"Em"g4 e2d2|"Am"A2 G2 z EG2|"Dm"d2c2 F3 E|"G7"D6 B,2|
-"C"E4 G2E2|"G"B6 e2|"F"d2f2 a2g2|"C"G4 G4|
-"C"E6C2|"G"B6 e2|"Am"A2G2 A3 B|"C"c8:|
+|:"C"e6c2|"G"B4 d2e2|"Am"A4 c2d2|"F"c4 f2e2|
+"C"e4 (3cde g2|"G"B4 d2g2|"F"c2d2 e3 f|"C"c4 (3GAB c2|
+"E7"g4 g2f2|"Am"a4 e'2c'2|"Dm" f4 a2f2|"G7"d4 g2f2|
+"Em"g4 e2d2|"Am"A2G2 c2e2|"Dm"d2c2 F3 E|"G7"D4 F2G2|
+"C"E4 G2c2|"G"B4 d2g2|"F"d2f2 a2g2|"C"G4 e2c2|
+"C"[Ge]4 [ce]2[ce]2|"G"[Bd]4 [Bg]2[Bg]2|"Am"[Ac]2[Ac]2 [ce]3 [df]|"C"[eg]8:|
 V:3 clef=bass name="Cello"
 %%MIDI program 42
-|:"C"C6C2|"G"G,4 D2D2|"Am"A,4 E2A2|"F"C4 C4|
-"C"E6E2|"G"B,4 D2D2|"F"A,2A,2 C3 E|"C"C6 C2|
-"E7"B,4 _B,2_B,2|"A"C4 E2A,2|"Dm"A,4 D2D2|"G7" G,4 D2G,2|
-"Em"E4 E2E2|"Am"C4 C2C2|"Dm"F4 A,2D2|"G7"B,6 F,2|
-"C"C4 E2C2|"G"G,4 D2D2|"F"A,4 F2C2|"C" C4 C4|
-"C"G,6E2|"G"D6 D2|"Am"E2E2 G3 A|"C"C8:|
+|:"C"C4 G,2C2|"G"G,4 D2B,2|"Am"A,4 E2A2|"F"F,4 A,2C2|
+"C"C4 G,2E2|"G"G,4 D2B,2|"F"A,2A,2 C3 E|"C"C4 E,2G,2|
+"E7"E,4 G,2B,2|"Am"A,4 C2E2|"Dm"D4 F,2A,2|"G7" G,4 B,2D2|
+"Em"E4 B,2G,2|"Am"A,4 C2E2|"Dm"F,4 A,2D2|"G7"G,4 D2F2|
+"C"C4 E2G2|"G"G,4 B,2D2|"F"F,4 A,2C2|"C" C4 E2G2|
+"C"C4 G,2C2|"G"G,4 D2G,2|"Am"A,2C2 E3 F|"C"C8:|
 \`\`\``,
 	},
 	{
@@ -81,22 +81,22 @@ K:Dm
 % The introduction evokes the call to adventure on the high seas
 V:1 clef=treble name="Clarinet"
 %%MIDI program 71
-|:"Dm" A4 A2fe | "C" d6 c2 | "Bb" B4 B2AG | "A7" A6 z2 |
-"Dm" A4 "C"gfed | "Bb" c4 "A7"A2G2 | "Dm"F6 "A7"E2 | "Dm"d8 |
-"Dm"f2ef "C"gec2 | "Bb"d2cB "A7"A2G2 | "Dm"F2E2 "C"D2C2 | "Bb"B6 z2 |
-"Dm"f4 fefa | "Gm"g4 gbag | "A7"a4 a2gf | "Dm"d8 :|
-V:2 clef=treble name="Basoon"
+|:"Dm" A3F A2fe | "C" (3ded c2 G3c | "Bb" B3G B2AG | "A7" A4 (3AGF E2 |
+"Dm" A3c "C"gfed | "Bb" c3d "A7"cBAG | "Dm"F3A "A7"GFED | "Dm"D4 d4 |
+"Dm"f2ef "C"gec2 | "Bb"(3dcB (3AGF "A7"E2G2 | "Dm"F2E2 "C"D2C2 | "Bb"B4 "A7"A3G |
+"Dm"f3d fefa | "Gm"g3b agfe | "A7"a3g fedc | "Dm"d8 :|
+V:2 clef=treble name="Bassoon"
 %%MIDI program 70
-|:"Dm" d4 d2c2 | "C" A6A2 | "Bb" G4 G2F2 | "A7" E6z2 |
-"Dm" d4 "C"edcB | "Bb" A4 "A7"G2F2 | "Dm"F6 "A7"E2 | "Dm"d8 |
-"Dm"A2A2 "C"GA_B2 | "Bb"F4 "A7"G2F2 | "Dm"D4 "C"C2D2 | "Bb"B6 z2 |
-"Dm"A2d2 "Gm"d2B2 | "A7"G2E2 E4 | "Dm"f4 "A7"A2G2 | "Dm"d8 :|
-V:3 clef=bass name="Accoustic Bass"
+|:"Dm" d3A d2c2 | "C" A3G _B3A | "Bb" G3D G2F2 | "A7" E4 (3EFG A2 |
+"Dm" d3A "C"edcB | "Bb" A3F "A7"GFED | "Dm"F3D "A7"CDEF | "Dm"D4 A4 |
+"Dm"A3F "C"GA_B2 | "Bb"F3G "A7"A3F | "Dm"D3F "C"FGAB | "Bb"B4 "A7"c3A |
+"Dm"A3F "Gm"GABA | "A7"G3E EFGA | "Dm"f3d "A7"cBAG | "Dm"F8 :|
+V:3 clef=bass name="Acoustic Bass"
 %%MIDI program 32
-|:"Dm" D,4 D,2F,2 | "C" C,6 G,2 | "Bb" B,,4 B,,2D,2 | "A7" A,6z2 |
-"Dm" A,4 "C"D,C,D,E, | "Bb" F,4 "A7"A,2F,2 | "Dm"D,6 "A7"A,2 | "Dm"D,8 |
-"Dm"D,2D,2 "C"C,4 | "Bb"B,,4 "A7"C,4 | "Dm"F,2G,2 "C"A,4 | "Bb"B,,6 z2 |
-"Dm"D,4 D,2D,2 | "Gm"G,,4 G,2G,2 | "A7"A,,4 A,2E,2 | "Dm"D,8 :|
+|:"Dm" D,3F, A,3F, | "C" C,3E, G,3E, | "Bb" B,,3D, F,3D, | "A7" A,,3C, E,3C, |
+"Dm" D,3F, "C"A,3F, | "Bb" B,,3D, "A7"A,3F, | "Dm"D,3F, "A7"A,3G, | "Dm"F,4 D,4 |
+"Dm"D,3F, "C"E,3G, | "Bb"B,,3D, "A7"C,3E, | "Dm"F,3A, "C"G,3B, | "Bb"B,,4 "A7"A,,4 |
+"Dm"D,3F, A,3F, | "Gm"G,,3B,, D,3B,, | "A7"A,,3C, E,3G, | "Dm"D,8 :|
 \`\`\``,
 	},
 	{
@@ -108,58 +108,62 @@ T:Starry Night Serenade
 C:OrchestrAI
 M:4/4
 L:1/8
-Q:1/4=60
+Q:1/4=56
 K:Amaj
-V:1 clef=treble name="Synth Pad"
-%% MIDI program 91
-|: "A"A6 E2 | "F#m"F4 E4 | "D" D6 F2 | "E"E4 z4 |
-"A"A3 B c4 | "E"B6 G2 | "A"A3 F E4 | "D"D4 F4 |
-"A"A6 E2 | "Bm7"E4 D4 | "E7sus4"G6 A2 | "A"A4 z4 :|
-V:2 clef=treble name="Synth Pad"
-%% MIDI program 91
-|: "A"C4 E4 | "F#m"A4 G4 | "D"F4 A4 | "E"E4 z4 |
-"A"A4 c2 B2 | "E"G4 E4 | "A"A4 F4 | "D"E4 F4 |
-"A"C6 E2 | "Bm7"F4 D4 | "E7sus4"G4 A4 | "A"A4 z4 :|
-V:3 clef=bass name="Synth Pad"
-%% MIDI program 91
-|: "A"A,4 E3 C | "F#m"F,4 A4 | "D"D,4 F4 | "E"E,4 z4 |
-"A"A,4 C4 | "E"E4 G3 E | "A"A,4 E3 F | "D"D4 F4 |
-"A"A,4 E4 | "Bm7"B,4 D4 | "E7sus4"E4 G4 | "A"A,4 z4 :|
-V:4 clef=bass name="Synth Pad"
-%% MIDI program 91
-|: "A"E2 A4 z2 | "F#m"C4 A4 | "D"A2 D4 F2 | "E"E4 z4 |
-"A"E4 A3 B | "E"C4 F3 G | "A"A3 E2 F2 z | "D"F4 z4 |
-"A"E6 A2 | "Bm7"D4 B4 | "E7sus4"G3 F E4 | "A"A4 z4 :|
+V:1 clef=treble name="Synth Pad 1"
+%% MIDI program 95
+|: "Amaj7"A6 E2 | "F#m7"F4 (3EFE D2 | "Dmaj9" D6 F2 | "E9"E4 (3BAG E2 |
+"Amaj7"A3 B c3 e | "E7sus4"B6 G2 | "Amaj7"A3 F "A7"E3 ^G | "Dmaj9"D4 (3FED F2 |
+"Amaj9"A6 E2 | "Bm11"E4 (3DED C2 | "E13sus4"G6 A2 | "Amaj7"A4 "A7"^G4 :|
+V:2 clef=treble name="Synth Pad 2"
+%% MIDI program 95
+|: "Amaj7"[CE]4 [EA]4 | "F#m7"[AC']4 [EG]4 | "Dmaj9"[FA]4 [Ac]4 | "E9"[EG]4 [GB]4 |
+"Amaj7"[AC']4 [Ec]2 [EB]2 | "E7sus4"[EG]4 [GB]4 | "Amaj7"[AC']4 "A7"[EG]4 | "Dmaj9"[DF]4 [FA]4 |
+"Amaj9"[CE]6 [EA]2 | "Bm11"[DF]4 [FA]4 | "E13sus4"[EG]4 [GB]4 | "Amaj7"[AC']4 "A7"[C^G]4 :|
+V:3 clef=bass name="Synth Pad 3"
+%% MIDI program 95
+|: "Amaj7"A,4 E3 C | "F#m7"F,4 A4 | "Dmaj9"D,4 F4 | "E9"E,4 B,3 D |
+"Amaj7"A,4 C4 | "E7sus4"E4 G3 E | "Amaj7"A,4 "A7"E3 ^G | "Dmaj9"D4 F3 A |
+"Amaj9"A,4 E4 | "Bm11"B,4 D4 | "E13sus4"E4 G4 | "Amaj7"A,4 "A7"^G,4 :|
+V:4 clef=bass name="Synth Bass"
+%% MIDI program 38
+|: "Amaj7"[A,E]6 [A,E]2 | "F#m7"[F,C]4 [F,C]4 | "Dmaj9"[D,A,]6 [D,A,]2 | "E9"[E,B,]4 [E,B,]4 |
+"Amaj7"[A,E]4 [A,E]4 | "E7sus4"[E,B,]4 [E,B,]4 | "Amaj7"[A,E]3 [A,E] "A7"[A,^G,]3 [A,^G,] | "Dmaj9"[D,A,]4 [D,A,]4 |
+"Amaj9"[A,E]6 [A,E]2 | "Bm11"[B,,F,]4 [B,,F,]4 | "E13sus4"[E,B,]6 [E,B,]2 | "Amaj7"[A,E]4 "A7"[A,^G,]4 :|
 \`\`\``,
 	},
 	{
 		prompt: "Please create a tune for this prompt: Compose a tune for an epic, fast paced boss battle in a video game",
-		response: `To craft an epic and fast-paced tune suitable for a boss battle in a video game, I will use driving rhythms, exciting melodies, and intense harmonies to capture the thrill and tension of the confrontation. The composition will incorporate a fast tempo to reflect the high energy of the encounter, and I will weave in minor tonalities to convey the sense of danger and urgency. I will also make use of rhythmic ostinatos and dynamic changes to amplify the drama of the battle. For the instrumentation, I will assign voices that are commonly used to evoke intensity in soundtracks, such as strong brass for the main melody, strings for rapid ostinato patterns, and wind instruments for counter melodies.
+		response: `To capture the essence of a glorious and fast-paced boss battle in a video game, I will compose a tune that is intense, rhythmically driven, and features strong melodic lines. The music will use minor keys to impart a sense of danger and conflict, with modulations to heighten tension and resolution to inspire heroics. The brisk tempo of 180 bpm will create a sense of urgency and quick-paced action. There will be syncopation and rhythmic complexity to exemplify the unpredictability of battle. I will include a driving bass line, soaring lead melodies, and punctuated chords to evoke the high stakes and drama of the scene. This boss battle theme showcases the fierce competition and adrenaline rush that comes with facing a formidable opponent, using a mix of bold brass, striking strings, and powerful percussion in the electronic sound palette to bring the battle to life.
 \`\`\`abc
 X:1
-T:Boss Battle Blitz
+T:Glorious Battle Rhapsody
 C:OrchestrAI
 M:4/4
 L:1/16
 Q:1/4=180
-K:Dmin
-% Multiple instruments combine for a powerful and rapid soundscape
-V:1 clef=treble name="Brass" subname="Main Theme"
+K:Bm
+V:1 clef=treble name="Lead Synth" subname="Lead"
+%%MIDI program 81
+|:"Bm" B2B2 d2f2 g3f edcB | "G" G2A2 B2d2 c3B ABAG | "A" A2f2 e2c2 d3c BAGF | "Em" E2G2 F2A2 G4 z4 |
+"Bm" B2d2 f2b2 a3g fedc | "F#" F2A2 c2f2 e3d cBAG | "G" G2B2 d2g2 f3e dcBA | "A" A2c2 e2a2 g4 f4 |
+"Bm" b2f2 d2B2 F2B2 d2f2 | "Em" g2e2 B2G2 E2G2 B2e2 | "F#" f2c2 A2F2 C2F2 A2c2 | "Bm" d2B2 F2D2 B,2D2 F2B2 |
+"G" d2B2 G2D2 B,2D2 G2B2 | "A" c2A2 E2C2 A,2C2 E2A2 | "D" d2A2 F2D2 A,2D2 F2A2 | "Bm" B6 d2 f6 a2 |
+|: "D" d'4 a4 f4 d4 | "G" b4 g4 d4 B4 | "A" c'4 a4 e4 c4 | "Bm" b4 f4 d4 B4 :|
+V:2 clef=treble name="Brass Section" subname="Brass"
 %%MIDI program 61
-|: "Dm"d2af d2af d4 c2A2 | "C"c2eg c2eg c4 B2G2 | "Bb"d2Bb d2Bb d4 c2A2 | "A"A2ce A2ce A8 |
-"Dm"d2af d2af d4 c2A2 | "C"c2eg c2eg c4 B2G2 | "Bb"d2Bb d2Bb d4 c2A2 | "A7"A2ce A2ce A8:|
-V:2 clef=treble name="Strings" subname="Rhythm"
-%%MIDI program 49
-|: "Dm"A4 A4 f4 f4 | "C"G4 G4 e4 e4 | "Bb"F4 F4 d4 d4 | "A"E4 E4 c4 c4 |
-"Dm"A4 A4 f4 f4 | "C"G4 G4 e4 e4 | "Bb"F4 F4 d4 d4 | "A7"E4 E4 c4 c4 :|
-V:3 clef=treble name="Woodwind" subname="Counter"
-%%MIDI program 74
-|: "Dm"f2d2 f2d2 AcBA z4 | "C"e2c2 e2c2 GFGA z4 | "Bb"B2F2 B2F2 DEDF z4 | "A"c2A2 c2A2 E4 z4 |
-"Dm"f2d2 f2d2 AcBA z4 | "C"e2c2 e2c2 GFGA z4 | "Bb"B2F2 B2F2 DEDF z4 | "A7"c2A2 c2A2 E4 z4 :|
-V:4 clef=bass name="Bass" octave=-1
-%%MIDI program 43
-|: "Dm"D8 D8 | "C"C8 C8 | "Bb"B B7 B B7 | "A"A,8 A,8 |
-"Dm"D8 D8 | "C"C8 C8 | "Bb"B B7 B B7 | "A7"A,8 A,8 :|
+|:"Bm" d2f2 B2d2 f4 z4 | "G" B2d2 G2B2 d4 z4 | "A" A2c2 E2A2 c4 z4 | "Em" G2B2 E2G2 B4 z4 |
+"Bm" f2b2 d2f2 b4 z4 | "F#" c2f2 A2c2 f4 z4 | "G" d2g2 B2d2 g4 z4 | "A" e2a2 c2e2 a4 z4 |
+"Bm" [Bd]2[Bf]2 [Bd]2[Bf]2 [Bd]2[Bf]2 [Bd]2[Bf]2 | "Em" [GB]2[Ge]2 [GB]2[Ge]2 [GB]2[Ge]2 [GB]2[Ge]2 | "F#" [Ac]2[Af]2 [Ac]2[Af]2 [Ac]2[Af]2 [Ac]2[Af]2 | "Bm" [Bd]2[Bf]2 [Bd]2[Bf]2 [Bd]2[Bf]2 [Bd]2[Bf]2 |
+"G" [GB]2[Gd]2 [GB]2[Gd]2 [GB]2[Gd]2 [GB]2[Gd]2 | "A" [Ac]2[Ae]2 [Ac]2[Ae]2 [Ac]2[Ae]2 [Ac]2[Ae]2 | "D" [Ad]2[Af]2 [Ad]2[Af]2 [Ad]2[Af]2 [Ad]2[Af]2 | "Bm" [Bd]2[Bf]2 [Bd]2[Bf]2 [Bd]2[Bf]2 [Bd]2[Bf]2 |
+|: "D" [DF]2[DA]2 [DF]2[DA]2 [DF]2[DA]2 [DF]2[DA]2 | "G" [GB]2[GD']2 [GB]2[GD']2 [GB]2[GD']2 [GB]2[GD']2 | "A" [AC]2[AE]2 [AC]2[AE]2 [AC]2[AE]2 [AC]2[AE]2 | "Bm" [BD]2[BF]2 [BD]2[BF]2 [BD]2[BF]2 [BD]2[BF]2 :|
+V:3 clef=bass name="Bass Synth" subname="Bass"
+%%MIDI program 87
+|:"Bm" B,4 B,2B,2 B,4 z4 | "G" G,4 G,2G,2 G,4 z4 | "A" A,4 A,2C2 A,4 z4 | "Em" E,4 E,2E,2 E,4 z4 |
+"Bm" B,3B, B,2D2 F,3F, F,2B,2 | "F#" F,3F, F,2A,2 C3C C2F,2 | "G" G,3G, G,2B,2 D3D D2G,2 | "A" A,3A, A,2C2 E3E E2A,2 |
+"Bm" B,,2B,,2 B,,2B,,2 B,,2B,,2 B,,2B,,2 | "Em" E,2E,2 E,2E,2 E,2E,2 E,2E,2 | "F#" F,2F,2 F,2F,2 F,2F,2 F,2F,2 | "Bm" B,,2B,,2 B,,2B,,2 B,,2B,,2 B,,2B,,2 |
+"G" G,,2G,,2 G,,2G,,2 G,,2G,,2 G,,2G,,2 | "A" A,,2A,,2 A,,2A,,2 A,,2A,,2 A,,2A,,2 | "D" D,2D,2 D,2D,2 D,2D,2 D,2D,2 | "Bm" B,,4 F,4 B,4 D4 |
+|: "D" D,4 A,,4 D,4 F,4 | "G" G,4 D,4 G,4 B,4 | "A" A,4 E,4 A,4 C4 | "Bm" B,4 F,4 B,4 D4 :|
 \`\`\``,
 	},
 ];

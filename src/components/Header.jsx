@@ -125,17 +125,13 @@ const Header = (args) => {
 						<NavItem>
 							<NavLink tag={RouterNavLink} to="/research">
 								Research{" "}
-								<span className="icon-square flex-shrink-0 d-none d-lg-inline">
-									<i className={`bi bi-trophy`} />
-								</span>
+									<i className={`bi bi-trophy d-none d-lg-inline`} />
 							</NavLink>
 						</NavItem>
 						<NavItem>
 							<NavLink tag={RouterNavLink} to="/juxcompose">
 								Juxcompose{" "}
-								<span className="icon-square flex-shrink-0 d-none d-lg-inline">
-									<i className={`bi bi-terminal-split`} />
-								</span>
+									<i className={`bi bi-terminal-split d-none d-lg-inline`} />
 							</NavLink>
 						</NavItem>
 						{/* TODO Move to far right */}
@@ -182,11 +178,9 @@ const Header = (args) => {
 											to="/login"
 										>
 											Sign In{" "}
-											<span className="icon-square flex-shrink-0 d-none d-lg-inline">
 												<i
-													className={`bi bi-box-arrow-in-right`}
+													className={`bi bi-box-arrow-in-right d-none d-lg-inline`}
 												/>
-											</span>
 										</NavLink>
 									</div>
 								</NavItem>
@@ -197,11 +191,9 @@ const Header = (args) => {
 											to="/signup"
 										>
 											Sign Up{" "}
-											<span className="icon-square flex-shrink-0 d-none d-lg-inline">
 												<i
-													className={`bi bi-person-plus`}
+													className={`bi bi-person-plus d-none d-lg-inline`}
 												/>
-											</span>
 										</NavLink>
 									</div>
 								</NavItem>

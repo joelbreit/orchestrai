@@ -110,6 +110,7 @@ const ProfileContent = () => {
 			<hr />
 			<p>Username: {appState.username}</p>
 			<p>Display Name: {appState.displayName}</p>
+			<p>Email: {appState.email}</p>
 
 			{/* Tune List */}
 			<h2>Your Tunes</h2>
@@ -146,18 +147,91 @@ const ProfileContent = () => {
 													>
 														{tune.title}
 													</span>
-													<small className="text-muted">
-														{new Date(
-															tune.date
-														).toLocaleTimeString(
-															"en-US",
-															{
-																hour: "numeric",
-																minute: "numeric",
-																hour12: true,
-															}
+													{/* 0 - 1 scores */}
+													<span>
+														
+														{tune.score && (
+															// 0.8 or higher = 4 stars
+															<span
+																className="text-warning"
+																title={`Score: ${tune.score}`}
+															>
+																{tune.score >=
+																	0.8 && (
+																	<>
+																		<i className="bi bi-star-fill" />
+																		<i className="bi bi-star-fill" />
+																		<i className="bi bi-star-fill" />
+																		<i className="bi bi-star-fill" />
+																		<i className="bi bi-star-fill" />
+																	</>
+																)}
+																{/* 0.6 to 0.79 = 3 stars */}
+																{tune.score >=
+																	0.6 &&
+																	tune.score <
+																		0.8 && (
+																		<>
+																			<i className="bi bi-star-fill" />
+																			<i className="bi bi-star-fill" />
+																			<i className="bi bi-star-fill" />
+																			<i className="bi bi-star-fill" />
+																			<i className="bi bi-star" />
+																		</>
+																	)}
+																{/* 0.4 to 0.59 = 2 stars */}
+																{tune.score >=
+																	0.4 &&
+																	tune.score <
+																		0.6 && (
+																		<>
+																			<i className="bi bi-star-fill" />
+																			<i className="bi bi-star-fill" />
+																			<i className="bi bi-star-fill" />
+																			<i className="bi bi-star" />
+																			<i className="bi bi-star" />
+																		</>
+																	)}
+																{/* 0.2 to 0.39 = 1 star */}
+																{tune.score >=
+																	0.2 &&
+																	tune.score <
+																		0.4 && (
+																		<>
+																			<i className="bi bi-star-fill" />
+																			<i className="bi bi-star-fill" />
+																			<i className="bi bi-star" />
+																			<i className="bi bi-star" />
+																			<i className="bi bi-star" />
+																		</>
+																	)}
+																{/* 0 to 0.19 = 0 stars */}
+																{tune.score >= 0 &&
+																	tune.score <
+																		0.2 && (
+																		<>
+																			<i className="bi bi-star-fill" />
+																			<i className="bi bi-star" />
+																			<i className="bi bi-star" />
+																			<i className="bi bi-star" />
+																			<i className="bi bi-star" />
+																		</>
+																	)}
+															</span>
 														)}
-													</small>
+														<small className="text-muted" style={{ marginLeft: "10px" }}>
+															{new Date(
+																tune.date
+															).toLocaleTimeString(
+																"en-US",
+																{
+																	hour: "numeric",
+																	minute: "numeric",
+																	hour12: true,
+																}
+															)}
+														</small>
+													</span>
 												</ListGroupItem>
 											))}
 										</ListGroup>

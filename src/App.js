@@ -13,6 +13,7 @@ import ProfilePage from "./pages/ProfilePage";
 import ResearchPage from "./pages/ResearchPage";
 import SignupPage from "./pages/SignupPage";
 import TunePage from "./pages/TunePage";
+import GuestPage from "./pages/GuestPage";
 
 function App() {
 	return (
@@ -30,6 +31,7 @@ function App() {
 					<Route path="/tunes/:tuneId" element={<TunePage />} />
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/signup" element={<SignupPage />} />
+					<Route path="/2iBIh9zHmLViW3N" element={<GuestPage />} />
 					<Route path="*" element={<NotFoundPage />} />
 				</Routes>
 			</BrowserRouter>

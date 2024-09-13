@@ -105,139 +105,88 @@ const ABCEditorContent = ({ tuneId }) => {
 	}, [file, tuneId]);
 
 	return (
-		<div className="container px-4">
-			<Container>
-				{!title ? (
-					<h1 className="border-bottom">ABC Notation Editor</h1>
-				) : (
-					<h1 className="border-bottom">{title}</h1>
-				)}
-				{retrievalState === "Loading" && (
-					<Alert color="primary">
-						<Spinner
-							as="span"
-							animation="border"
-							size="sm"
-							role="status"
-							aria-hidden="true"
-						/>{" "}
-						Loading tune...
+		<Container>
+			{!title ? (
+				<h1 className="border-bottom">ABC Notation Editor</h1>
+			) : (
+				<h1 className="border-bottom">{title}</h1>
+			)}
+			{retrievalState === "Loading" && (
+				<Alert color="primary">
+					<Spinner
+						as="span"
+						animation="border"
+						size="sm"
+						role="status"
+						aria-hidden="true"
+					/>{" "}
+					Loading tune...
+				</Alert>
+			)}
+			{retrievalState === "Complete" && (
+				<div>
+					<Alert
+						color={
+							retrievalStatusCode === 200 ? "success" : "danger"
+						}
+					>
+						{retrievalStatusCode === 200 ? (
+							<div
+								style={{
+									display: "flex",
+									alignItems: "center",
+									// justifyContent: "center",
+								}}
+							>
+								<img
+									src={OrcheImage}
+									width="30"
+									height="30"
+									alt="Orche"
+								/>{" "}
+								"Tune retrieved successfully!"
+							</div>
+						) : (
+							<div
+								style={{
+									display: "flex",
+									alignItems: "center",
+									// justifyContent: "center",
+								}}
+							>
+								<img
+									src={OrcheImage}
+									width="30"
+									height="30"
+									alt="Orche"
+								/>{" "}
+								"There was an error retrieving your tune."
+							</div>
+						)}
 					</Alert>
-				)}
-				{retrievalState === "Complete" && (
-					<div>
-						<Alert
-							color={
-								retrievalStatusCode === 200
-									? "success"
-									: "danger"
-							}
-						>
-							{retrievalStatusCode === 200 ? (
-								<div
-									style={{
-										display: "flex",
-										alignItems: "center",
-										// justifyContent: "center",
-									}}
-								>
-									<img
-										src={OrcheImage}
-										width="30"
-										height="30"
-										alt="Orche"
-									/>{" "}
-									"Tune retrieved successfully!"
-								</div>
-							) : (
-								<div
-									style={{
-										display: "flex",
-										alignItems: "center",
-										// justifyContent: "center",
-									}}
-								>
-									<img
-										src={OrcheImage}
-										width="30"
-										height="30"
-										alt="Orche"
-									/>{" "}
-									"There was an error retrieving your tune."
-								</div>
-							)}
-						</Alert>
 
-						<Row className="mt-2">
-							<Col>
-								<h2>Title</h2>
-								{title ? (
-									<p>{title}</p>
-								) : (
-									<p>No title provided</p>
-								)}
-							</Col>
-							<Col>
-								<h2>Date</h2>
-								{creationDate ? (
-									<p>{creationDate}</p>
-								) : (
-									<p>No date provided</p>
-								)}
-							</Col>
-							<Col>
-								<h2>Prompt</h2>
-								{prompt ? (
-									<p>{prompt}</p>
-								) : (
-									<p>No prompt provided</p>
-								)}
-							</Col>
-						</Row>
-						<Row className="mt-2">
-							<Col>
-								<h2>Description</h2>
-								{description ? (
-									<p>{description}</p>
-								) : (
-									<p>No description provided</p>
-								)}
-							</Col>
-						</Row>
-					</div>
-				)}
-				{!tuneId && (
-					<>
-						<h2>Enter ABC Notation</h2>
-						{/* <Input
-							type="textarea"
-							value={abcNotation}
-							onChange={handleInputChange}
-							placeholder="Enter ABC notation here"
-							rows={10}
-						/> */}
-						<ABCInput
-							parentText={abcNotation}
-							placeholderText="Enter ABC notation here"
-							onChange={setAbcNotation}
-						/>
-					</>
-				)}
-				<Row className="mt-2">
-					<Col className="d-flex justify-content-end">
-						<Button
-							onClick={() => setAbcNotation("")}
-							color="danger"
-							outline
-							size="sm"
-							style={{ marginRight: "10px" }}
-						>
-							Clear
-						</Button>
-						<FileUploader handleFile={setFile} />
-					</Col>
-				</Row>
-				{didUpload && (
+					<Row className="mt-2">
+						<Col>
+							<h2>Title</h2>
+							{title ? <p>{title}</p> : <p>No title provided</p>}
+						</Col>
+						<Col>
+							<h2>Date</h2>
+							{creationDate ? (
+								<p>{creationDate}</p>
+							) : (
+								<p>No date provided</p>
+							)}
+						</Col>
+						<Col>
+							<h2>Prompt</h2>
+							{prompt ? (
+								<p>{prompt}</p>
+							) : (
+								<p>No prompt provided</p>
+							)}
+						</Col>
+					</Row>
 					<Row className="mt-2">
 						<Col>
 							<h2>Description</h2>
@@ -248,32 +197,75 @@ const ABCEditorContent = ({ tuneId }) => {
 							)}
 						</Col>
 					</Row>
-				)}
-				<Row className="mt-2">
-					<Col>
-						{/* <h2>Rendered Sheet Music</h2> */}
-						<Synthesizer abcNotation={abcNotation} index={0} />
-					</Col>
-				</Row>
-				{tuneId && (
-					<>
-						<h2>Generated Music Notation</h2>
-						{/* <Input
+				</div>
+			)}
+			{!tuneId && (
+				<>
+					<h2>Enter ABC Notation</h2>
+					{/* <Input
 							type="textarea"
 							value={abcNotation}
 							onChange={handleInputChange}
 							placeholder="Enter ABC notation here"
 							rows={10}
 						/> */}
-						<ABCInput
-							parentText={abcNotation}
-							placeholderText="Enter ABC notation here"
-							onChange={setAbcNotation}
-						/>
-					</>
-				)}
-			</Container>
-		</div>
+					<ABCInput
+						parentText={abcNotation}
+						placeholderText="Enter ABC notation here"
+						onChange={setAbcNotation}
+					/>
+				</>
+			)}
+			<Row className="mt-2">
+				<Col className="d-flex justify-content-end">
+					<Button
+						onClick={() => setAbcNotation("")}
+						color="danger"
+						outline
+						size="sm"
+						style={{ marginRight: "10px" }}
+					>
+						Clear
+					</Button>
+					<FileUploader handleFile={setFile} />
+				</Col>
+			</Row>
+			{didUpload && (
+				<Row className="mt-2">
+					<Col>
+						<h2>Description</h2>
+						{description ? (
+							<p>{description}</p>
+						) : (
+							<p>No description provided</p>
+						)}
+					</Col>
+				</Row>
+			)}
+			<Row className="mt-2">
+				<Col>
+					{/* <h2>Rendered Sheet Music</h2> */}
+					<Synthesizer abcNotation={abcNotation} index={0} />
+				</Col>
+			</Row>
+			{tuneId && (
+				<>
+					<h2>Generated Music Notation</h2>
+					{/* <Input
+							type="textarea"
+							value={abcNotation}
+							onChange={handleInputChange}
+							placeholder="Enter ABC notation here"
+							rows={10}
+						/> */}
+					<ABCInput
+						parentText={abcNotation}
+						placeholderText="Enter ABC notation here"
+						onChange={setAbcNotation}
+					/>
+				</>
+			)}
+		</Container>
 	);
 };
 

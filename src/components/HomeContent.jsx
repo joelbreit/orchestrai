@@ -49,8 +49,8 @@ const HomeContent = () => {
 					className="primary-button mr-2"
 				>
 					Compose Now{" "}
-					<span role="img" aria-label="music note emoji">
-						🎵
+					<span className="icon-square flex-shrink-0">
+						<i className={`bi bi-music-note-beamed`}></i>
 					</span>
 				</Button>
 			</div>
@@ -80,8 +80,8 @@ const HomeContent = () => {
 								className="primary-button"
 							>
 								Read Our Research{" "}
-								<span role="img" aria-label="book emoji">
-									📖
+								<span className="icon-square flex-shrink-0">
+									<i className={`bi bi-journal-text`}></i>
 								</span>
 							</Button>
 						</CardBody>
@@ -107,8 +107,8 @@ const HomeContent = () => {
 								className="primary-button"
 							>
 								Try It Out{" "}
-								<span role="img" aria-label="crossed swords">
-									⚔️
+								<span className="icon-square flex-shrink-0">
+									<i className={`bi bi-columns-gap`}></i>
 								</span>
 							</Button>
 						</CardBody>
@@ -134,8 +134,8 @@ const HomeContent = () => {
 								className="primary-button"
 							>
 								Try It Out{" "}
-								<span role="img" aria-label="paper emoji">
-									📝
+								<span className="icon-square flex-shrink-0">
+									<i className={`bi bi-pencil-square`}></i>
 								</span>
 							</Button>
 						</CardBody>
@@ -160,8 +160,8 @@ const HomeContent = () => {
 								className="primary-button"
 							>
 								View{" "}
-								<span role="img" aria-label="trophy emoji">
-									🏆
+								<span className="icon-square flex-shrink-0">
+									<i className={`bi bi-trophy`}></i>
 								</span>
 							</Button>
 						</CardBody>
