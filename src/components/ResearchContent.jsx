@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-	Button,
-	Container,
-	Modal,
-	ModalBody,
-	ModalHeader
-} from "reactstrap";
-
+import { Button, Container, Modal, ModalBody, ModalHeader } from "reactstrap";
 
 import Rubric from "./Rubric";
 
@@ -19,7 +12,10 @@ const ResearchContent = () => {
 
 	return (
 		<Container className="mt-5">
-			<h1>Automated Music Composition using GPT-4 - An Exploration</h1>
+			<h1>
+				Automated Music Composition with a Large Language Model - An
+				Exploration
+			</h1>
 			<h5>Joel P. S. Breit</h5>
 			<h5>University of Pittsburgh</h5>
 			<h5>December 2023</h5>
@@ -54,7 +50,7 @@ const ResearchContent = () => {
 			</p>
 			<h3>Objectives</h3>
 			<p>
-				My objective, for this project was to utilize the intelligence
+				The objective, for this project was to utilize the intelligence
 				of an LLM to easily generate pleasant and customizable musical
 				compositions. This objective consisted of many subgoals
 				including the following:
@@ -93,93 +89,93 @@ const ResearchContent = () => {
 			<h2>Methods</h2>
 			<h3>Picking an LLM</h3>
 			<p>
-				In order to address the goals of this project, I needed to pick
-				a large language model and a text based music notation style.
-				For the large language model, I chose GPT-4 primarily due to its
-				reputation as being the state-of-the-art language model in
-				October-December of 2023 when this research was conducted{" "}
+				In order to address the goals of this research, a large language
+				model and a text based music notation style needed to be
+				selected. For the large language model, GPT-4 was chosen
+				primarily due to its reputation as being the state-of-the-art
+				language model in October-December of 2023 when this research
+				was conducted{" "}
 				<a href="https://huggingface.co/spaces/lmsys/chatbot-arena-leaderboard">
 					Chatbot Arena Leaderboard
 				</a>
 				. This research also likely could have been conducted using
 				other LLMs such as Claude from Anthropic or Llama from Meta, but
-				such exploration fell outside the scope of this project (i.e.
-				would have required a lot more time and effort).
+				such exploration fell outside the scope of this research and
+				preliminary testing showed that other models often struggled to
+				produce even coherent outputs.
 			</p>
 			<h3>Picking a Notation Style</h3>
 			<p>
-				As for the text based music notation style, I explored creating
-				output in the following formats: 1. ABC notation, 2. (note,
-				duration) pairs (e.g. (“A4”, 2) where “A4” represents the
-				musical note A4, and 2 represents the duration of 2 beats), 3.
-				Python code utilizing the music21 library, and 4. MusicXML. In
-				test runs, MusicXML was too verbose and resulted in invalid
-				syntax and a dearth of musical content relative to the volume of
-				text required. Similarly, music21 code frequently failed to
-				compile making it difficult to test, and (note, duration) pairs
-				were difficult to translate into a usable format. ABC notation
-				and (note, duration) pairs provided the best preliminary
-				results, so I tested them each with 8 identical prompts and
-				compared the results. I did not conduct a formal analysis, but
-				the resulting compositions can be found at{" "}
+				The following formats were tested for text based music notation
+				style: 1. ABC notation, 2. (note, duration) pairs (e.g. (“A4”,
+				2) where “A4” represents the musical note A4, and 2 represents
+				the duration of 2 beats), 3. Python code utilizing the music21
+				library, and 4. MusicXML. In test runs, MusicXML was too verbose
+				and resulted in invalid syntax and a dearth of musical content
+				relative to the volume of text required. Similarly, music21 code
+				frequently failed to compile making it difficult to test, and
+				(note, duration) pairs were difficult to translate into a usable
+				format. ABC notation and (note, duration) pairs provided the
+				best preliminary results. Next, 8 identical prompts were used to
+				compare the quality of compositions generated using ABC notation
+				and (note, duration). No formal analysis was conducted on these
+				results, but the resulting compositions can be found at{" "}
 				<a href="https://www.OrchestrAI.site/juxcompose">
 					https://www.OrchestrAI.site/juxcompose
 				</a>
-				. Based on the above, I determined empirically that ABC notation
-				produced the best results although it has its own limitations
-				which are outline in the limitations section below.
+				. Based on the above, it was determined empirically that ABC
+				notation produced the best results.
 			</p>
 			<h3>Creating an Interface</h3>
 			<p>
 				After making these determinations, an interface needed to be
 				developed for replicable usage of the LLM and for translation of
-				the LLM’s text based output. To this end, I created a web
-				application utilizing web development languages and libraries
+				the LLM’s text based output. To this end, a web application was
+				created utilizing web development languages and libraries
 				including the open source ABCjs library which allows for
 				in-browser rendering of audio-video enabled sheet music from ABC
-				notation. To simplify the composition process, I only included a
-				field for providing a mood for the composition to emulate. Upon
-				submission, the prompt “Compose a tune that expresses the
-				following mood: [provided mood]“ was sent to the API. After
-				completion, the web application extracted the ABC notation,
-				provided it in an editable text field, rendered the ABC notation
-				as playable audio-video sheet music, and separately displayed
-				any accompanying text that the model generated.
+				notation. For each composition, a different mood was requested
+				to be expressed in the music. Upon submission, the prompt
+				“Compose a tune that expresses the following mood: [provided
+				mood]“ was sent to the API. After completion, the web
+				application extracted the ABC notation, provided it in an
+				editable text field, rendered the ABC notation as playable
+				audio-video sheet music, and separately displayed any
+				accompanying text that the model generated.
 			</p>
 			<h3>Customizing the Model</h3>
 			<p>
-				For the purpose of this project, I created a custom GPT-4-Turbo
-				model using OpenAI’s Assistants API which was available in beta
-				at the time. For customization, I provided a custom prompt
-				provided in the appendix of this report that discouraged common
-				failures such as mismatched voices and encouraged its proven
-				competencies such as including chords and composing multiple
-				sections.
+				For the purpose of this project, a custom GPT-4-Turbo model was
+				created using OpenAI’s Assistants API which was available in
+				beta at the time. For customization, a custom prompt was
+				provided which is available in the appendix of this report. The
+				prompt discouraged common failures such as mismatched voices and
+				encouraged proven competencies such as including chords and
+				composing multiple sections.
 			</p>
 			<p>
-				In addition to a custom prompt, I also provided 3 reference
-				materials to provide a targeted knowledge base for the GPT. The
-				first document was a web archive of the ABC notation Standards
+				In addition to a custom prompt, 3 reference materials were added
+				to provide a targeted knowledge base for the GPT. The first
+				document was a web archive of the ABC notation Standards
 				provided at{" "}
 				<a href="https://abcnotation.com/wiki/abc:standard:v2.1">
 					https://abcnotation.com/wiki/abc:standard:v2.1
 				</a>
 				. The other two documents were transcripts generated by GPT-4 on
-				what makes a good melody and what makes good harmonization.
-				These knowledge represented in these documents originated
-				entirely from GPT-4, so compositions can really be attributed as
-				original.
+				what makes a good melody and what makes good harmonization. The
+				knowledge represented in these documents originated entirely
+				from GPT-4.
 			</p>
 			<h3>Evaluation</h3>
 			<p>
-				In order to evaluate the results of this project, I generated 20
-				mood ideas with the model created for this project, and
-				evaluated them on 11 metrics: grade, notation, melody, harmony,
-				chords, mood, lyrics, text, measures, duration, and voices.
-				Measures was the number of musical measure written in the
-				output, duration was the time that the tune took to play in the
-				ABCjs interface, and voices was the number of voices (1 through
-				4) included in the composition. All the other metrics were
+				In order to evaluate the results of this project, 20
+				compositions were generated with varying request parameters and
+				each was evaluated on 11 metrics: grade, notation, melody,
+				harmony, chords, mood, lyrics, text, measures, duration, and
+				voices. Measures was the number of musical measures written in
+				the output, duration was the time that the tune took to play in
+				the ABCjs interface, and voices was the number of voices (1
+				through 4) included in the composition. All other metrics were
 				assessed qualitatively according to the following rubric:
 			</p>
 			<Button
@@ -212,19 +208,16 @@ const ResearchContent = () => {
 			<hr />
 			<h2>Results</h2>
 			<p>
-				The best way to understand the results of this project are to go
-				and view them on the site:{" "}
+				The best way to understand the results of this research are to
+				go and view them on its dedicated website:{" "}
 				<a href="https://www.OrchestrAI.site/compose">
 					https://www.OrchestrAI.site/compose
 				</a>
-				. You can generate new tunes there with an OpenAI API key, or
-				you can listen to some previously generated ABC notation tunes
-				using software that can render it (one such place is also on my
-				site:{" "}
-				<a href="https://www.OrchestrAI.site/abcEditor">
-					https://www.OrchestrAI.site/abcEditor
-				</a>
-				). You find some of the best results at{" "}
+				. The site allows visiters to generate new compositions, view
+				them as sheet music, listen and watch them be played back, and
+				edit them. It also allows for saving and sharing generated
+				compositions. A curated selection of successful compositions
+				generated by the model can also be viewed at{" "}
 				<a href="https://www.OrchestrAI.site/portfolio">
 					https://www.OrchestrAI.site/portfolio
 				</a>
@@ -250,8 +243,8 @@ const ResearchContent = () => {
 			<h3>Limitations</h3>
 			<p>
 				It was difficult to conduct this research without noticing
-				several limitations of the methodology. For example, I mentioned
-				above several reasons for the use of ABC notation however, ABC
+				several limitations of the methodology. Mentioned above are
+				several reasons for the use of ABC notation however, ABC
 				notation has limitations of its own. ABC notation was developed,
 				and is largely used for annotation of folk music, and like
 				nearly all public sources of written music, ABC notation
@@ -261,116 +254,125 @@ const ResearchContent = () => {
 				uninteresting music. This is also at least partially due to the
 				fact that if music is particularly complicated or intricate, it
 				is unlikely to be represented in ABC notation as opposed to
-				other formats. This I believe has resulted in LLMs being biased
-				towards generating simplistic musical structure when prompted to
-				write in ABC notation.
+				other formats. This may result in LLMs being biased towards
+				generating simplistic musical structure when prompted to write
+				in ABC notation.
 			</p>
 			<p>
 				While it can be shown that LLMs retain an incredible depth of
-				knowledge of music theory it is difficult to coax into
-				demonstrating that knowledge through the ABC notation medium. A
-				large portion of my struggle in improving the interestingness of
-				generated compositions consisted of pleading in every way that I
-				could articulate for it to include any rhythm other than quarter
-				notes and any musical direction other than stepwise motion. It
-				is also the case that while GPT-4 had no trouble describing the
-				rules and conventions of good voice leading (the rules that lead
-				to good, or at least not unpleasant, harmonies), it struggled to
-				implement these concepts in its generated output.
+				knowledge of music theory, it is difficult to demonstrate that
+				knowledge through the ABC notation medium. A large portion of
+				the tweaking phase of this research was focused on improving the
+				interestingness of generated compositions and particularly on
+				generating rhythms other than quarter notes and musical
+				direction other than stepwise motion. It is also the case that
+				while GPT-4 had no trouble describing the rules and conventions
+				of good voice leading (the rules that lead to good, or at least
+				not unpleasant, harmonies), it frequently failed to implement
+				these rules in its compositions.
 			</p>
 			<p>
 				Some other notable and recurring issues included filling
 				measures with too many/too few beats, mismatching beats across
 				voices, including contradicting chords in different voices,
-				forgetting to put notes in the correct octave (likely due to the
+				failing to put notes in the correct octave (likely due to the
 				convoluted nature of octave representation in ABC notation),
 				crossing voices (an easy-to-spot voice leading mistake), failing
 				to line lyrics up with notes (this is an admittedly difficult
 				task), and otherwise failing to generate consistency across
 				voices.
 			</p>
-			<h3>Successes</h3>
 			<p>
-				While the end results are inconsistent and not well measured in
-				comparison to other methods, I am immensely proud of the overall
-				product. I believe this is the first ever successful(-ish)
-				implementation of an LLM as a music composer. I also believe
-				this is genuinely among one of the most useful tools created for
-				music composition. I would have loved to have a tool like this
-				when writing music for bands, and I think further improvements
-				are very much within grasp.
-			</p>
-			<p>
-				It is also worth mentioning that this is a completely insane
-				project to be doing. I am using a language model to reason about
-				music and wrangling its conjectures into real, playable music
-				that is at least occasionally inspiring and beautiful! It is
-				very cool to be alive right now, and I hope the future lives up
-				to being as exhilarating as it looks to be headed.
+				While there are many limitations to this research, it is the
+				first of its kind and provides a strong foundation for future
+				research. The resulting tool created by this research is also
+				likely the first to accomplish any of the following: generate
+				playable music from unrestricted text input, generate viewable
+				music notation using a machine learning system, generate
+				creative music output not based on a musical corpus, allow
+				unrestricted input for music generation, and allow for
+				composition editing and extension.
 			</p>
 			<h3>Further Work</h3>
 			<p>
-				I am filled with ideas for the future relating to how this type
-				of research could be expanded upon. A lot of improvement was
-				made by tweaking the prompt that I provided to GPT-4, I have
-				already tweaked it more since conducting the evaluation, and I
-				think there are further improvements that can be made in that
-				easy to update domain. I believe another 15% improvement is
-				likely to result from working on this.
+				Ultimately, while this research attempts to provide a high level
+				view of the limitations and potential for using large language
+				models in music composition, it provides neither a sufficiently
+				deep inspection of these limitations nor a comprehensive
+				exploration of the possible approaches that this line of
+				research could take. There are many facets of large language
+				models' understanding of written music that could be further
+				scrutinized as well as many other applications of these models
+				in music composition that could be explored.
+			</p>
+			<h4>Prompt and Resource Adjustments</h4>
+			<p>
+				Considerable progress was made in the quality of the output by
+				tweaking the prompt that was provided. Some adjustments have
+				already been implemented since this research was conducted, and
+				there are likely further improvements that can be made in this
+				easy to update domain. Marginal improvements are likely to
+				result from a sufficient exploration of prompting techniques.
 			</p>
 			<p>
-				Some of the most surprising improvements came from providing
-				resources to the custom GPT. The sources I provided were simply
-				more content created by the same LLM, but they helped in priming
-				the results and overcoming the limitations of its related
-				training data. My impression is that providing the knowledge
-				base materials could help improve the compositions by another
-				50%.
+				Some of the more surprising improvements came from providing
+				resources to the custom GPT. Furthermore, the sources provided
+				were selected largely for expiedience and were in fact producted
+				directly by the model itself. These resources likely helped in
+				priming the results. Future research may explore iteratively
+				providing professionally produced resources on music theory and
+				notation standards.
 			</p>
+			<h4>Few Shot Learning</h4>
 			<p>
-				Next is using a few shot learning approach. In particular,
-				providing just a few example messages in the thread generates
-				new results could help keep it much more on track. I observed
-				this in a few unintentional circumstances, and intended to use
-				this technique in the project before time limitations
-				necessitated that I not. This would likely reduce the failures
-				of the output by 90%, but it may also reduce the creativity -
-				something that is particularly important in this use case.
+				It was peripherally observed that the model was able to produce
+				better results in contexts where successful examples were
+				provided. While a few shot learning approach was not implemented
+				in this research, it is likely to be a fruitful avenue for
+				future research. However, given the importance of creativity in
+				music generation, it is possible that this approach could limit
+				the variability of output and thus limit visibility into what
+				the best case scenarios generations could be.
 			</p>
+			<h4>Fine Tuning</h4>
 			<p>
-				Perhaps the most obvious next improvement is fine-tuning. While
-				fine-tuning is not yet available for GPT-4, it will be soon, and
-				that is an obvious area to focus future efforts. Even just a
-				little bit of fine-tuned training would likely improve this
-				model especially given how strange the task I am asking of it is
-				compared to most of its training. A lot of fine-tuning might
-				make this as good a music generator as currently exists.
+				Noteably, this research did not attempt to test a fine-tuned
+				model. When this research was conducted, fine-tuning was not
+				available for GPT-4 and other language models for which
+				fine-tuning was available proved significantly less capable at
+				generating music. While training data in the form of ABC
+				notation may be a limiting factor, fine-tuning will likely
+				provide a significant advantage in future research.
 			</p>
+			<h4>Synthetic Training Data</h4>
 			<p>
-				Another future area I am excited about is using this kind of
-				model for generating synthetic data. It seems that large,
-				relevant musical datasets will be out of reach for many, many
-				years, and some of the best generative music AIs are trained on
-				just a few hundred compositions! Being that music generated with
-				LLMs is necessarily public domain and original (my attempts to
-				get LLMs to recreate or even recognize common songs have been
-				entirely fruitless), there is a huge opportunity for creating a
-				synthetic dataset of music that is not a century old, is not
-				from low quality recordings, and has ample text related
-				descriptions. This really may be the future of generative music
-				notation AI.
+				A novel approach that this method of music generation allows is
+				the creation of synthetic training data. Standardized training
+				data for music research is among the most difficult to come by,
+				and generating new compositions has, perhaps until now, been
+				infeasible outside of the most well funded research efforts.
+				Many current generative music systems have been limited to music
+				that is a century or more old, is from low quality recordings,
+				or that has limited labeling data associated with it. Indeed,
+				some of the best generative music systems are trained on just a
+				few hundred compositions. Music generated by large language
+				models and verified by human judges could be used to create a
+				new dataset of music that has ample metadata, and is public
+				domain and original by nature. This data could be useful for
+				future iterations of this flavor of music generation as well as
+				for other music generation tasks.
 			</p>
+			<h4>Other Text Based Music Notation Formats</h4>
 			<p>
 				In future work, it may be worth revisiting other text based
 				music notation formats. This could include music libraries for
 				computer languages like music21, file formats like MusicXML or
-				MIDI, or other text representations. There is a lot to explore
-				here, and combining LLMs, code and other technologies could help
-				elevate one of those notation techniques to helping compose or
-				even record incredible music. More research could be done on
-				analyzing what text representations LLMs are best at
-				comprehending and best at expressing.
+				MIDI, or other text representations. There is a wide space to be
+				explored in this domain, and more research could be done on
+				analyzing what text representations large language models are
+				best at comprehending and best at expressing.
 			</p>
+			<h4>Comparative Evaluations</h4>
 			<p>
 				Providing training data based on music21, or (note, duration)
 				pairs may improve reliability in which case these formats may
@@ -379,19 +381,20 @@ const ResearchContent = () => {
 				data compared to music training data) or in small snippets which
 				makes sense a priori. It may also be prudent to create a
 				converter that translates syntax like (note, duration) pairs for
-				ease of experimentation.Similarly, it would be worth exploring
-				how other LLMs do compared to GPT-4. Other models can be fine
-				tuned which is likely to provide a huge advantage with enough
-				care for crafting good training data. I expect that a direct
-				comparison of evaluations between models would be more
-				enlightening than a single evaluation on its own.
+				ease of experimentation. Similarly, it would be worth exploring
+				how other large language models perform at similar tasks when
+				compared to GPT-4. Other models can be fine tuned which is
+				likely to provide an important advantage with enough care for
+				crafting good training data. Furthermore, a direct comparison of
+				evaluations between models may be more enlightening than a
+				single evaluation as conducted above.
 			</p>
+			<h4>Future Models</h4>
 			<p>
-				Finally, it is probably worth mentioning that AI and especially
-				LLMs are improving at an exhilarating pace, and it may be the
-				case that by the time any of this research is conducted in
-				totality, new LLM technology will lap the music AI community in
-				capabilities yet again.
+				Finally, as large language models continue to improve, these
+				capabilities may need to be reassessed. It is possible that the
+				limitations of this current iteration may soon be address be
+				better models with improved reasoning capabilities.
 			</p>
 			<hr />
 			<h2>Appendix</h2>
