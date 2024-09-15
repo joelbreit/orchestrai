@@ -93,27 +93,25 @@ const ABCCleaner = () => {
 				is a tool that helps you clean up ABC notation compositions.
 				Compositions created with LLMs frequently contain notation
 				errors that can turn an impressive piece of music into a jumbled
-				mess. This small mistakes often cause vioces to get out of sync
+				mess. These small mistakes often cause vioces to get out of sync
 				which can be particularly detrimental to the overall quality of
 				the composition. This is especially noticable on this platform
-				as we animate the music sheet as it plays.
+				as it animates the notes as they are played.
 			</p>
 			<p>
-				The cleaner will help you fix these errors and get your
-				composition back on track. Simply paste your ABC notation into
-				the input box on the left and click the "Clean" button. If the
-				cleaner is able to fix the notation, the cleaned version will
-				appear in the right input box. You can also select a tune from
-				the dropdown to see a pre-generated tune and its cleaned
-				version.
+				The cleaner can help you fix some of these errors and get your
+				composition back on track. To use it, paste your ABC notation
+				into the input box on the left and click the "Clean" button. If
+				the cleaner is able to fix the notation, the cleaned version
+				will appear in the right input box. You can also select "Load
+				Example" to see an example of a tune that can be cleaned with
+				this tool.
 			</p>
 			<p>
-				This tool is a work in progress. In our experience, it works
+				This tool is a work in progress. In past experience, it works
 				between 70-80% of the time for small issues, and 20-30% of the
-				time for compositions with a lot of issues. We are working to
-				improve the accuracy of the cleaner as well as making
-				improvements to the LLM that help improve its ability to stay on
-				track with the notation.
+				time for compositions with a lot of issues. More work is being
+				done to improve the capabilities of the cleaner.
 			</p>
 
 			<Row>
@@ -134,15 +132,17 @@ const ABCCleaner = () => {
 									alt="Orche"
 								/>{" "}
 								<span>
-									Sorry, but we couldn't clean up this tune.{" "}
-									{warnings.length} warnings were issued. See
-									something strange? Let us know on our{" "}
+									Sorry, but this tune wasn't able to be
+									repaired. {warnings.length} warnings were
+									issued. See something strange? Send a
+									message to the{" "}
 									<a
 										href="https://discord.gg/e3nNUGVA7A"
 										target="_blank"
 										rel="noreferrer"
 									>
-										Discord
+										Discord{" "}
+										<i className="bi bi-discord"></i>
 									</a>
 									.
 								</span>
@@ -237,7 +237,7 @@ const ABCCleaner = () => {
 							Logger.debug("Example loaded");
 							loadExample();
 						}}
-						className="primary-button mb-2"
+						className="primary-button-outline mb-2"
 					>
 						Load Example{" "}
 						<span className="icon-square flex-shrink-0">

@@ -218,3 +218,55 @@ $light-border: #dee2e6;
 	padding: 10px;
 	border-radius: 6px;
 }
+
+.research-text {
+	font-family: "Times New Roman", Times, serif;
+	font-size: 16px;
+	line-height: 1.6;
+}
+
+.research-container {
+	width: 100%;
+	height: 100vh;
+	overflow-y: auto;
+	padding: 20px;
+	box-sizing: border-box;
+}
+
+.research-content {
+	column-count: 2;
+	column-gap: 40px;
+	column-rule: 1px solid #ccc;
+	padding: 20px;
+	box-sizing: border-box;
+	font-family: "Times New Roman", Times, serif;
+	font-size: 16px;
+	line-height: 1.6;
+}
+
+.research-content h2,
+.research-content h3 {
+	break-inside: avoid;
+}
+
+.research-content ol {
+	padding-left: 20px;
+}
+
+.research-content p,
+.research-content ol,
+.research-content hr {
+	break-inside: avoid;
+}
+
+@media print {
+	.research-container {
+		height: auto;
+	}
+
+	.research-content {
+		column-count: 2;
+		column-gap: 40px;
+		column-rule: 1px solid #ccc;
+	}
+}

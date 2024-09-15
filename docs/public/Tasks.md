@@ -6,6 +6,7 @@
 - [ ] Clean up report
 - [ ] When API fails, you should stop it right away instead of continueing the progress bar for 2ish minutes
 - [ ] Audio stops working in tabs after a while
+- [ ] ABC editor limits height (scrolls) but ABC formatter does not
 
 ## Features
 
@@ -28,6 +29,9 @@
 - [ ] "Keep me logged in" checkbox
 - [ ] Ability to load more tunes on profile page
 - [ ] Enable "Edit Profile" button
+- [ ] Create a specific link for the ABC v note-duration pair comparisons
+- [ ] Replace with clipboard button in ABC Input component
+- [ ] Allow other import/export formats
 
 ## Changes
 
@@ -40,3 +44,12 @@
 
 - [ ] Move Lambda functions to folders
 - [ ] Organize components into folders
+
+## Explore
+
+- [ ] https://github.com/fuhton/react-abc
+
+## Research
+
+- [ ] Can LLMs reproduce existing music?
+- [ ] Clean up research rubric

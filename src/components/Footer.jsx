@@ -15,15 +15,14 @@ const Footer = () => {
 					</span>
 				</h4>
 				<p className="mb-0">
-					We just added the ability to save your compositions and
-					share them with others and more features are on the way! In
-					the meantime, join our{" "}
+					Compositions can now be saved and shared and more features
+					are on the way! In the meantime, join our{" "}
 					<a
 						href="https://discord.gg/e3nNUGVA7A"
 						target="_blank"
 						rel="noreferrer"
 					>
-						Discord
+						Discord <i className="bi bi-discord"></i>
 					</a>{" "}
 					to get updates and chat with us!
 				</p>
@@ -40,7 +39,7 @@ const Footer = () => {
 							className="text-dark"
 						>
 							GitHub Profile{" "}
-							<i className="bi bi-box-arrow-up-right"></i>
+							<i className="bi bi-github" aria-hidden="true"></i>
 						</a>
 					</li>
 					<li>
@@ -50,8 +49,7 @@ const Footer = () => {
 							rel="noreferrer"
 							className="text-dark"
 						>
-							LinkedIn Profile{" "}
-							<i className="bi bi-box-arrow-up-right"></i>
+							LinkedIn Profile <i className="bi bi-linkedin"></i>
 						</a>
 					</li>
 				</ul>
