@@ -6,7 +6,8 @@
 - [ ] Clean up report
 - [ ] When API fails, you should stop it right away instead of continueing the progress bar for 2ish minutes
 - [ ] Audio stops working in tabs after a while
-- [ ] ABC editor limits height (scrolls) but ABC formatter does not
+- [x] ABC editor limits height (scrolls) but ABC formatter does not
+- [ ] Have tried to set min-height for formatted ABCBlock component, but it gets overridden somehow
 
 ## Features
 
@@ -29,9 +30,9 @@
 - [ ] "Keep me logged in" checkbox
 - [ ] Ability to load more tunes on profile page
 - [ ] Enable "Edit Profile" button
-- [ ] Create a specific link for the ABC v note-duration pair comparisons
 - [ ] Replace with clipboard button in ABC Input component
 - [ ] Allow other import/export formats
+- [ ] Ability to upload MIDI/XML files
 
 ## Changes
 
@@ -44,6 +45,12 @@
 
 - [ ] Move Lambda functions to folders
 - [ ] Organize components into folders
+- [ ] Create page component
+- [ ] Rename ABC components
+
+## Ideas
+
+- [ ] Move all buttons for ABC text editor/formatter to a toolbar
 
 ## Explore
 
@@ -52,4 +59,6 @@
 ## Research
 
 - [ ] Can LLMs reproduce existing music?
-- [ ] Clean up research rubric
+- [x] Clean up research rubric
+- [ ] Archive old Reseach component and rubric
+- [ ] Create page or tab for ABC vs note-duration pair comparisons and link in research

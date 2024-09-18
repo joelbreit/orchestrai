@@ -196,13 +196,16 @@ $light-border: #dee2e6;
 	position: relative;
 }
 
-.ABCFormButton {
+.ABCFormButtons {
 	position: absolute;
 	top: 10px;
 	right: 10px;
 	z-index: 1000;
-	min-width: 100px;
 	font-family: "Roboto", sans-serif;
+}
+
+.ABCFormButtons button {
+	min-width: 100px;
 }
 
 .ABCInput {
@@ -210,7 +213,7 @@ $light-border: #dee2e6;
 	font-size: 14px;
 	line-height: 21px;
 	padding: 10px;
-	min-height: 100px;
+	min-height: 85px !important;
 }
 
 .ABCBlock {

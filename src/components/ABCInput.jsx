@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
-import { Button, Form, FormFeedback, FormGroup, Input } from "reactstrap";
+import { Button, Form, Input } from "reactstrap";
 import useOutsideAlerter from "../hooks/useOutsideAlerter";
-import Logger from "../services/Logger";
 import ABCBlock from "./ABCBlock";
 
 const ABCInput = ({ parentText, placeholderText, onChange }) => {
@@ -16,8 +15,6 @@ const ABCInput = ({ parentText, placeholderText, onChange }) => {
 	const handleFormat = (event) => {
 		if (event) event.stopPropagation();
 		setIsEditing(false);
-		Logger.debug("Exiting edit mode", parentText);
-		// No need to call onChange here if no changes are made
 	};
 
 	const handleEdit = () => {
@@ -26,9 +23,9 @@ const ABCInput = ({ parentText, placeholderText, onChange }) => {
 
 	return (
 		<div ref={formRef}>
-			<Form onClick={handleEdit} className="mb-4 ABCForm">
+			<Form onClick={handleEdit} className="mb-2 ABCForm">
 				{isEditing ? (
-					<FormGroup>
+					<>
 						<Input
 							type="textarea"
 							value={parentText}
@@ -36,27 +33,30 @@ const ABCInput = ({ parentText, placeholderText, onChange }) => {
 							placeholder={placeholderText}
 							style={{
 								height: `${
-									parentText.split("\n").length * 23
+									parentText.split("\n").length * 21 + 22
 								}px`,
 							}}
 							className="ABCInput"
 						/>
-						<FormFeedback>
-							Please enter a valid ABC notation.
-						</FormFeedback>
-						<Button
-							type="button"
-							onClick={handleFormat}
-							className="primary-button-outline ABCFormButton btn-sm"
-						>
-							Format{" "}
-							<span className="icon-square flex-shrink-0">
-								<i className={`bi bi-braces`}></i>
-							</span>
-						</Button>
-					</FormGroup>
+						<div className="ABCFormButtons">
+							<Button
+								type="button"
+								onClick={handleFormat}
+								className="primary-button-outline btn-sm"
+							>
+								Format{" "}
+								<span className="icon-square flex-shrink-0">
+									<i className={`bi bi-braces`}></i>
+								</span>
+							</Button>
+						</div>
+					</>
 				) : (
-					<ABCBlock code={parentText} />
+					<ABCBlock
+						code={parentText}
+						setCode={onChange}
+						onEdit={handleEdit}
+					/>
 				)}
 			</Form>
 		</div>
