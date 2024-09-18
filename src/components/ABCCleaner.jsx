@@ -20,7 +20,7 @@ import Synthesizer from "./Synthesizer";
 import ABCNotation from "../services/ABCNotationParser";
 
 import OrcheImage from "../assets/images/Orche.png";
-import ABCInput from "./ABCInput";
+import ABCNotationComponent from "./ABCNotationComponent";
 
 const example = `abc
 X:1
@@ -208,7 +208,7 @@ const ABCCleaner = () => {
 						</Alert>
 					))}
 				<Col sm="6">
-					<ABCInput
+					<ABCNotationComponent
 						parentText={abcNotation1}
 						placeholderText="Enter ABC notation here"
 						onChange={setAbcNotation1}
@@ -253,7 +253,7 @@ const ABCCleaner = () => {
 					</Col>
 				</Col>
 				<Col sm="6">
-					<ABCInput
+					<ABCNotationComponent
 						parentText={abcNotation2}
 						placeholderText="Enter ABC notation here"
 						onChange={setAbcNotation2}

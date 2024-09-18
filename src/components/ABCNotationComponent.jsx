@@ -1,9 +1,9 @@
 import React, { useRef, useState } from "react";
 import { Button, Form, Input } from "reactstrap";
 import useOutsideAlerter from "../hooks/useOutsideAlerter";
-import ABCBlock from "./ABCBlock";
+import PrettyABC from "./PrettyABC";
 
-const ABCInput = ({ parentText, placeholderText, onChange }) => {
+const ABCNotationComponent = ({ parentText, placeholderText, onChange }) => {
 	const [isEditing, setIsEditing] = useState(false);
 	const formRef = useRef(null); // Reference to the form wrapper
 
@@ -25,6 +25,7 @@ const ABCInput = ({ parentText, placeholderText, onChange }) => {
 		<div ref={formRef}>
 			<Form onClick={handleEdit} className="mb-2 ABCForm">
 				{isEditing ? (
+					// TODO make this a component
 					<>
 						<Input
 							type="textarea"
@@ -52,7 +53,7 @@ const ABCInput = ({ parentText, placeholderText, onChange }) => {
 						</div>
 					</>
 				) : (
-					<ABCBlock
+					<PrettyABC
 						code={parentText}
 						setCode={onChange}
 						onEdit={handleEdit}
@@ -63,4 +64,4 @@ const ABCInput = ({ parentText, placeholderText, onChange }) => {
 	);
 };
 
-export default ABCInput;
+export default ABCNotationComponent;

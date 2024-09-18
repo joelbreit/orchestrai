@@ -6,7 +6,7 @@ import FileUploader from "./FileUploader";
 import Synthesizer from "./Synthesizer";
 
 import OrcheImage from "../assets/images/Orche.png";
-import ABCInput from "./ABCInput";
+import ABCNotationComponent from "./ABCNotationComponent";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -209,7 +209,7 @@ const ABCEditorContent = ({ tuneId }) => {
 							placeholder="Enter ABC notation here"
 							rows={10}
 						/> */}
-					<ABCInput
+					<ABCNotationComponent
 						parentText={abcNotation}
 						placeholderText="Enter ABC notation here"
 						onChange={setAbcNotation}
@@ -258,7 +258,7 @@ const ABCEditorContent = ({ tuneId }) => {
 							placeholder="Enter ABC notation here"
 							rows={10}
 						/> */}
-					<ABCInput
+					<ABCNotationComponent
 						parentText={abcNotation}
 						placeholderText="Enter ABC notation here"
 						onChange={setAbcNotation}

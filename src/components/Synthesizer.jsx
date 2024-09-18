@@ -1,6 +1,7 @@
 import { saveAs } from "file-saver";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
+	Alert,
 	Button,
 	Card,
 	CardBody,
@@ -17,6 +18,8 @@ import ABCJS from "abcjs";
 function Synthesizer({ abcNotation, index, animate }) {
 	const musicSheetRef = useRef(null);
 	const audioRef = useRef(null);
+
+	const [abcjsWarnings, setAbcjsWarnings] = useState([]);
 
 	const downloadMIDI = async () => {
 		if (!abcNotation) return;
@@ -105,7 +108,7 @@ function Synthesizer({ abcNotation, index, animate }) {
 
 			var abcOptions = { add_classes: true };
 			var audioParams = { chordsOff: false };
-			var visualOptions = { responsive: "resize" };
+			var visualOptions = { responsive: "resize", jazzchords: true };
 
 			var synthControl = new ABCJS.synth.SynthController();
 
@@ -124,6 +127,12 @@ function Synthesizer({ abcNotation, index, animate }) {
 			// 		synthControl.play();
 			// 	}
 			// });
+
+			const warnings = ABCJS.parseOnly(cleanedNotation)[0].warnings;
+			if (warnings && warnings.length > 0) {
+				Logger.warn("ABCJS Warnings: ", warnings);
+				setAbcjsWarnings(warnings);
+			}
 
 			var visualObj = ABCJS.renderAbc(
 				musicSheetRef.current,
@@ -210,6 +219,15 @@ function Synthesizer({ abcNotation, index, animate }) {
 					</CardBody>
 				</Card>
 			)}
+			{/* {abcjsWarnings.length > 0 && (
+				<Alert color="warning" className="mt-2">
+					<ul>
+						{abcjsWarnings.map((warning, i) => (
+							<li key={i}>{warning}</li>
+						))}
+					</ul>
+				</Alert>
+			)} */}
 			<Row className="mt-2">
 				<Col className="d-flex justify-content-end">
 					<Button

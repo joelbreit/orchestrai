@@ -25,7 +25,7 @@ import {
 import Logger from "../services/Logger";
 import Synthesizer from "./Synthesizer";
 
-import ABCInput from "./ABCInput";
+import ABCNotationComponent from "./ABCNotationComponent";
 import FeedbackForm from "./FeedbackForm";
 
 const apiUrl = process.env.REACT_APP_API_URL;
@@ -131,13 +131,14 @@ const TuneViewerComponent = ({ tuneId, setPageTitle, animate }) => {
 						</span>{" "}
 						{/* {title || "Tune Viewer"} */}
 						{title ? (
-							<a 
-							href={`/tunes/${tuneId}`}
-							target="_blank"
-							rel="noreferrer"
-							style={{color: "inherit"}}
-							
-							>{title}</a>
+							<a
+								href={`/tunes/${tuneId}`}
+								target="_blank"
+								rel="noreferrer"
+								style={{ color: "inherit" }}
+							>
+								{title}
+							</a>
 						) : (
 							"Tune Viewer"
 						)}
@@ -349,7 +350,7 @@ const TuneViewerComponent = ({ tuneId, setPageTitle, animate }) => {
 								<Row>
 									<Col>
 										<h3>ABC Notation</h3>
-										<ABCInput
+										<ABCNotationComponent
 											parentText={abcNotation}
 											placeholderText="Enter ABC notation here"
 											onChange={setAbcNotation}

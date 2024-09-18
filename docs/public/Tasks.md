@@ -3,11 +3,12 @@
 ## Bugs
 
 - [ ] This composition caused an infinite loop with the cleanup code: m0wtjbep
-- [ ] Clean up report
+- [x] Clean up report
 - [ ] When API fails, you should stop it right away instead of continueing the progress bar for 2ish minutes
 - [ ] Audio stops working in tabs after a while
+- [ ] Music keeps playing when you navigate away
 - [x] ABC editor limits height (scrolls) but ABC formatter does not
-- [ ] Have tried to set min-height for formatted ABCBlock component, but it gets overridden somehow
+- [x] Have tried to set min-height for formatted ABCBlock component, but it gets overridden somehow
 
 ## Features
 
@@ -26,18 +27,22 @@
 - [ ] Allow commenting on compositions
 - [ ] Recent compositions feed
 - [ ] Give the user a hint to unmute their mobile device if they can't hear anything
-- [ ] Add "Add LLM to improve this composition" button
+- [ ] Add "Ask LLM to improve this composition" button
 - [ ] "Keep me logged in" checkbox
 - [ ] Ability to load more tunes on profile page
 - [ ] Enable "Edit Profile" button
-- [ ] Replace with clipboard button in ABC Input component
+- [x] Replace with clipboard button in ABC Input component
 - [ ] Allow other import/export formats
 - [ ] Ability to upload MIDI/XML files
+- [ ] Bring back spacebar to play/pause feature
+- [ ] Highlight notation when notes selected
+- [ ] Allow dragging of notes on paper
+- [ ] Improve notation repair tool
 
 ## Changes
 
 - [ ] Invite only
-- [ ] Allow non-logged in users to create some public compositions
+- [x] Allow non-logged in users to create some public compositions
 - [ ] De-fun-ify the site (remove emojis, orcas)
 - [ ] New domain name?
 
@@ -46,7 +51,7 @@
 - [ ] Move Lambda functions to folders
 - [ ] Organize components into folders
 - [ ] Create page component
-- [ ] Rename ABC components
+- [x] Rename ABC components
 
 ## Ideas
 

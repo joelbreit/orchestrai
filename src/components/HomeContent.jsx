@@ -20,11 +20,6 @@ import VictoriousFanfareImage from "../assets/images/VictoriousFanfare.png";
 const HomeContent = () => {
 	return (
 		<Container className="mt-5">
-			{/* <ABCInput
-				parentText={text}
-				placeholderText="Enter your ABC notation here"
-				onChange={onInputChange}
-			/> */}
 			<div className="text-center my-5">
 				<div
 					style={{
@@ -78,7 +73,7 @@ const HomeContent = () => {
 								href="/research"
 								className="primary-button"
 							>
-								Read Our Research{" "}
+								View Article{" "}
 								<span className="icon-square flex-shrink-0">
 									<i className={`bi bi-journal-text`}></i>
 								</span>

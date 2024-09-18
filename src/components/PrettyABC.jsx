@@ -4,7 +4,7 @@ import { Button } from "reactstrap";
 import "../assets/AbcNotationSyntax.js";
 import Logger from "../services/Logger.js";
 
-const ABCBlock = ({ code, setCode, onEdit }) => {
+const PrettyABC = ({ code, setCode, onEdit }) => {
 	useEffect(() => {
 		// Highlight all syntax once the component mounts or code changes
 		Prism.highlightAll();
@@ -64,4 +64,4 @@ const ABCBlock = ({ code, setCode, onEdit }) => {
 	);
 };
 
-export default ABCBlock;
+export default PrettyABC;

@@ -51,7 +51,9 @@ const Header = (args) => {
 						displayName: displayName,
 					}));
 					Logger.debug("User token found and valid");
-					Logger.debug(`status: ${status}, accountId: ${accountId}, email: ${email}, username: ${username}, displayName: ${displayName}`);
+					Logger.debug(
+						`status: ${status}, accountId: ${accountId}, email: ${email}, username: ${username}, displayName: ${displayName}`
+					);
 				} else {
 					Logger.debug("User token found but invalid");
 					localStorage.removeItem("OrchestrAIToken");
@@ -124,14 +126,15 @@ const Header = (args) => {
 						</NavItem> */}
 						<NavItem>
 							<NavLink tag={RouterNavLink} to="/research">
-								Research{" "}
-									<i className={`bi bi-trophy d-none d-lg-inline`} />
+								Research <i className={`bi bi-journals`} />
 							</NavLink>
 						</NavItem>
 						<NavItem>
 							<NavLink tag={RouterNavLink} to="/juxcompose">
 								Juxcompose{" "}
-									<i className={`bi bi-terminal-split d-none d-lg-inline`} />
+								<i
+									className={`bi bi-terminal-split d-none d-lg-inline`}
+								/>
 							</NavLink>
 						</NavItem>
 						{/* TODO Move to far right */}
@@ -178,9 +181,9 @@ const Header = (args) => {
 											to="/login"
 										>
 											Sign In{" "}
-												<i
-													className={`bi bi-box-arrow-in-right d-none d-lg-inline`}
-												/>
+											<i
+												className={`bi bi-box-arrow-in-right d-none d-lg-inline`}
+											/>
 										</NavLink>
 									</div>
 								</NavItem>
@@ -191,9 +194,9 @@ const Header = (args) => {
 											to="/signup"
 										>
 											Sign Up{" "}
-												<i
-													className={`bi bi-person-plus d-none d-lg-inline`}
-												/>
+											<i
+												className={`bi bi-person-plus d-none d-lg-inline`}
+											/>
 										</NavLink>
 									</div>
 								</NavItem>

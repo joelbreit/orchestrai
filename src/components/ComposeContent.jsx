@@ -47,7 +47,7 @@ import {
 } from "../assets/Constants";
 import OrcheImage from "../assets/images/Orche.png";
 import GenerateId from "../services/GenerateId";
-import ABCInput from "./ABCInput";
+import ABCNotationComponent from "./ABCNotationComponent";
 const apiUrl = process.env.REACT_APP_API_URL;
 
 const ComposeContent = () => {
@@ -71,7 +71,7 @@ const ComposeContent = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [timeSoFar, setTimeSoFar] = useState(0);
 	const [percentComplete, setPercentComplete] = useState(1);
-	const [loadingMessage, setLoadingMessage] = useState(LOADING_MESSAGES[0]);
+	const [loadingMessage, setLoadingMessage] = useState("Composing music...");
 	const [hasGeneratedMusic, setHasGeneratedMusic] = useState(false);
 	const [errorMessage, setErrorMessage] = useState();
 	const [runStatus, setRunStatus] = useState("");
@@ -219,7 +219,7 @@ const ComposeContent = () => {
 		e.preventDefault();
 
 		const startTime = Date.now();
-		setLoadingMessage(LOADING_MESSAGES[0]);
+		// setLoadingMessage(LOADING_MESSAGES[0]);
 		setPercentComplete(0);
 		setErrorMessage("");
 		setIsLoading(true);
@@ -233,8 +233,12 @@ const ComposeContent = () => {
 
 			// If tab 1
 			if (activeTab === "1") {
-				content = `Compose a tune that expresses the following vibe: ${vibe}`;
-			} else if (activeTab === "3") {
+				if (!vibe) {
+					content = "Compose whatever you want";
+				} else {
+					content = `Compose a tune that expresses the following vibe: ${vibe}`;
+				}
+			} else if (activeTab === "2") {
 				content = `Please create a tune for this prompt: ${fullPrompt}`;
 			}
 
@@ -246,7 +250,7 @@ const ComposeContent = () => {
 						"Content-Type": "application/json",
 					},
 					body: JSON.stringify({
-						accountId: appState.accountId,
+						accountId: appState.accountId || "m18g2y71", // NotLoggedIn account used for easy compose feature
 						content: content,
 					}),
 				}
@@ -343,7 +347,7 @@ const ComposeContent = () => {
 						if (messageIndex >= messagesLength) {
 							messageIndex = messagesLength - 1;
 						}
-						setLoadingMessage(LOADING_MESSAGES[messageIndex]);
+						// setLoadingMessage(LOADING_MESSAGES[messageIndex]);
 					}
 
 					// Make sure we wait at least 2 seconds before pinging again
@@ -429,394 +433,482 @@ const ComposeContent = () => {
 	};
 
 	return (
-		<div className="container px-4">
-			<Container>
-				<h1 className="border-bottom">Compose Music with GPT-4</h1>
-				<p>
-					This composition tool uses GPT-4's assistants API provided
-					by OpenAI to generate music notation. You can provide
-					basically any text description, and a piece of music will be
-					generated in ABC notation which will then be rendered for
-					you to watch, listen, edit and save.
+		<Container>
+			<h1 className="border-bottom">Compose Music with GPT-4</h1>
+			<p>
+				This composition tool uses GPT-4's assistants API provided by
+				OpenAI to generate music notation. You can provide basically any
+				text description, and a piece of music will be generated in ABC
+				notation which will then be rendered for you to watch, listen,
+				edit and save.
+			</p>
+			{!appState.authenticated && (
+				<p className="mt-3">
+					<a href="/signup">Create a free account</a> or{" "}
+					<a href="/login">log in</a> to use the advanced compose
+					feature.
 				</p>
-				{errorMessage && <Alert color="danger">{errorMessage}</Alert>}
-				<ProtectedContent>
-					<div>
-						<h3>
-							Customize Music{" "}
-							<span className="icon-square flex-shrink-0">
-								<i className={`bi bi-music-note-beamed`}></i>
-							</span>
-						</h3>
+			)}
+			{errorMessage && <Alert color="danger">{errorMessage}</Alert>}
+			{/* <ProtectedContent> */}
+			<div>
+				<h3>
+					Customize Music{" "}
+					<span className="icon-square flex-shrink-0">
+						<i className={`bi bi-music-note-beamed`}></i>
+					</span>
+				</h3>
 
-						<Nav tabs>
-							<NavItem>
-								<NavLink
-									className={
-										activeTab === "1" ? "active" : ""
-									}
-									onClick={() => {
-										toggleTab("1");
-									}}
+				<Nav tabs>
+					<NavItem>
+						<NavLink
+							className={activeTab === "1" ? "active" : ""}
+							onClick={() => {
+								toggleTab("1");
+							}}
+						>
+							Easy Compose <i className="bi bi-music-note"></i>
+						</NavLink>
+					</NavItem>
+					<NavItem>
+						<NavLink
+							className={activeTab === "2" ? "active" : ""}
+							onClick={() => {
+								toggleTab("2");
+							}}
+							disabled={!appState.authenticated}
+						>
+							Advanced Compose{" "}
+							<i className="bi bi-code-square"></i>
+						</NavLink>
+					</NavItem>
+					{/* <NavItem>
+						<NavLink
+							className={activeTab === "3" ? "active" : ""}
+							onClick={() => {
+								toggleTab("3");
+							}}
+							disabled={!appState.authenticated}
+						>
+							OpenRouter Compose{" "}
+							<i className="bi bi-diagram-3"></i>
+						</NavLink>
+					</NavItem> */}
+				</Nav>
+				<TabContent activeTab={activeTab}>
+					<TabPane tabId="1">
+						<Form onSubmit={handleSubmit} className="mt-3">
+							{/* <FormGroup>
+								<Label
+									for="vibe"
+									style={{ marginRight: "0.5rem" }}
 								>
-									Simple{" "}
-									<span className="icon-square flex-shrink-0">
-										<i className={`bi bi-brush`}></i>
-									</span>
-								</NavLink>
-							</NavItem>
-							{/* <NavItem>
-								<NavLink
-									className={
-										activeTab === "2" ? "active" : ""
-									}
-									onClick={() => {
-										toggleTab("2");
-									}}
+									Vibe of the composition
+								</Label>
+								<Button
+									className="primary-button"
+									size="sm"
+									onClick={suggestVibe}
 								>
-									Intermediate{" "}
-									<span className="icon-square flex-shrink-0">
-										<i className={`bi bi-tools`}></i>
-									</span>
-								</NavLink>
-							</NavItem> */}
-							<NavItem>
-								<NavLink
-									className={
-										activeTab === "3" ? "active" : ""
-									}
-									onClick={() => {
-										toggleTab("3");
-									}}
+									Suggest one for me{" "}
+									<i className={`bi bi-magic`}></i>
+								</Button>
+								<Input
+									type="text"
+									id="vibe"
+									value={vibe}
+									onChange={(e) => setVibe(e.target.value)}
+									placeholder="Enter a vibe here"
+									maxLength={100}
+									className="mt-2"
+								/>
+								<span className="character-counter">
+									{vibe.length}/100
+								</span>
+							</FormGroup> */}
+							<FormGroup>
+								{/* <Button
+									type="submit"
+									value="Generate Music"
+									className="btn btn-primary primary-button"
+									disabled={!vibe || isLoading}
 								>
-									Advanced{" "}
-									<span className="icon-square flex-shrink-0">
-										<i
-											className={`bi bi-gear-wide-connected`}
-										></i>
-									</span>
-								</NavLink>
-							</NavItem>
-						</Nav>
-						<TabContent activeTab={activeTab}>
-							<TabPane tabId="1">
-								<Form onSubmit={handleSubmit} className="mt-3">
-									<FormGroup>
-										<Label
-											for="vibe"
-											style={{ marginRight: "0.5rem" }}
-										>
-											Vibe of the composition
-										</Label>
-										<Button
-											className="primary-button"
-											size="sm"
-											onClick={suggestVibe}
-										>
-											Suggest one for me{" "}
-											<i className={`bi bi-magic`}></i>
-										</Button>
-										<Input
-											type="text"
-											id="vibe"
-											value={vibe}
-											onChange={(e) =>
-												setVibe(e.target.value)
-											}
-											placeholder="Enter a vibe here"
-											maxLength={100}
-											className="mt-2"
-										/>
-										<span className="character-counter">
-											{vibe.length}/100
-										</span>
-									</FormGroup>
-									<FormGroup>
-										<Button
-											type="submit"
-											value="Generate Music"
-											className="btn btn-primary primary-button"
-											disabled={!vibe || isLoading}
-										>
-											{isLoading && (
-												<>
-													<Spinner
-														as="span"
-														animation="border"
-														size="sm"
-														role="status"
-														aria-hidden="true"
-													/>{" "}
-												</>
-											)}
-											Generate Music{" "}
-											<i
-												className={`bi bi-music-note-beamed`}
-											></i>
-										</Button>
-									</FormGroup>
-									{/* TODO Compose whatever you want button */}
-								</Form>
-							</TabPane>
-							<TabPane tabId="3">
-								<Form onSubmit={handleSubmit} className="mt-3">
-									<FormGroup>
-										<Label
-											for="fullPrompt"
-											style={{ marginRight: "0.5rem" }}
-										>
-											Prompt
-										</Label>
-										<Button
-											className="primary-button"
-											size="sm"
-											onClick={suggestFullPrompt}
-										>
-											Suggest one for me{" "}
-											<i className={`bi bi-magic`}></i>
-										</Button>
-										<Input
-											type="textarea"
-											id="fullPrompt"
-											value={fullPrompt}
-											onChange={(e) =>
-												setFullPrompt(e.target.value)
-											}
-											placeholder="Write a full prompt for what you want the composition to be"
-											className="mt-2"
-										/>
-									</FormGroup>
-									{/* Checkbox to keep tune private */}
-									{/* <FormGroup check>
-										<Label check>
-											<Input type="checkbox" /> Keep tune
-											private
-										</Label>
-									</FormGroup> */}
-									<FormGroup>
-										<Button
-											type="submit"
-											value="Generate Music"
-											className="btn btn-primary primary-button"
-											disabled={!fullPrompt || isLoading}
-										>
-											{isLoading && (
-												<>
-													<Spinner
-														as="span"
-														animation="border"
-														size="sm"
-														role="status"
-														aria-hidden="true"
-													/>{" "}
-												</>
-											)}
-											Generate Music{" "}
-											<i
-												className={`bi bi-music-note-beamed`}
-											></i>
-										</Button>
-									</FormGroup>
-								</Form>
-							</TabPane>
-							{/* <TabPane tabId="3">Hello, this is tab 3</TabPane> */}
-						</TabContent>
-						{isLoading && (
-							<div>
-								<Col className="d-flex justify-content-start">
-									{runStatus && (
-										// div prevents the Badge from stretching to the height of the <p>
-										<div>
-											<Badge
-												color={
-													runStatus === "Completed"
-														? "success"
-														: runStatus === "Failed"
-														? "danger"
-														: runStatus ===
-														  "In Progress"
-														? "warning"
-														: "info"
-												}
-												// pill
-												className="d-none d-md-inline"
-												style={{
-													marginRight: "10px",
-													marginBottom: "10px",
-												}}
-											>
-												{runStatus}
-											</Badge>
-										</div>
+									{isLoading && (
+										<>
+											<Spinner
+												as="span"
+												animation="border"
+												size="sm"
+												role="status"
+												aria-hidden="true"
+											/>{" "}
+										</>
 									)}
-									<p>{loadingMessage}</p>
-								</Col>
-								<Progress
-									animated
-									value={percentComplete}
-									className="tertiary-progress-bar mb-3"
+									Generate Music{" "}
+									<i
+										className={`bi bi-music-note-beamed`}
+									></i>
+								</Button> */}
+
+								{/* Surprise me button */}
+								<Button
+									type="submit"
+									value="Surprise me"
+									className="btn btn-primary primary-button-outline"
+									style={{ marginLeft: "10px" }}
+									disabled={isLoading}
 								>
-									{percentComplete > 9 && (
-										<>{percentComplete}%</>
+									{isLoading && (
+										<>
+											<Spinner
+												as="span"
+												animation="border"
+												size="sm"
+												role="status"
+												aria-hidden="true"
+											/>{" "}
+										</>
 									)}
-								</Progress>
-							</div>
-						)}
-						{hasGeneratedMusic && (
+									Surprise me!{" "}
+									<i className={`bi bi-dice-5`}></i>
+								</Button>
+							</FormGroup>
+						</Form>
+					</TabPane>
+					<TabPane tabId="2">
+						<Form onSubmit={handleSubmit} className="mt-3">
+							<FormGroup className="col-12 col-md-8">
+								<Label
+									for="fullPrompt"
+									style={{ marginRight: "0.5rem" }}
+								>
+									Prompt
+								</Label>
+								<Button
+									className="primary-button"
+									size="sm"
+									onClick={suggestFullPrompt}
+								>
+									Suggest one for me{" "}
+									<i className={`bi bi-magic`}></i>
+								</Button>
+								<Input
+									type="textarea"
+									id="fullPrompt"
+									value={fullPrompt}
+									onChange={(e) =>
+										setFullPrompt(e.target.value)
+									}
+									placeholder="Write a full prompt for what you want the composition to be"
+									className="mt-2"
+								/>
+							</FormGroup>
+
+							{/* <FormGroup className="col-6 col-md-4">
+								<Label for="voices">Number of voices</Label>
+								<Input type="select" name="voices" id="voices">
+									<option>1</option>
+									<option>2</option>
+									<option>3</option>
+									<option>4</option>
+									<option>5</option>
+								</Input>
+							</FormGroup>
+
+							<FormGroup check className="mb-3">
+								<Label check>
+									<Input type="checkbox" /> Keep tune private
+								</Label>
+							</FormGroup> */}
+							<FormGroup>
+								<Button
+									type="submit"
+									value="Generate Music"
+									className="btn btn-primary primary-button"
+									disabled={!fullPrompt || isLoading}
+								>
+									{isLoading && (
+										<>
+											<Spinner
+												as="span"
+												animation="border"
+												size="sm"
+												role="status"
+												aria-hidden="true"
+											/>{" "}
+										</>
+									)}
+									Generate Music{" "}
+									<i
+										className={`bi bi-music-note-beamed`}
+									></i>
+								</Button>
+							</FormGroup>
+						</Form>
+					</TabPane>
+					<TabPane tabId="3">
+						<Form onSubmit={handleSubmit} className="mt-3">
+							<FormGroup>
+								<Label
+									for="fullPrompt"
+									style={{ marginRight: "0.5rem" }}
+								>
+									Prompt
+								</Label>
+								<Button
+									className="primary-button"
+									size="sm"
+									onClick={suggestFullPrompt}
+								>
+									Suggest one for me{" "}
+									<i className={`bi bi-magic`}></i>
+								</Button>
+								<Input
+									type="textarea"
+									id="fullPrompt"
+									value={fullPrompt}
+									onChange={(e) =>
+										setFullPrompt(e.target.value)
+									}
+									placeholder="Write a full prompt for what you want the composition to be"
+									className="mt-2"
+								/>
+							</FormGroup>
+							{/* Number of voices dropdown */}
+							<FormGroup>
+								<Label for="voices">Number of voices</Label>
+								<Input type="select" name="voices" id="voices">
+									<option>1</option>
+									<option>2</option>
+									<option>3</option>
+									<option>4</option>
+									<option>5</option>
+								</Input>
+							</FormGroup>
+
+							{/* Checkbox to keep tune private */}
+							<FormGroup check>
+								<Label check>
+									<Input type="checkbox" /> Keep tune private
+								</Label>
+							</FormGroup>
+							<FormGroup>
+								<Button
+									type="submit"
+									value="Generate Music"
+									className="btn btn-primary primary-button"
+									disabled={!fullPrompt || isLoading}
+								>
+									{isLoading && (
+										<>
+											<Spinner
+												as="span"
+												animation="border"
+												size="sm"
+												role="status"
+												aria-hidden="true"
+											/>{" "}
+										</>
+									)}
+									Generate Music{" "}
+									<i
+										className={`bi bi-music-note-beamed`}
+									></i>
+								</Button>
+							</FormGroup>
+						</Form>
+					</TabPane>
+					{/* <TabPane tabId="3">Hello, this is tab 3</TabPane> */}
+				</TabContent>
+				{isLoading && (
+					<div>
+						<Col className="d-flex justify-content-start">
+							{runStatus && (
+								// div prevents the Badge from stretching to the height of the <p>
+								<div>
+									<Badge
+										color={
+											runStatus === "Completed"
+												? "success"
+												: runStatus === "Failed"
+												? "danger"
+												: runStatus === "In Progress"
+												? "warning"
+												: "info"
+										}
+										// pill
+										className="d-none d-md-inline"
+										style={{
+											marginRight: "10px",
+											marginBottom: "10px",
+										}}
+									>
+										{runStatus}
+									</Badge>
+								</div>
+							)}
+							<p>{loadingMessage}</p>
+						</Col>
+						<Progress
+							animated
+							value={percentComplete}
+							className="tertiary-progress-bar mb-3"
+						>
+							{percentComplete > 9 && <>{percentComplete}%</>}
+						</Progress>
+					</div>
+				)}
+				{hasGeneratedMusic && (
+					<>
+						<h2>Generated Description</h2>
+						{vibe || fullPrompt ? (
 							<>
-								<h2>Generated Description</h2>
-								{vibe || fullPrompt ? (
+								{description ? (
+									<p>{description}</p>
+								) : (
+									<p>
+										*No description was generated this
+										time.*
+									</p>
+								)}
+							</>
+						) : (
+							"Enter a vibe above to generate music."
+						)}
+
+						{saveState === "Complete" && (
+							<Alert
+								color={
+									saveStatusCode === 200
+										? "success"
+										: "danger"
+								}
+							>
+								{saveStatusCode === 200 ? (
 									<>
-										{description ? (
-											<p>{description}</p>
-										) : (
-											<p>
-												*No description was generated
-												this time.*
-											</p>
-										)}
+										Your tune was saved successfully! You
+										can now share it with{" "}
+										<Link
+											to={`/tunes/${tuneId}`}
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											the world{" "}
+											<i className={`bi bi-share`}></i>
+										</Link>
+										!
 									</>
 								) : (
-									"Enter a vibe above to generate music."
+									"There was an error saving your tune."
 								)}
+							</Alert>
+						)}
 
-								{saveState === "Complete" && (
-									<Alert
-										color={
-											saveStatusCode === 200
-												? "success"
-												: "danger"
-										}
+						<div style={{ marginTop: "20px" }}>
+							<h2>Rendered Sheet Music</h2>
+							<Synthesizer abcNotation={abcNotation} index={0} />
+						</div>
+						{/* TODO clean this up */}
+						{hasCleaned &&
+							(failed ? (
+								<Alert color="info">
+									<div
+										style={{
+											display: "flex",
+											alignItems: "center",
+											// justifyContent: "center",
+										}}
 									>
-										{saveStatusCode === 200 ? (
-											<>
-												Your tune was saved
-												successfully! You can now share
-												it with{" "}
-												<Link
-													to={`/tunes/${tuneId}`}
-													target="_blank"
-													rel="noopener noreferrer"
-												>
-													the world{" "}
-													<span
-														role="img"
-														aria-label="link emoji"
-													>
-														🔗
-													</span>
-												</Link>
-												!
-											</>
-										) : (
-											"There was an error saving your tune."
-										)}
-									</Alert>
-								)}
-
-								<div style={{ marginTop: "20px" }}>
-									<h2>Rendered Sheet Music</h2>
-									<Synthesizer
-										abcNotation={abcNotation}
-										index={0}
-									/>
-								</div>
-								{/* TODO clean this up */}
-								{hasCleaned &&
-									(failed ? (
-										<Alert color="info">
-											<div
-												style={{
-													display: "flex",
-													alignItems: "center",
-													// justifyContent: "center",
-												}}
+										<img
+											src={OrcheImage}
+											width="30"
+											height="30"
+											alt="Orche"
+										/>{" "}
+										<span>
+											Sorry, but this tune wasn't able to
+											be repaired. {warnings.length}{" "}
+											warnings were issued. See something
+											strange? Send a message to the{" "}
+											<a
+												href="https://discord.gg/e3nNUGVA7A"
+												target="_blank"
+												rel="noreferrer"
 											>
-												<img
-													src={OrcheImage}
-													width="30"
-													height="30"
-													alt="Orche"
-												/>{" "}
-												<span>
-													Sorry, but we couldn't clean
-													up this tune.{" "}
-													{warnings.length} warnings
-													were issued. See something
-													strange? Let us know on our{" "}
-													<a
-														href="https://discord.gg/e3nNUGVA7A"
-														target="_blank"
-														rel="noreferrer"
-													>
-														Discord
-													</a>
-													.
-												</span>
-											</div>
-										</Alert>
-									) : warnings.length > 0 ? (
-										<Alert color="info">
-											<div
-												style={{
-													display: "flex",
-													alignItems: "center",
-													// justifyContent: "center",
-												}}
-											>
-												<img
-													src={OrcheImage}
-													width="30"
-													height="30"
-													alt="Orche"
-												/>{" "}
-												Notation successfully cleaned!{" "}
-												{numFixes} fixes were made, but{" "}
-												{warnings.length} warnings were
-												issued.
-											</div>
-										</Alert>
-									) : numFixes > 0 ? (
-										<Alert color="success">
-											<div
-												style={{
-													display: "flex",
-													alignItems: "center",
-													// justifyContent: "center",
-												}}
-											>
-												<img
-													src={OrcheImage}
-													width="30"
-													height="30"
-													alt="Orche"
-												/>{" "}
-												Notation successfully cleaned!{" "}
-												{numFixes} fixes were made!
-											</div>
-										</Alert>
-									) : (
-										<Alert color="info">
-											<div
-												style={{
-													display: "flex",
-													alignItems: "center",
-													// justifyContent: "center",
-												}}
-											>
-												<img
-													src={OrcheImage}
-													width="30"
-													height="30"
-													alt="Orche"
-												/>{" "}
-												Notation successfully cleaned!
-												No fixes were needed.
-											</div>
-										</Alert>
-									))}
-								<h2>Generated ABC Notation</h2>
-								{/* <Input
+												Discord{" "}
+												<i className="bi bi-discord"></i>
+											</a>
+											.
+										</span>
+									</div>
+									{/* {warnings.map((warning, index) => (
+										<div key={index}>
+											{warning}
+											<br />
+										</div>
+									))} */}
+								</Alert>
+							) : warnings.length > 0 ? (
+								<Alert color="info">
+									<div
+										style={{
+											display: "flex",
+											alignItems: "center",
+											// justifyContent: "center",
+										}}
+									>
+										<img
+											src={OrcheImage}
+											width="30"
+											height="30"
+											alt="Orche"
+										/>{" "}
+										Notation successfully cleaned!{" "}
+										{numFixes} fixes were made, but{" "}
+										{warnings.length} warnings were issued.
+									</div>
+								</Alert>
+							) : numFixes > 0 ? (
+								<Alert color="success">
+									<div
+										style={{
+											display: "flex",
+											alignItems: "center",
+											// justifyContent: "center",
+										}}
+									>
+										<img
+											src={OrcheImage}
+											width="30"
+											height="30"
+											alt="Orche"
+										/>{" "}
+										Notation successfully cleaned!{" "}
+										{numFixes} fixes were made!
+									</div>
+								</Alert>
+							) : (
+								<Alert color="info">
+									<div
+										style={{
+											display: "flex",
+											alignItems: "center",
+											// justifyContent: "center",
+										}}
+									>
+										<img
+											src={OrcheImage}
+											width="30"
+											height="30"
+											alt="Orche"
+										/>{" "}
+										Notation successfully cleaned! No fixes
+										were needed.
+									</div>
+								</Alert>
+							))}
+						<h2>Generated ABC Notation</h2>
+						{/* <Input
 									type="textarea"
 									value={abcNotation}
 									onChange={handleNotationChange}
@@ -824,14 +916,14 @@ const ComposeContent = () => {
 									rows={10}
 								/> */}
 
-								<ABCInput
-									parentText={abcNotation}
-									placeholderText="Enter ABC notation here"
-									onChange={handleNotationChange}
-								/>
+						<ABCNotationComponent
+							parentText={abcNotation}
+							placeholderText="Enter ABC notation here"
+							onChange={handleNotationChange}
+						/>
 
-								{/* Download functionality not really needed and saves happen automatically*/}
-								{/* <Button
+						{/* Download functionality not really needed and saves happen automatically*/}
+						{/* <Button
 									onClick={handleDownload}
 									className="btn btn-primary primary-button mt-3"
 									style={{ marginRight: "10px" }}
@@ -853,8 +945,8 @@ const ComposeContent = () => {
 									</div>
 								</Button> */}
 
-								{/* TODO add this back */}
-								{/* {!isFeedbackOpen && (
+						{/* TODO add this back */}
+						{/* {!isFeedbackOpen && (
 									<Button
 										onClick={toggleFeedback}
 										className="primary-button mt-3"
@@ -865,50 +957,47 @@ const ComposeContent = () => {
 										></i>
 									</Button>
 								)} */}
-								<hr />
-							</>
-						)}
-						{saveState === "Loading" && (
-							<Alert color="primary">
-								<Spinner
-									as="span"
-									animation="border"
-									size="sm"
-									role="status"
-									aria-hidden="true"
-								/>{" "}
-								Saving tune...
-							</Alert>
-						)}
+						<hr />
+					</>
+				)}
+				{saveState === "Loading" && (
+					<Alert color="primary">
+						<Spinner
+							as="span"
+							animation="border"
+							size="sm"
+							role="status"
+							aria-hidden="true"
+						/>{" "}
+						Saving tune...
+					</Alert>
+				)}
 
-						<Collapse isOpen={isFeedbackOpen}>
-							<Card>
-								<CardHeader>
-									<h4>Feedback on Generated Composition</h4>
-								</CardHeader>
-								<CardBody>
-									<FeedbackForm
-										toggleFeedback={toggleFeedback}
-										tuneId={tuneId}
-									/>
-								</CardBody>
-								<CardFooter>
-									<Col className="d-flex justify-content-between">
-										<Button onClick={toggleFeedback}>
-											Cancel
-										</Button>
-										<Button className="primary-button">
-											Download{" "}
-											<i className={`bi bi-download`}></i>
-										</Button>
-									</Col>
-								</CardFooter>
-							</Card>
-						</Collapse>
-					</div>
-				</ProtectedContent>
-			</Container>
-		</div>
+				<Collapse isOpen={isFeedbackOpen}>
+					<Card>
+						<CardHeader>
+							<h4>Feedback on Generated Composition</h4>
+						</CardHeader>
+						<CardBody>
+							<FeedbackForm
+								toggleFeedback={toggleFeedback}
+								tuneId={tuneId}
+							/>
+						</CardBody>
+						<CardFooter>
+							<Col className="d-flex justify-content-between">
+								<Button onClick={toggleFeedback}>Cancel</Button>
+								<Button className="primary-button">
+									Download{" "}
+									<i className={`bi bi-download`}></i>
+								</Button>
+							</Col>
+						</CardFooter>
+					</Card>
+				</Collapse>
+			</div>
+			{/* </ProtectedContent> */}
+		</Container>
 	);
 };
 
