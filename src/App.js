@@ -10,7 +10,8 @@ import LoginPage from "./pages/LoginPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import PortfolioPage from "./pages/PortfolioPage";
 import ProfilePage from "./pages/ProfilePage";
-import ResearchPage from "./pages/ResearchPage";
+// import ResearchPage from "./pages/ResearchPage";
+import ResearchPDF from "./pages/ResearchPDF";
 import SignupPage from "./pages/SignupPage";
 import TunePage from "./pages/TunePage";
 import GuestPage from "./pages/GuestPage";
@@ -27,7 +28,8 @@ function App() {
 					<Route path="/notationStyles" element={<NotationStylesPage />} />
 					<Route path="/profile" element={<ProfilePage />} />
 					<Route path="/portfolio" element={<PortfolioPage />} />
-					<Route path="/research" element={<ResearchPage />} />
+					{/* <Route path="/research" element={<ResearchPage />} /> */}
+					<Route path="/research" element={<ResearchPDF />} />
 					<Route path="/tunes/:tuneId" element={<TunePage />} />
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/signup" element={<SignupPage />} />
