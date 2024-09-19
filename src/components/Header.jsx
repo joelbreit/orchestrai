@@ -126,7 +126,10 @@ const Header = (args) => {
 						</NavItem> */}
 						<NavItem>
 							<NavLink tag={RouterNavLink} to="/research">
-								Research <i className={`bi bi-journals`} />
+								Research{" "}
+								<i
+									className={`bi bi-journals d-none d-lg-inline`}
+								/>
 							</NavLink>
 						</NavItem>
 						<NavItem>

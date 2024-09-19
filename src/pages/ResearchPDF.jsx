@@ -4,7 +4,7 @@ import Article from "../assets/Article.pdf";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 
-const ResearchPage = () => {
+const ResearchPDF = () => {
 	return (
 		<div>
 			<Header />
@@ -24,4 +24,4 @@ const ResearchPage = () => {
 	);
 };
 
-export default ResearchPage;
+export default ResearchPDF;
