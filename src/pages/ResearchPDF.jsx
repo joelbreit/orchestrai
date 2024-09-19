@@ -1,6 +1,5 @@
 import React from "react";
 
-import Article from "../assets/Article.pdf";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 
@@ -10,7 +9,7 @@ const ResearchPDF = () => {
 			<Header />
 			<div style={{ height: "100vh" }}>
 				<iframe
-					src={Article}
+					src={"/Article.pdf"}
 					title="Research Document"
 					style={{
 						width: "100%",
