@@ -9,7 +9,7 @@ const ResearchPDF = () => {
 			<Header />
 			<div style={{ height: "100vh" }}>
 				<iframe
-					src={"/Article.pdf"}
+					src="/Article.pdf"
 					title="Research Document"
 					style={{
 						width: "100%",
