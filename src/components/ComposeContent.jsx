@@ -161,7 +161,7 @@ const ComposeContent = () => {
 
 			const body = {
 				tuneId: tuneId,
-				accountId: appState.accountId,
+				accountId: appState.accountId || "m18g2y71", // NotLoggedIn account used for easy compose feature
 				date: dateAndTime,
 				thread: thread,
 				run: run,
@@ -287,7 +287,7 @@ const ComposeContent = () => {
 							"Content-Type": "application/json",
 						},
 						body: JSON.stringify({
-							UUID: appState.accountId,
+							UUID: appState.accountId || "m18g2y71",
 							threadId: threadId,
 							runId: runId,
 						}),
