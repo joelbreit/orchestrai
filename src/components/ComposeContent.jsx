@@ -119,7 +119,6 @@ const ComposeContent = () => {
 
 	// Calculate % complete
 	useEffect(() => {
-		Logger.debug("Calc % complete useEffect");
 		let raw = 0;
 		if (timeSoFar + 10 >= EXPECTED_DURATION) {
 			raw = (timeSoFar / (timeSoFar + 10)) * 100;
@@ -131,16 +130,14 @@ const ComposeContent = () => {
 	}, [timeSoFar]);
 
 	useEffect(() => {
-		Logger.debug("Set input useEffect");
 		if (activeTab === "1") {
 			setInput(vibe);
-		} else if (activeTab === "3") {
+		} else if (activeTab === "2") {
 			setInput(fullPrompt);
 		}
 	}, [activeTab, vibe, fullPrompt]);
 
 	useEffect(() => {
-		Logger.debug("Clean ABC Notation useEffect");
 		const cleanedNotation = new ABCNotation(abcNotation);
 		setAbcNotation(cleanedNotation.abcNotation);
 		setHasCleaned(true);
@@ -152,7 +149,6 @@ const ComposeContent = () => {
 
 	// When ready to save tune
 	useEffect(() => {
-		Logger.debug("Save tune useEffect");
 		const handleSaveTune = async () => {
 			setSaveState("Loading");
 

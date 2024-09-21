@@ -442,7 +442,7 @@ const TuneViewerComponent = ({ tuneId, setPageTitle, animate }) => {
 			)}
 			<Modal isOpen={isFeedbackOpen} toggle={toggleFeedback}>
 				<ModalHeader toggle={toggleFeedback}>
-					Composition Feedback
+					Feedback for "{title}"
 				</ModalHeader>
 				<ModalBody style={{ paddingBottom: "0px" }}>
 					<FeedbackForm

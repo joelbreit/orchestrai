@@ -173,7 +173,7 @@ const Header = (args) => {
 						) : (
 							<>
 								<NavItem>
-									<div className="navbar-button-outline btn btn-secondary">
+									<div className="navbar-button btn btn-secondary">
 										<NavLink
 											tag={RouterNavLink}
 											to="/login"
