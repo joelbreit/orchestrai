@@ -9,6 +9,7 @@
 - [ ] Music keeps playing when you navigate away
 - [x] ABC editor limits height (scrolls) but ABC formatter does not
 - [x] Have tried to set min-height for formatted ABCBlock component, but it gets overridden somehow
+- [ ] Shows "Enter a vibe above to generate music." for easy compose tab
 
 ## Features
 
@@ -38,6 +39,8 @@
 - [ ] Highlight notation when notes selected
 - [ ] Allow dragging of notes on paper
 - [ ] Improve notation repair tool
+- [ ] Add follow-up ability to send message to same chat thread
+- [x] Switch Layout button
 
 ## Changes
 
@@ -45,6 +48,7 @@
 - [x] Allow non-logged in users to create some public compositions
 - [ ] De-fun-ify the site (remove emojis, orcas)
 - [ ] New domain name?
+- [ ] Move description to below even when first composing
 
 ## Refactors
 

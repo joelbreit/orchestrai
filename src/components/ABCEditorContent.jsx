@@ -10,7 +10,7 @@ import ABCNotationComponent from "./ABCNotationComponent";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
-const ABCEditorContent = ({ tuneId }) => {
+const ABCEditorContent = ({ tuneId, handleLayoutChange, layout }) => {
 	const defaultContent = ABCNotations["Placeholder Tune"];
 	const [abcNotation, setAbcNotation] = useState(defaultContent);
 	const [file, setFile] = useState(null);
@@ -107,7 +107,25 @@ const ABCEditorContent = ({ tuneId }) => {
 	return (
 		<Container>
 			{!title ? (
-				<h1 className="border-bottom">ABC Notation Editor</h1>
+				<h1 className="border-bottom d-flex justify-content-between">
+					ABC Notation Editor
+					<Button
+						color="primary"
+						onClick={() => {
+							handleLayoutChange(
+								layout === "tall" ? "sideBySide" : "tall"
+							);
+						}}
+						className="primary-button-outline m-2"
+					>
+						Change Layout{" "}
+						{layout === "tall" ? (
+							<i className="bi bi-layout-split"></i>
+						) : (
+							<i className={`bi bi-view-stacked`}></i>
+						)}
+					</Button>
+				</h1>
 			) : (
 				<h1 className="border-bottom">{title}</h1>
 			)}
@@ -123,148 +141,149 @@ const ABCEditorContent = ({ tuneId }) => {
 					Loading tune...
 				</Alert>
 			)}
-			{retrievalState === "Complete" && (
-				<div>
-					<Alert
-						color={
-							retrievalStatusCode === 200 ? "success" : "danger"
-						}
-					>
-						{retrievalStatusCode === 200 ? (
-							<div
-								style={{
-									display: "flex",
-									alignItems: "center",
-									// justifyContent: "center",
-								}}
-							>
-								<img
-									src={OrcheImage}
-									width="30"
-									height="30"
-									alt="Orche"
-								/>{" "}
-								"Tune retrieved successfully!"
-							</div>
-						) : (
-							<div
-								style={{
-									display: "flex",
-									alignItems: "center",
-									// justifyContent: "center",
-								}}
-							>
-								<img
-									src={OrcheImage}
-									width="30"
-									height="30"
-									alt="Orche"
-								/>{" "}
-								"There was an error retrieving your tune."
-							</div>
-						)}
-					</Alert>
 
+			<Row>
+				<Col md={layout === "tall" ? 12 : 6}>
+					{retrievalState === "Complete" && (
+						<div>
+							<Alert
+								color={
+									retrievalStatusCode === 200
+										? "success"
+										: "danger"
+								}
+							>
+								{retrievalStatusCode === 200 ? (
+									<div
+										style={{
+											display: "flex",
+											alignItems: "center",
+											// justifyContent: "center",
+										}}
+									>
+										<img
+											src={OrcheImage}
+											width="30"
+											height="30"
+											alt="Orche"
+										/>{" "}
+										"Tune retrieved successfully!"
+									</div>
+								) : (
+									<div
+										style={{
+											display: "flex",
+											alignItems: "center",
+											// justifyContent: "center",
+										}}
+									>
+										<img
+											src={OrcheImage}
+											width="30"
+											height="30"
+											alt="Orche"
+										/>{" "}
+										"There was an error retrieving your
+										tune."
+									</div>
+								)}
+							</Alert>
+
+							<Row className="mt-2">
+								<Col>
+									<h2>Title</h2>
+									{title ? (
+										<p>{title}</p>
+									) : (
+										<p>No title provided</p>
+									)}
+								</Col>
+								<Col>
+									<h2>Date</h2>
+									{creationDate ? (
+										<p>{creationDate}</p>
+									) : (
+										<p>No date provided</p>
+									)}
+								</Col>
+								<Col>
+									<h2>Prompt</h2>
+									{prompt ? (
+										<p>{prompt}</p>
+									) : (
+										<p>No prompt provided</p>
+									)}
+								</Col>
+							</Row>
+							<Row className="mt-2">
+								<Col>
+									<h2>Description</h2>
+									{description ? (
+										<p>{description}</p>
+									) : (
+										<p>No description provided</p>
+									)}
+								</Col>
+							</Row>
+						</div>
+					)}
+					{!tuneId && (
+						<>
+							<h2>Enter ABC Notation</h2>
+							<ABCNotationComponent
+								parentText={abcNotation}
+								placeholderText="Enter ABC notation here"
+								onChange={setAbcNotation}
+							/>
+						</>
+					)}
 					<Row className="mt-2">
-						<Col>
-							<h2>Title</h2>
-							{title ? <p>{title}</p> : <p>No title provided</p>}
-						</Col>
-						<Col>
-							<h2>Date</h2>
-							{creationDate ? (
-								<p>{creationDate}</p>
-							) : (
-								<p>No date provided</p>
-							)}
-						</Col>
-						<Col>
-							<h2>Prompt</h2>
-							{prompt ? (
-								<p>{prompt}</p>
-							) : (
-								<p>No prompt provided</p>
-							)}
+						<Col className="d-flex justify-content-end">
+							<Button
+								onClick={() => setAbcNotation("")}
+								color="danger"
+								outline
+								size="sm"
+								style={{ marginRight: "10px" }}
+							>
+								Clear
+							</Button>
+							<FileUploader handleFile={setFile} />
 						</Col>
 					</Row>
+					{didUpload && (
+						<Row className="mt-2">
+							<Col>
+								<h2>Description</h2>
+								{description ? (
+									<p>{description}</p>
+								) : (
+									<p>No description provided</p>
+								)}
+							</Col>
+						</Row>
+					)}
+				</Col>
+
+				<Col md={layout === "tall" ? 12 : 6}>
 					<Row className="mt-2">
 						<Col>
-							<h2>Description</h2>
-							{description ? (
-								<p>{description}</p>
-							) : (
-								<p>No description provided</p>
-							)}
+							{/* <h2>Rendered Sheet Music</h2> */}
+							<Synthesizer abcNotation={abcNotation} index={0} />
 						</Col>
 					</Row>
-				</div>
-			)}
-			{!tuneId && (
-				<>
-					<h2>Enter ABC Notation</h2>
-					{/* <Input
-							type="textarea"
-							value={abcNotation}
-							onChange={handleInputChange}
-							placeholder="Enter ABC notation here"
-							rows={10}
-						/> */}
-					<ABCNotationComponent
-						parentText={abcNotation}
-						placeholderText="Enter ABC notation here"
-						onChange={setAbcNotation}
-					/>
-				</>
-			)}
-			<Row className="mt-2">
-				<Col className="d-flex justify-content-end">
-					<Button
-						onClick={() => setAbcNotation("")}
-						color="danger"
-						outline
-						size="sm"
-						style={{ marginRight: "10px" }}
-					>
-						Clear
-					</Button>
-					<FileUploader handleFile={setFile} />
+					{tuneId && (
+						<>
+							<h2>Generated Music Notation</h2>
+							<ABCNotationComponent
+								parentText={abcNotation}
+								placeholderText="Enter ABC notation here"
+								onChange={setAbcNotation}
+							/>
+						</>
+					)}
 				</Col>
 			</Row>
-			{didUpload && (
-				<Row className="mt-2">
-					<Col>
-						<h2>Description</h2>
-						{description ? (
-							<p>{description}</p>
-						) : (
-							<p>No description provided</p>
-						)}
-					</Col>
-				</Row>
-			)}
-			<Row className="mt-2">
-				<Col>
-					{/* <h2>Rendered Sheet Music</h2> */}
-					<Synthesizer abcNotation={abcNotation} index={0} />
-				</Col>
-			</Row>
-			{tuneId && (
-				<>
-					<h2>Generated Music Notation</h2>
-					{/* <Input
-							type="textarea"
-							value={abcNotation}
-							onChange={handleInputChange}
-							placeholder="Enter ABC notation here"
-							rows={10}
-						/> */}
-					<ABCNotationComponent
-						parentText={abcNotation}
-						placeholderText="Enter ABC notation here"
-						onChange={setAbcNotation}
-					/>
-				</>
-			)}
 		</Container>
 	);
 };
