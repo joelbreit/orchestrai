@@ -1,4 +1,5 @@
 import Logger from "../services/Logger";
+import abcjs from "abcjs";
 
 const voiceLineStartRegex = /^[a-gz{|%w"()}[]/i;
 // const nonNoteNotationRegex = /[[\]:|\\n]/i;
@@ -12,8 +13,12 @@ class ABCNotation {
 	constructor(abcNotation) {
 		Logger.debug("ABCNotationParser: ", this);
 
+		const tunes = abcjs.parseOnly(abcNotation);
+
+		const abcWarnings = tunes[0].warnings;
+
 		// Initialize all the properties
-		this.warnings = [];
+		this.warnings = abcWarnings || [];
 		this.failed = false;
 		this.fixes = [];
 		this.abcNotation = "";

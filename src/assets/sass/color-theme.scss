@@ -1,8 +1,14 @@
-$primary: #0779e4;
-$primary-hover: #03529d;
+// $primary: #0779e4;
+// $primary-hover: #03529d;
 
-$secondary: #4cbbb9;
-$secondary-hover: #2f8e8c;
+// $secondary: #4cbbb9;
+// $secondary-hover: #2f8e8c;
+
+$primary: #13348d;
+$primary-hover: #0f276b;
+
+$secondary: #6080c6;
+$secondary-hover: #7d9bdb;
 
 $tertiary: #77d8d8;
 $tertiary-hover: #5db1b1;
@@ -45,6 +51,14 @@ $light-border: #dee2e6;
 		background-color: $primary !important;
 		border-color: $primary !important;
 		color: white !important;
+	}
+}
+
+.primary-link {
+	color: $primary !important;
+	// hover
+	&:hover {
+		color: $primary-hover !important;
 	}
 }
 
@@ -116,6 +130,16 @@ $light-border: #dee2e6;
 // 	}
 // }
 
+.active-tab {
+	color: black !important;
+	background-color: white !important;
+}
+
+.inactive-tab {
+	color: $primary !important;
+	background-color: white !important;
+}
+
 .bordered-tab-pane {
 	border: 1px solid $light-border !important;
 	border-radius: 0 0 10px 10px;
@@ -177,10 +201,12 @@ $light-border: #dee2e6;
 
 // Override for Logout navbar link
 .inactive-navbar-link {
-	color: white !important;
+	// color: white !important;
+	color: black !important;
 	opacity: 0.5;
 	&:hover {
-		color: white !important;
+		// color: white !important;
+		color: black !important;
 		opacity: 0.75;
 	}
 }

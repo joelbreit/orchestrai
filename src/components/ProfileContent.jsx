@@ -149,7 +149,6 @@ const ProfileContent = () => {
 													</span>
 													{/* 0 - 1 scores */}
 													<span>
-														
 														{tune.score && (
 															// 0.8 or higher = 4 stars
 															<span
@@ -206,7 +205,8 @@ const ProfileContent = () => {
 																		</>
 																	)}
 																{/* 0 to 0.19 = 0 stars */}
-																{tune.score >= 0 &&
+																{tune.score >=
+																	0 &&
 																	tune.score <
 																		0.2 && (
 																		<>
@@ -219,7 +219,13 @@ const ProfileContent = () => {
 																	)}
 															</span>
 														)}
-														<small className="text-muted" style={{ marginLeft: "10px" }}>
+														<small
+															className="text-muted"
+															style={{
+																marginLeft:
+																	"10px",
+															}}
+														>
 															{new Date(
 																tune.date
 															).toLocaleTimeString(
@@ -248,12 +254,12 @@ const ProfileContent = () => {
 									// justifyContent: "center",
 								}}
 							>
-								<img
+								{/* <img
 									src={OrcheImage}
 									width="30"
 									height="30"
 									alt="Orche"
-								/>{" "}
+								/>{" "} */}
 								You haven't created any tunes yet.
 							</div>
 						</Alert>

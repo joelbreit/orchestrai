@@ -120,12 +120,12 @@ const CompositionComparisonContent = () => {
 								alignItems: "center",
 							}}
 						>
-							<img
+							{/* <img
 								src={OrcheImage}
 								width="30"
 								height="30"
 								alt="Orche"
-							/>{" "}
+							/>{" "} */}
 							<span>{message.text}</span>
 						</div>
 					</Alert>

@@ -1,45 +1,12 @@
-import React, { useContext, useState } from "react";
-import {
-	Button,
-	Container,
-	Modal,
-	ModalBody,
-	ModalFooter,
-	ModalHeader,
-} from "reactstrap";
+import React from "react";
+import { Container } from "reactstrap";
+import ComposeContent from "../components/ComposeContent";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import ComposeContent from "../components/ComposeContent";
 
 // Import contexts
-import { AppContext } from "../contexts/AppContext";
-import QuickComposeForm from "../components/QuickComposeForm";
-import { Link } from "react-router-dom";
-import AdvancedComposeForm from "../components/AdvancedComposeForm";
-import OpenRouterComposeForm from "../components/OpenRouterComposeForm";
 
 const ComposePage = () => {
-	// App context
-	const { appState } = useContext(AppContext);
-
-	// Modal State
-	const [showComposeModal, setShowComposeModal] = useState(false);
-	const [modalMode, setModalMode] = useState(null);
-	const [modalTitle, setModalTitle] = useState("");
-	const [modalContent, setModalContent] = useState("");
-
-	const switchMode = () => {
-		if (modalMode === "Quick Compose") {
-			setModalMode("Advanced Compose");
-			setModalTitle("Advanced Compose");
-			setModalContent(<AdvancedComposeForm />);
-		} else {
-			setModalMode("Quick Compose");
-			setModalTitle("Quick Compose");
-			setModalContent(<QuickComposeForm />);
-		}
-	};
-
 	return (
 		<div>
 			<Header />

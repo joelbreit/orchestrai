@@ -161,12 +161,12 @@ const ABCEditorContent = ({ tuneId, handleLayoutChange, layout }) => {
 											// justifyContent: "center",
 										}}
 									>
-										<img
+										{/* <img
 											src={OrcheImage}
 											width="30"
 											height="30"
 											alt="Orche"
-										/>{" "}
+										/>{" "} */}
 										"Tune retrieved successfully!"
 									</div>
 								) : (
@@ -177,12 +177,12 @@ const ABCEditorContent = ({ tuneId, handleLayoutChange, layout }) => {
 											// justifyContent: "center",
 										}}
 									>
-										<img
+										{/* <img
 											src={OrcheImage}
 											width="30"
 											height="30"
 											alt="Orche"
-										/>{" "}
+										/>{" "} */}
 										"There was an error retrieving your
 										tune."
 									</div>

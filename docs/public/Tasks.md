@@ -9,7 +9,7 @@
 - [ ] Music keeps playing when you navigate away
 - [x] ABC editor limits height (scrolls) but ABC formatter does not
 - [x] Have tried to set min-height for formatted ABCBlock component, but it gets overridden somehow
-- [ ] Shows "Enter a vibe above to generate music." for easy compose tab
+- [x] Shows "Enter a vibe above to generate music." for easy compose tab
 
 ## Features
 
@@ -41,14 +41,17 @@
 - [ ] Improve notation repair tool
 - [ ] Add follow-up ability to send message to same chat thread
 - [x] Switch Layout button
+- [ ] Dark mode
+- [ ] Export to PDF
+- [ ] Format ABC so that measures line up across voices
 
 ## Changes
 
 - [ ] Invite only
 - [x] Allow non-logged in users to create some public compositions
-- [ ] De-fun-ify the site (remove emojis, orcas)
+- [x] De-fun-ify the site (remove emojis, orcas)
 - [ ] New domain name?
-- [ ] Move description to below even when first composing
+- [x] Move description to below even when first composing
 
 ## Refactors
 
@@ -56,6 +59,7 @@
 - [ ] Organize components into folders
 - [ ] Create page component
 - [x] Rename ABC components
+- [ ] Rename/organize styles files
 
 ## Ideas
 
@@ -71,3 +75,8 @@
 - [x] Clean up research rubric
 - [ ] Archive old Reseach component and rubric
 - [ ] Create page or tab for ABC vs note-duration pair comparisons and link in research
+
+## Upgrades
+
+- [ ] Use TypeScript
+- [ ] Use Tailwind CSS

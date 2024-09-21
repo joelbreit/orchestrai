@@ -48,6 +48,7 @@ import {
 import OrcheImage from "../assets/images/Orche.png";
 import GenerateId from "../services/GenerateId";
 import ABCNotationComponent from "./ABCNotationComponent";
+import TuneViewerComponent from "./TuneViewerComponent";
 const apiUrl = process.env.REACT_APP_API_URL;
 
 const ComposeContent = () => {
@@ -79,6 +80,7 @@ const ComposeContent = () => {
 	// Music generation state
 	const [abcNotation, setAbcNotation] = useState("");
 	const [uncleanedNotation, setUncleanedNotation] = useState("");
+	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
 
 	// ABC Cleaner state
@@ -94,6 +96,8 @@ const ComposeContent = () => {
 
 	// Save tune state
 	const [tuneId, setTuneId] = useState("");
+	// Need to set displayTuneId after a tune is saved so that TuneViewerComponent updates
+	const [displayTuneId, setDisplayTuneId] = useState("");
 	const [saveState, setSaveState] = useState("");
 	const [saveStatusCode, setSaveStatusCode] = useState(0);
 
@@ -108,6 +112,10 @@ const ComposeContent = () => {
 		setAbcNotation(newNotation);
 	};
 	// Logger.log("tuneId:", tuneId);
+
+	const setPageTitle = (title) => {
+		document.title = title;
+	};
 
 	// Calculate % complete
 	useEffect(() => {
@@ -159,14 +167,17 @@ const ComposeContent = () => {
 				.toISOString()
 				.slice(0, 10)} ${nycTime}`;
 
+			const newTitle = abcNotation.match(/^T:(.*)$/m)[1];
+			setTitle(newTitle);
+
 			const body = {
 				tuneId: tuneId,
 				accountId: appState.accountId || "m18g2y71", // NotLoggedIn account used for easy compose feature
 				date: dateAndTime,
 				thread: thread,
 				run: run,
-				title: abcNotation.match(/^T:(.*)$/m)[1],
-				prompt: input,
+				title: newTitle,
+				prompt: input || "Compose whatever you want",
 				description: description,
 				notation: abcNotation,
 				warnings: warnings,
@@ -196,6 +207,7 @@ const ComposeContent = () => {
 
 			setSaveStatusCode(statusCode);
 			setSaveState("Complete");
+			setDisplayTuneId(tuneId);
 		};
 
 		if (hasGeneratedMusic && hasCleaned && tuneId) {
@@ -462,7 +474,11 @@ const ComposeContent = () => {
 				<Nav tabs>
 					<NavItem>
 						<NavLink
-							className={activeTab === "1" ? "active" : ""}
+							className={
+								activeTab === "1"
+									? "active active-tab"
+									: "inactive-tab"
+							}
 							onClick={() => {
 								toggleTab("1");
 							}}
@@ -472,7 +488,11 @@ const ComposeContent = () => {
 					</NavItem>
 					<NavItem>
 						<NavLink
-							className={activeTab === "2" ? "active" : ""}
+							className={
+								activeTab === "2"
+									? "active active-tab"
+									: "inactive-tab"
+							}
 							onClick={() => {
 								toggleTab("2");
 							}}
@@ -484,7 +504,7 @@ const ComposeContent = () => {
 					</NavItem>
 					{/* <NavItem>
 						<NavLink
-							className={activeTab === "3" ? "active" : ""}
+							className={activeTab === "3" ? "active active-tab" : "inactive-tab"}
 							onClick={() => {
 								toggleTab("3");
 							}}
@@ -550,6 +570,12 @@ const ComposeContent = () => {
 									></i>
 								</Button> */}
 
+								<p>
+									Don't know what to ask for? Use the
+									"Surprise me" button to let the AI compose
+									whatever it wants.
+								</p>
+
 								{/* Surprise me button */}
 								<Button
 									type="submit"
@@ -601,6 +627,12 @@ const ComposeContent = () => {
 									}
 									placeholder="Write a full prompt for what you want the composition to be"
 									className="mt-2"
+									style={{
+										height: `${
+											fullPrompt.split("\n").length * 24 +
+											16
+										}px`,
+									}}
 								/>
 							</FormGroup>
 
@@ -752,215 +784,38 @@ const ComposeContent = () => {
 						<Progress
 							animated
 							value={percentComplete}
-							className="tertiary-progress-bar mb-3"
+							className="primary-progress-bar mb-3"
 						>
 							{percentComplete > 9 && <>{percentComplete}%</>}
 						</Progress>
 					</div>
 				)}
-				{hasGeneratedMusic && (
-					<>
-						<h2>Generated Description</h2>
-						{vibe || fullPrompt ? (
+				{!isLoading && saveState === "Complete" && (
+					<Alert
+						color={saveStatusCode === 200 ? "success" : "danger"}
+					>
+						{saveStatusCode === 200 ? (
 							<>
-								{description ? (
-									<p>{description}</p>
-								) : (
-									<p>
-										*No description was generated this
-										time.*
-									</p>
-								)}
+								"{title}" was saved successfully! You can now
+								view and share it from{" "}
+								<Link
+									to={`/tunes/${tuneId}`}
+									target="_blank"
+									rel="noopener noreferrer"
+									className="primary-link"
+								>
+									this link{" "}
+									<i className={`bi bi-link-45deg`}></i>
+								</Link>
+								!
 							</>
 						) : (
-							"Enter a vibe above to generate music."
+							"There was an error saving your tune."
 						)}
-
-						{saveState === "Complete" && (
-							<Alert
-								color={
-									saveStatusCode === 200
-										? "success"
-										: "danger"
-								}
-							>
-								{saveStatusCode === 200 ? (
-									<>
-										Your tune was saved successfully! You
-										can now share it with{" "}
-										<Link
-											to={`/tunes/${tuneId}`}
-											target="_blank"
-											rel="noopener noreferrer"
-										>
-											the world{" "}
-											<i className={`bi bi-share`}></i>
-										</Link>
-										!
-									</>
-								) : (
-									"There was an error saving your tune."
-								)}
-							</Alert>
-						)}
-
-						<div style={{ marginTop: "20px" }}>
-							<h2>Rendered Sheet Music</h2>
-							<Synthesizer abcNotation={abcNotation} index={0} />
-						</div>
-						{/* TODO clean this up */}
-						{hasCleaned &&
-							(failed ? (
-								<Alert color="info">
-									<div
-										style={{
-											display: "flex",
-											alignItems: "center",
-											// justifyContent: "center",
-										}}
-									>
-										<img
-											src={OrcheImage}
-											width="30"
-											height="30"
-											alt="Orche"
-										/>{" "}
-										<span>
-											Sorry, but this tune wasn't able to
-											be repaired. {warnings.length}{" "}
-											warnings were issued. See something
-											strange? Send a message to the{" "}
-											<a
-												href="https://discord.gg/e3nNUGVA7A"
-												target="_blank"
-												rel="noreferrer"
-											>
-												Discord{" "}
-												<i className="bi bi-discord"></i>
-											</a>
-											.
-										</span>
-									</div>
-									{/* {warnings.map((warning, index) => (
-										<div key={index}>
-											{warning}
-											<br />
-										</div>
-									))} */}
-								</Alert>
-							) : warnings.length > 0 ? (
-								<Alert color="info">
-									<div
-										style={{
-											display: "flex",
-											alignItems: "center",
-											// justifyContent: "center",
-										}}
-									>
-										<img
-											src={OrcheImage}
-											width="30"
-											height="30"
-											alt="Orche"
-										/>{" "}
-										Notation successfully cleaned!{" "}
-										{numFixes} fixes were made, but{" "}
-										{warnings.length} warnings were issued.
-									</div>
-								</Alert>
-							) : numFixes > 0 ? (
-								<Alert color="success">
-									<div
-										style={{
-											display: "flex",
-											alignItems: "center",
-											// justifyContent: "center",
-										}}
-									>
-										<img
-											src={OrcheImage}
-											width="30"
-											height="30"
-											alt="Orche"
-										/>{" "}
-										Notation successfully cleaned!{" "}
-										{numFixes} fixes were made!
-									</div>
-								</Alert>
-							) : (
-								<Alert color="info">
-									<div
-										style={{
-											display: "flex",
-											alignItems: "center",
-											// justifyContent: "center",
-										}}
-									>
-										<img
-											src={OrcheImage}
-											width="30"
-											height="30"
-											alt="Orche"
-										/>{" "}
-										Notation successfully cleaned! No fixes
-										were needed.
-									</div>
-								</Alert>
-							))}
-						<h2>Generated ABC Notation</h2>
-						{/* <Input
-									type="textarea"
-									value={abcNotation}
-									onChange={handleNotationChange}
-									placeholder="Enter ABC notation here"
-									rows={10}
-								/> */}
-
-						<ABCNotationComponent
-							parentText={abcNotation}
-							placeholderText="Enter ABC notation here"
-							onChange={handleNotationChange}
-						/>
-
-						{/* Download functionality not really needed and saves happen automatically*/}
-						{/* <Button
-									onClick={handleDownload}
-									className="btn btn-primary primary-button mt-3"
-									style={{ marginRight: "10px" }}
-								>
-									<div className="icon-square flex-shrink-0">
-										{" "}
-										Download{" "}
-										<i className={`bi bi-download`}></i>
-									</div>
-								</Button>
-
-								<Button
-									onClick={handleSaveTune}
-									className="btn btn-primary primary-button mt-3 ml-3"
-								>
-									<div className="icon-square flex-shrink-0">
-										{" "}
-										Save <i className={`bi bi-save`}></i>
-									</div>
-								</Button> */}
-
-						{/* TODO add this back */}
-						{/* {!isFeedbackOpen && (
-									<Button
-										onClick={toggleFeedback}
-										className="primary-button mt-3"
-									>
-										Submit Feedback{" "}
-										<i
-											className={`bi bi-chat-right-text`}
-										></i>
-									</Button>
-								)} */}
-						<hr />
-					</>
+					</Alert>
 				)}
-				{saveState === "Loading" && (
+
+				{/* {saveState === "Loading" && (
 					<Alert color="primary">
 						<Spinner
 							as="span"
@@ -971,7 +826,13 @@ const ComposeContent = () => {
 						/>{" "}
 						Saving tune...
 					</Alert>
-				)}
+				)} */}
+
+				<TuneViewerComponent
+					tuneId={displayTuneId}
+					animate={isLoading}
+					setPageTitle={setPageTitle}
+				/>
 
 				<Collapse isOpen={isFeedbackOpen}>
 					<Card>
@@ -981,7 +842,7 @@ const ComposeContent = () => {
 						<CardBody>
 							<FeedbackForm
 								toggleFeedback={toggleFeedback}
-								tuneId={tuneId}
+								tuneId={displayTuneId}
 							/>
 						</CardBody>
 						<CardFooter>

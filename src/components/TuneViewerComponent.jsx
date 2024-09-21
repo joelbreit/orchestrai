@@ -214,13 +214,15 @@ const TuneViewerComponent = ({ tuneId, setPageTitle, animate }) => {
 							<NavItem>
 								<NavLink
 									className={
-										activeTab === "1" ? "active" : ""
+										activeTab === "1"
+											? "active  active-tab"
+											: "inactive-tab"
 									}
 									onClick={() => {
 										toggleTab("1");
 									}}
 								>
-									Info{" "}
+									ABC Notation{" "}
 									<span className="icon-square flex-shrink-0">
 										<i className={`bi bi-info-circle`} />
 									</span>
@@ -230,7 +232,9 @@ const TuneViewerComponent = ({ tuneId, setPageTitle, animate }) => {
 							<NavItem>
 								<NavLink
 									className={
-										activeTab === "2" ? "active" : ""
+										activeTab === "2"
+											? "active active-tab"
+											: "inactive-tab"
 									}
 									onClick={() => {
 										toggleTab("2");
@@ -246,13 +250,15 @@ const TuneViewerComponent = ({ tuneId, setPageTitle, animate }) => {
 							<NavItem>
 								<NavLink
 									className={
-										activeTab === "3" ? "active" : ""
+										activeTab === "3"
+											? "active active-tab"
+											: "inactive-tab"
 									}
 									onClick={() => {
 										toggleTab("3");
 									}}
 								>
-									ABC Notation{" "}
+									Info{" "}
 									<span className="icon-square flex-shrink-0">
 										<i className={`bi bi-music-note`} />
 									</span>
@@ -262,7 +268,9 @@ const TuneViewerComponent = ({ tuneId, setPageTitle, animate }) => {
 							<NavItem>
 								<NavLink
 									className={
-										activeTab === "4" ? "active" : ""
+										activeTab === "4"
+											? "active active-tab"
+											: "inactive-tab"
 									}
 									onClick={() => {
 										toggleTab("4");
@@ -276,7 +284,7 @@ const TuneViewerComponent = ({ tuneId, setPageTitle, animate }) => {
 							</NavItem>
 						</Nav>
 						<TabContent activeTab={activeTab}>
-							<TabPane tabId="1" className="bordered-tab-pane">
+							<TabPane tabId="3" className="bordered-tab-pane">
 								<Row>
 									<Col>
 										<Row>
@@ -346,7 +354,7 @@ const TuneViewerComponent = ({ tuneId, setPageTitle, animate }) => {
 									</Col>
 								</Row>
 							</TabPane>
-							<TabPane tabId="3" className="bordered-tab-pane">
+							<TabPane tabId="1" className="bordered-tab-pane">
 								<Row>
 									<Col>
 										<h3>ABC Notation</h3>

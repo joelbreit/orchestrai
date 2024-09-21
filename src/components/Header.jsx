@@ -69,21 +69,16 @@ const Header = (args) => {
 
 	return (
 		<div>
-			<Navbar
-				expand="md"
-				color="primary"
-				dark
-				{...args}
-				className="secondary-navbar"
-			>
+			<Navbar expand="md" light {...args}>
 				<NavbarBrand tag={RouterNavLink} to="/">
 					<span className="icon-square flex-shrink-0">
-						<img
+						{/* <img
 							src={OrcheImage}
 							width="30"
 							height="30"
 							alt="Orche"
-						/>{" "}
+						/> */}
+						<i className={`bi bi-music-note-beamed`} />{" "}
 						<span>OrchestrAI</span>
 					</span>{" "}
 				</NavbarBrand>

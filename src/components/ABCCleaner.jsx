@@ -95,7 +95,7 @@ const ABCCleaner = () => {
 				errors that can turn an impressive piece of music into a jumbled
 				mess. These small mistakes often cause vioces to get out of sync
 				which can be particularly detrimental to the overall quality of
-				the composition. This is especially noticable on this platform
+				the composition. This is especially noticeable on this platform
 				as it animates the notes as they are played.
 			</p>
 			<p>
@@ -125,12 +125,13 @@ const ABCCleaner = () => {
 									// justifyContent: "center",
 								}}
 							>
-								<img
+								{/* <img
 									src={OrcheImage}
 									width="30"
 									height="30"
 									alt="Orche"
-								/>{" "}
+								/>{" "} */}
+								<i className="bi bi-x-circle"></i>{" "}
 								<span>
 									Sorry, but this tune wasn't able to be
 									repaired. {warnings.length} warnings were
@@ -149,6 +150,7 @@ const ABCCleaner = () => {
 							</div>
 						</Alert>
 					) : warnings.length > 0 ? (
+						// TODO - lots of duplicate code here
 						<Alert color="warning">
 							<div
 								style={{
@@ -157,12 +159,13 @@ const ABCCleaner = () => {
 									// justifyContent: "center",
 								}}
 							>
-								<img
+								{/* <img
 									src={OrcheImage}
 									width="30"
 									height="30"
 									alt="Orche"
-								/>{" "}
+								/>{" "} */}
+								<i className="bi bi-exclamation-triangle"></i>{" "}
 								Notation successfully cleaned! {numFixes} fixes
 								were made, but {warnings.length} warnings were
 								issued.
@@ -177,14 +180,15 @@ const ABCCleaner = () => {
 									// justifyContent: "center",
 								}}
 							>
-								<img
+								{/* <img
 									src={OrcheImage}
 									width="30"
 									height="30"
 									alt="Orche"
-								/>{" "}
-								Notation successfully cleaned! {numFixes} fixes
-								were made!
+								/>{" "} */}
+								<i className="bi bi-check-circle"></i> Notation
+								successfully cleaned! {numFixes} fixes were
+								made!
 							</div>
 						</Alert>
 					) : (
@@ -196,14 +200,14 @@ const ABCCleaner = () => {
 									// justifyContent: "center",
 								}}
 							>
-								<img
+								{/* <img
 									src={OrcheImage}
 									width="30"
 									height="30"
 									alt="Orche"
-								/>{" "}
-								Notation successfully cleaned! No fixes were
-								needed.
+								/>{" "} */}
+								<i className="bi bi-check-circle"></i> Notation
+								successfully cleaned! No fixes were needed.
 							</div>
 						</Alert>
 					))}

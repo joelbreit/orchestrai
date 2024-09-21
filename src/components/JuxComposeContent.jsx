@@ -49,7 +49,11 @@ const JuxComposeContent = () => {
 			<Nav tabs className="mb-3">
 				<NavItem>
 					<NavLink
-						className={activeTab === "1" ? "active" : ""}
+						className={
+							activeTab === "1"
+								? "active active-tab"
+								: "inactive-tab"
+						}
 						onClick={() => {
 							toggleTab("1");
 						}}
@@ -62,7 +66,11 @@ const JuxComposeContent = () => {
 				</NavItem>
 				<NavItem>
 					<NavLink
-						className={activeTab === "2" ? "active" : ""}
+						className={
+							activeTab === "2"
+								? "active active-tab"
+								: "inactive-tab"
+						}
 						onClick={() => {
 							toggleTab("2");
 						}}

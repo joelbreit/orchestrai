@@ -28,7 +28,7 @@ const HomeContent = () => {
 						justifyContent: "center",
 					}}
 				>
-					<img src={OrcheImage} width="70" height="70" alt="Orche" />{" "}
+					{/* <img src={OrcheImage} width="70" height="70" alt="Orche" />{" "} */}
 					<h1>OrchestrAI</h1>
 				</div>
 				<p className="lead">

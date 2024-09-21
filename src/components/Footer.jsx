@@ -7,7 +7,7 @@ const Footer = () => {
 
 	return (
 		<footer className="bg-light text-center text-lg-start mt-4">
-			<Alert color="info" className="text-center">
+			{/* <Alert color="info" className="text-center">
 				<h4 className="alert-heading">
 					OrchestrAI is under construction{" "}
 					<span className="icon-square flex-shrink-0">
@@ -15,22 +15,47 @@ const Footer = () => {
 					</span>
 				</h4>
 				<p className="mb-0">
-					Compositions can now be saved and shared and more features
-					are on the way! In the meantime, join our{" "}
+					Guests can now use the easy compose feature, ABC notation is
+					now pretty-formatted, and more features are on the way! In
+					the meantime, you can send ideas or questions to the{" "}
 					<a
 						href="https://discord.gg/e3nNUGVA7A"
 						target="_blank"
 						rel="noreferrer"
+						className="alert-link"
 					>
 						Discord <i className="bi bi-discord"></i>
 					</a>{" "}
-					to get updates and chat with us!
+					!
 				</p>
-			</Alert>
+			</Alert> */}
 			<Container className="text-center p-3">
 				<h5 className="text-uppercase">Contact Info</h5>
 				<ul className="list-unstyled mb-0">
-					<li>joel [at] breitest [dot] com</li>
+					<li>
+						<a
+							href="mailto:joel@breitest.com"
+							className="text-dark"
+						>
+							Joel@Breitest.com{" "}
+							<i
+								className="bi bi-envelope-fill"
+								aria-hidden="true"
+							></i>
+						</a>{" "}
+						/{" "}
+						<a
+							href="mailto:joel.breit@pitt.edu"
+							className="text-dark"
+						>
+							Joel.Breit@pitt.edu{" "}
+							<i
+								className="bi bi-envelope-fill"
+								aria-hidden="true"
+							></i>
+						</a>
+					</li>
+
 					<li>
 						<a
 							href="https://github.com/joelbreit"
@@ -53,6 +78,21 @@ const Footer = () => {
 						</a>
 					</li>
 				</ul>
+				<Row className="d-flex justify-content-center">
+					<div className="mt-3">
+						<h6>Questions or suggesstions?</h6>
+						Message the{" "}
+						<a
+							href="
+							https://discord.gg/e3nNUGVA7A"
+							target="_blank"
+							rel="noreferrer"
+							className="text-dark"
+						>
+							Discord <i className="bi bi-discord"></i>
+						</a>
+					</div>
+				</Row>
 				<div className="mt-5">&copy; {year} Joel Breit</div>
 			</Container>
 		</footer>
