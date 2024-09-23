@@ -8,6 +8,7 @@ export const AppProvider = ({ children }) => {
 		authenticated: false,
 		UUID: "",
 		accountId: "",
+		isEditing: false,
 	});
 
 	return (

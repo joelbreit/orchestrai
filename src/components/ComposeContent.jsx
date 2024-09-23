@@ -66,7 +66,6 @@ const ComposeContent = () => {
 	const [fullPromptIndex, setFullPromptIndex] = useState(
 		Math.floor(Math.random() * PROMPT_SUGGESTIONS.length)
 	);
-	const [keepPrivate, setKeepPrivate] = useState(false);
 
 	// Loading state
 	const [isLoading, setIsLoading] = useState(false);
@@ -498,9 +497,13 @@ const ComposeContent = () => {
 							<i className="bi bi-code-square"></i>
 						</NavLink>
 					</NavItem>
-					{/* <NavItem>
+					<NavItem>
 						<NavLink
-							className={activeTab === "3" ? "active active-tab" : "inactive-tab"}
+							className={
+								activeTab === "3"
+									? "active active-tab"
+									: "inactive-tab"
+							}
 							onClick={() => {
 								toggleTab("3");
 							}}
@@ -509,7 +512,7 @@ const ComposeContent = () => {
 							OpenRouter Compose{" "}
 							<i className="bi bi-diagram-3"></i>
 						</NavLink>
-					</NavItem> */}
+					</NavItem>
 				</Nav>
 				<TabContent activeTab={activeTab}>
 					<TabPane tabId="1">
@@ -632,22 +635,6 @@ const ComposeContent = () => {
 								/>
 							</FormGroup>
 
-							{/* <FormGroup className="col-6 col-md-4">
-								<Label for="voices">Number of voices</Label>
-								<Input type="select" name="voices" id="voices">
-									<option>1</option>
-									<option>2</option>
-									<option>3</option>
-									<option>4</option>
-									<option>5</option>
-								</Input>
-							</FormGroup>
-
-							<FormGroup check className="mb-3">
-								<Label check>
-									<Input type="checkbox" /> Keep tune private
-								</Label>
-							</FormGroup> */}
 							<FormGroup>
 								<Button
 									type="submit"
@@ -702,24 +689,7 @@ const ComposeContent = () => {
 									className="mt-2"
 								/>
 							</FormGroup>
-							{/* Number of voices dropdown */}
-							<FormGroup>
-								<Label for="voices">Number of voices</Label>
-								<Input type="select" name="voices" id="voices">
-									<option>1</option>
-									<option>2</option>
-									<option>3</option>
-									<option>4</option>
-									<option>5</option>
-								</Input>
-							</FormGroup>
 
-							{/* Checkbox to keep tune private */}
-							<FormGroup check>
-								<Label check>
-									<Input type="checkbox" /> Keep tune private
-								</Label>
-							</FormGroup>
 							<FormGroup>
 								<Button
 									type="submit"

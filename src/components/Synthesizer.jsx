@@ -19,8 +19,6 @@ function Synthesizer({ abcNotation, index, animate }) {
 	const musicSheetRef = useRef(null);
 	const audioRef = useRef(null);
 
-	const [abcjsWarnings, setAbcjsWarnings] = useState([]);
-
 	const downloadMIDI = async () => {
 		if (!abcNotation) return;
 
@@ -127,12 +125,6 @@ function Synthesizer({ abcNotation, index, animate }) {
 			// 		synthControl.play();
 			// 	}
 			// });
-
-			const warnings = ABCJS.parseOnly(cleanedNotation)[0].warnings;
-			if (warnings && warnings.length > 0) {
-				Logger.warn("ABCJS Warnings: ", warnings);
-				setAbcjsWarnings(warnings);
-			}
 
 			var visualObj = ABCJS.renderAbc(
 				musicSheetRef.current,

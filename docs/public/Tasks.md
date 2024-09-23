@@ -10,6 +10,9 @@
 - [x] ABC editor limits height (scrolls) but ABC formatter does not
 - [x] Have tried to set min-height for formatted ABCBlock component, but it gets overridden somehow
 - [x] Shows "Enter a vibe above to generate music." for easy compose tab
+- [ ] Notations aren't getting cleaned (e.g. m1cmysxk)
+- [ ] m1cmysxk gets cleaned incorrectly (removes note instead of adding one)
+- [x] Article PDF doesn't show completely on mobile
 
 ## Features
 

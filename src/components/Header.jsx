@@ -113,14 +113,8 @@ const Header = (args) => {
 								</span>
 							</NavLink>
 						</NavItem>
-						{/* 
 						<NavItem>
-							<NavLink tag={RouterNavLink} to="/about">
-								About This Site
-							</NavLink>
-						</NavItem> */}
-						<NavItem>
-							<NavLink tag={RouterNavLink} to="/research">
+							<NavLink href="/Article.pdf">
 								Research{" "}
 								<i
 									className={`bi bi-journals d-none d-lg-inline`}
@@ -135,7 +129,6 @@ const Header = (args) => {
 								/>
 							</NavLink>
 						</NavItem>
-						{/* TODO Move to far right */}
 
 						{appState.authenticated ? (
 							<>

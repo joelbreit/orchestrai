@@ -50,6 +50,7 @@ const HomeContent = () => {
 					</span>
 				</Button>
 			</div>
+			{/* TODO - lots of duplicate code here */}
 			<Row className="justify-content-center" style={{ display: "flex" }}>
 				<Col xl={4} md={6} style={{ display: "flex" }}>
 					<Card className="my-2" style={{ flex: 1 }}>
@@ -61,7 +62,7 @@ const HomeContent = () => {
 						/>
 						<CardBody>
 							<CardTitle tag="h5">
-								Can Language Models Really Write Music?
+								Can Language Models Write Music?
 							</CardTitle>
 							<CardText>
 								This 2023 paper explored the possibility of
@@ -70,7 +71,7 @@ const HomeContent = () => {
 							</CardText>
 							<Button
 								color="secondary"
-								href="/research"
+								href="/Article.pdf"
 								className="primary-button"
 							>
 								View Article{" "}
