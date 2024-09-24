@@ -238,7 +238,6 @@ const ABCCleaner = () => {
 					</Dropdown> */}
 					<Button
 						onClick={() => {
-							Logger.debug("Example loaded");
 							loadExample();
 						}}
 						className="primary-button-outline mb-2"
@@ -264,11 +263,9 @@ const ABCCleaner = () => {
 					/>
 					<Button
 						onClick={() => {
-							Logger.debug("Cleaning notation");
 							const cleanedNotation = new ABCNotation(
 								abcNotation1
 							);
-							Logger.debug("Cleaned notation: ", cleanedNotation);
 							setAbcNotation2(cleanedNotation.abcNotation);
 							setHasCleaned(true);
 							setNumFixes(cleanedNotation.numFixes);

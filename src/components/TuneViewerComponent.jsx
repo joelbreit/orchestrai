@@ -46,8 +46,6 @@ const TuneViewerComponent = ({ tuneId, setPageTitle, animate }) => {
 	const [score, setScore] = useState(0);
 	const [numScores, setNumScores] = useState(0);
 
-	Logger.debug(`Tune ID: ${tuneId}`);
-
 	// Tune retrieval state
 	const [retrievalState, setRetrievalState] = useState("");
 
@@ -56,11 +54,9 @@ const TuneViewerComponent = ({ tuneId, setPageTitle, animate }) => {
 	const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
 
 	useEffect(() => {
-		Logger.debug("Tune retrieval useEffect");
 		const getTune = async () => {
 			setRetrievalState("Loading");
 			try {
-				Logger.log("Retrieving tune...");
 				const response = await fetch(`${apiUrl}/getTune`, {
 					method: "POST",
 					headers: {
@@ -74,7 +70,6 @@ const TuneViewerComponent = ({ tuneId, setPageTitle, animate }) => {
 				const statusCode = response.status;
 
 				if (statusCode === 200) {
-					Logger.log("Tune retrieved successfully");
 					setAbcNotation(body.notation);
 					setDescription(body.description);
 					setTitle(body.title);
@@ -111,8 +106,6 @@ const TuneViewerComponent = ({ tuneId, setPageTitle, animate }) => {
 	const toggleFeedback = () => {
 		setIsFeedbackOpen(!isFeedbackOpen);
 	};
-
-	Logger.debug("Tune ID: ", tuneId);
 
 	return (
 		<Container>

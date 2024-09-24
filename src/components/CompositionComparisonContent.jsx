@@ -19,8 +19,6 @@ const CompositionComparisonContent = () => {
 	// States: welcome, loading, loaded, error, submitting, submitted
 	const [pageState, setPageState] = useState("welcome");
 
-	Logger.debug("pageState: ", pageState);
-
 	const handleLoadTunes = async () => {
 		Logger.log("Loading tunes...");
 		setPageState("loading");
@@ -30,8 +28,6 @@ const CompositionComparisonContent = () => {
 		if (response.statusCode === 200) {
 			setTuneId1(response.tune1.tuneId);
 			setTuneId2(response.tune2.tuneId);
-			Logger.debug(`Tune 1: ${response.tune1.title}, <${tuneId1}>`);
-			Logger.debug(`Tune 2: ${response.tune2.title}, <${tuneId2}>`);
 			setPageState("loaded");
 			setMessage({ text: "Tunes loaded", color: "success" });
 		} else {
@@ -44,7 +40,6 @@ const CompositionComparisonContent = () => {
 	};
 
 	const handleSelectTune = async (winnerId, loserId) => {
-		Logger.debug("Tune selected: ", winnerId);
 		setPageState("submitting");
 		setMessage({ text: "Submitting comparison...", color: "info" });
 
@@ -59,8 +54,6 @@ const CompositionComparisonContent = () => {
 					loserId,
 				}),
 			});
-
-			Logger.debug("Response: ", response);
 
 			setPageState("submitted");
 			setMessage({

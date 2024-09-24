@@ -13,6 +13,7 @@
 - [ ] Notations aren't getting cleaned (e.g. m1cmysxk)
 - [ ] m1cmysxk gets cleaned incorrectly (removes note instead of adding one)
 - [x] Article PDF doesn't show completely on mobile
+- [ ] Prompt textarea doesn't expand to fit text when lines wrap
 
 ## Features
 
@@ -47,6 +48,8 @@
 - [ ] Dark mode
 - [ ] Export to PDF
 - [ ] Format ABC so that measures line up across voices
+- [ ] "Discourage lyrics, pickup measures, and percussion" checkbox(es)
+- [ ] Number of voices/measures dropdowns
 
 ## Changes
 

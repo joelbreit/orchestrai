@@ -108,8 +108,6 @@ const FeedbackForm = ({ toggleFeedback, tuneId }) => {
 	// 	</FormGroup>
 	// );
 
-	Logger.debug(`submissionMessage.message: ${submissionMessage.message}`);
-
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 

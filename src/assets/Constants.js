@@ -315,3 +315,17 @@ export const USER_NAME_ADJECTIVES = {
 		"Wimpy",
 	],
 };
+
+export const OPEN_ROUTER_MODELS = {
+	// "anthropic/claude-3-opus": "Anthropic: Claude 3 Opus",
+	"anthropic/claude-3.5-sonnet": "Anthropic: Claude 3.5 Sonnet",
+	// "openai/o1-preview": "OpenAI: o1-Preview",
+	"openai/o1-mini": "OpenAI: o1-Mini",
+	"openai/gpt-4o": "OpenAI: GPT-4o",
+	"openai/gpt-4o-mini": "OpenAI: GPT-4o-mini",
+	"openai/gpt-3.5-turbo": "OpenAI: GPT-3.5 Turbo",
+	// "mistralai/mistral-large": "Mistral: Mistral Large",
+	"mistralai/mistral-7b-instruct-v0.1": "Mistral: Mistral 7B Instruct v0.1",
+	"google/gemini-pro-1.5": "Google: Gemini Pro 1.5",
+	"google/gemini-pro": "Google: Gemini Pro 1.0",
+};

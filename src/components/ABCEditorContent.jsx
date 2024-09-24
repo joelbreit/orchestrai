@@ -25,7 +25,6 @@ const ABCEditorContent = ({ tuneId, handleLayoutChange, layout }) => {
 	const [retrievalStatusCode, setRetrievalStatusCode] = useState(0);
 
 	useEffect(() => {
-		Logger.debug("Tune retrieval useEffect");
 		const getTune = async () => {
 			setRetrievalState("Loading");
 			try {
@@ -66,10 +65,7 @@ const ABCEditorContent = ({ tuneId, handleLayoutChange, layout }) => {
 		}
 	}, [tuneId]);
 
-	Logger.debug("Tune ID: ", tuneId);
-
 	useEffect(() => {
-		Logger.debug("File upload useEffect");
 		if (file && !tuneId) {
 			setDidUpload(true);
 			const reader = new FileReader();

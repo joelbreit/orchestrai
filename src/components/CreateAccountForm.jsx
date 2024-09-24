@@ -260,7 +260,6 @@ const CreateAccountForm = ({ redirect }) => {
 			} else {
 				const generatedToken = await GenerateToken(accountId);
 				localStorage.setItem("OrchestrAIToken", generatedToken);
-				Logger.debug(`Token generated: ${generatedToken}`);
 			}
 			if (redirect) {
 				redirect();
@@ -316,7 +315,7 @@ const CreateAccountForm = ({ redirect }) => {
 					<FormFeedback>{feedback.email}</FormFeedback>
 				</Col>
 			</FormGroup>
-			
+
 			<Row>
 				<Col>
 					<FormGroup>
@@ -506,7 +505,12 @@ const CreateAccountForm = ({ redirect }) => {
 						className="primary-button"
 						block
 						disabled={
-							!email || !password || !confirmPassword || loading || !username || !displayName
+							!email ||
+							!password ||
+							!confirmPassword ||
+							loading ||
+							!username ||
+							!displayName
 						}
 					>
 						Create Account{" "}

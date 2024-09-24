@@ -15,9 +15,13 @@ import {
 	Col,
 	Collapse,
 	Container,
+	Dropdown,
+	DropdownItem,
+	DropdownMenu,
+	DropdownToggle,
 	Form,
-	FormFeedback,
 	FormGroup,
+	FormText,
 	Input,
 	Label,
 	Nav,
@@ -30,8 +34,6 @@ import {
 } from "reactstrap";
 import ABCNotation from "../services/ABCNotationParser";
 import FeedbackForm from "./FeedbackForm";
-import ProtectedContent from "./ProtectedContent";
-import Synthesizer from "./Synthesizer";
 
 // Import contexts
 import { AppContext } from "../contexts/AppContext";
@@ -42,12 +44,9 @@ import {
 	ORCHESTRAI_LOADING_MESSAGES as LOADING_MESSAGES,
 	ORCHESTRAI_TIMEOUT_DURATION as MAX_DURATION,
 	PROMPT_SUGGESTIONS,
-	// ORCHESTRAI_SAVE_FILE_VERSION as SAVE_FILE_VERSION,
-	VIBE_SUGGESTIONS,
+	OPEN_ROUTER_MODELS,
 } from "../assets/Constants";
-import OrcheImage from "../assets/images/Orche.png";
 import GenerateId from "../services/GenerateId";
-import ABCNotationComponent from "./ABCNotationComponent";
 import TuneViewerComponent from "./TuneViewerComponent";
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -55,15 +54,14 @@ const ComposeContent = () => {
 	// App context
 	const { appState } = useContext(AppContext);
 
-	// Parameters
+	// User Input
 	const [activeTab, setActiveTab] = useState("1");
-	const [vibe, setVibe] = useState("");
-	const [fullPrompt, setFullPrompt] = useState("");
+	const [advancedPrompt, setAdvancedPrompt] = useState("");
+	const [openRouterPrompt, setOpenRouterPrompt] = useState("");
+	const [dropdownOpen, setDropdownOpen] = useState(false);
+	const [model, setModel] = useState("openai/gpt-4o");
 	const [input, setInput] = useState("");
-	const [vibePromptIndex, setVibePromptIndex] = useState(
-		Math.floor(Math.random() * VIBE_SUGGESTIONS.length)
-	);
-	const [fullPromptIndex, setFullPromptIndex] = useState(
+	const [advancedPromptIndex, setAdvancedPromptIndex] = useState(
 		Math.floor(Math.random() * PROMPT_SUGGESTIONS.length)
 	);
 
@@ -110,7 +108,8 @@ const ComposeContent = () => {
 	const handleNotationChange = (newNotation) => {
 		setAbcNotation(newNotation);
 	};
-	// Logger.log("tuneId:", tuneId);
+
+	const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
 	const setPageTitle = (title) => {
 		document.title = title;
@@ -130,11 +129,13 @@ const ComposeContent = () => {
 
 	useEffect(() => {
 		if (activeTab === "1") {
-			setInput(vibe);
+			setInput("Compose whatever you want");
 		} else if (activeTab === "2") {
-			setInput(fullPrompt);
+			setInput(advancedPrompt);
+		} else if (activeTab === "3") {
+			setInput(openRouterPrompt);
 		}
-	}, [activeTab, vibe, fullPrompt]);
+	}, [activeTab, advancedPrompt, openRouterPrompt]);
 
 	useEffect(() => {
 		const cleanedNotation = new ABCNotation(abcNotation);
@@ -172,7 +173,7 @@ const ComposeContent = () => {
 				thread: thread,
 				run: run,
 				title: newTitle,
-				prompt: input || "Compose whatever you want",
+				prompt: input || "Compose whatever you want", // TODO this might be wrong if the user switches tabs
 				description: description,
 				notation: abcNotation,
 				warnings: warnings,
@@ -210,16 +211,10 @@ const ComposeContent = () => {
 		}
 	}, [hasGeneratedMusic, hasCleaned, tuneId]); // TODO seems I'm doing this wrong somehow
 
-	const suggestVibe = () => {
-		const nextIndex = (vibePromptIndex + 1) % VIBE_SUGGESTIONS.length;
-		setVibe(VIBE_SUGGESTIONS[nextIndex]);
-		setVibePromptIndex(nextIndex);
-	};
-
-	const suggestFullPrompt = () => {
-		const nextIndex = (fullPromptIndex + 1) % PROMPT_SUGGESTIONS.length;
-		setFullPrompt(PROMPT_SUGGESTIONS[nextIndex]);
-		setFullPromptIndex(nextIndex);
+	const suggestAdvancedPrompt = () => {
+		const nextIndex = (advancedPromptIndex + 1) % PROMPT_SUGGESTIONS.length;
+		setAdvancedPrompt(PROMPT_SUGGESTIONS[nextIndex]);
+		setAdvancedPromptIndex(nextIndex);
 	};
 
 	const handleSubmit = async (e) => {
@@ -233,20 +228,20 @@ const ComposeContent = () => {
 		setIsFeedbackOpen(false);
 		setRunStatus("Queued");
 
-		try {
+		const handleOpenAIAPI = async () => {
 			let threadId = "";
 			let runId = "";
 			let content = "";
 
 			// If tab 1
 			if (activeTab === "1") {
-				if (!vibe) {
-					content = "Compose whatever you want";
-				} else {
-					content = `Compose a tune that expresses the following vibe: ${vibe}`;
-				}
+				content = "Compose whatever you want";
 			} else if (activeTab === "2") {
-				content = `Please create a tune for this prompt: ${fullPrompt}`;
+				content = `Please create a tune for this prompt: ${advancedPrompt}`;
+			} else if (activeTab === "3") {
+				content = `${openRouterPrompt}`;
+			} else {
+				Logger.warn("Unknown tab:", activeTab);
 			}
 
 			const generateMusicResponse = await fetch(
@@ -400,6 +395,86 @@ const ComposeContent = () => {
 			setSaveState("");
 			setSaveStatusCode(0);
 			// handleSaveTune();
+		};
+
+		const handleOpenRouterAPI = async () => {
+			let secondsSoFar = 0;
+			setRunStatus("In Progress");
+			const openRouterResponse = await fetch(
+				`${apiUrl}/OpenRouterGenerate`,
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						accountId: appState.accountId,
+						content: `${openRouterPrompt}`,
+						model: model,
+					}),
+				}
+			);
+
+			// Handle the response
+			const responseBody = await openRouterResponse.json();
+			const statusCode = openRouterResponse.status;
+			if (statusCode === 200) {
+				Logger.log("Success:", responseBody);
+				setRunStatus("Completed");
+			} else {
+				setErrorMessage(responseBody.message);
+				setRunStatus("Failed");
+				Logger.error("Error:", responseBody.message);
+			}
+
+			const message = responseBody.message;
+			Logger.debug("Message:", message);
+			const data = responseBody.data;
+			Logger.debug("Data:", data);
+			const choices = data.choices;
+			Logger.debug("Choices:", choices);
+
+			Logger.log("Generated response:", responseBody.message);
+
+			setThread(data.model);
+			setRun("NA");
+			secondsSoFar = Math.floor((Date.now() - startTime) / 1000);
+			setTimeSoFar(secondsSoFar);
+
+			// Update progress bar
+			// Set timeout threashold
+
+			const output = choices[0].message.content;
+			// Logger.log("Output:", output);
+
+			setHasCleaned(false);
+			let parsedNotation;
+			try {
+				parsedNotation = output.match(/```([^`]*)```/)[1];
+			} catch (error) {
+				Logger.error("Error parsing notation:", error);
+				setErrorMessage(
+					"Unable to find ABC notation in the response. Please try again."
+				);
+				setIsLoading(false);
+				return;
+			}
+			setAbcNotation(parsedNotation);
+			setUncleanedNotation(parsedNotation);
+			setDescription(output.replace(/```([^`]*)```/, ""));
+			setHasGeneratedMusic(true);
+			setTuneId(GenerateId());
+			setSaveState("");
+			setSaveStatusCode(0);
+			// handleSaveTune();
+		};
+
+		try {
+			if (activeTab === "3") {
+				await handleOpenRouterAPI();
+			} else {
+				await handleOpenAIAPI();
+			}
 		} catch (error) {
 			Logger.error("API call failed:", error);
 			setErrorMessage(error.message);
@@ -439,13 +514,48 @@ const ComposeContent = () => {
 		setIsFeedbackOpen(!isFeedbackOpen);
 	};
 
+	const renderCustomModelExplanation = () => {
+		return (
+			<FormText style={{ marginBottom: "1rem" }}>
+				<strong>Custom Model</strong>
+				<p>
+					The custom model is a version of GPT-4o modified with the
+					OpenAI assistants API. This model is different from the
+					GPT-4 models available under the OpenRouter Compose tab.
+					<ul>
+						<li>
+							It is not fine-tuned with any data, but it is
+							different in the following ways.
+						</li>
+						<li>
+							It has been provided access to some music theory
+							materials and ABC notation standards.
+						</li>
+						<li>
+							It uses a few shot learning approach by providing 5
+							modified examples of previously successful AI
+							generated compositions.
+						</li>
+						<li>
+							It provides custom instructions aimed at a reduced
+							error rate in the generated music.
+						</li>
+					</ul>
+					You can provide any text description, and a piece of music
+					will be generated in ABC notation which will then be
+					rendered for you to watch, listen, edit and save.
+				</p>
+			</FormText>
+		);
+	};
+
 	return (
 		<Container>
 			<h1 className="border-bottom">Compose Music with GPT-4</h1>
 			<p>
-				This composition tool uses GPT-4's assistants API provided by
-				OpenAI to generate music notation. You can provide basically any
-				text description, and a piece of music will be generated in ABC
+				This composition tool uses LLM APIs like GPT-4 or Claude Sonnet
+				to generate music notation. You can provide any text
+				description, and a piece of music will be generated in ABC
 				notation which will then be rendered for you to watch, listen,
 				edit and save.
 			</p>
@@ -517,63 +627,13 @@ const ComposeContent = () => {
 				<TabContent activeTab={activeTab}>
 					<TabPane tabId="1">
 						<Form onSubmit={handleSubmit} className="mt-3">
-							{/* <FormGroup>
-								<Label
-									for="vibe"
-									style={{ marginRight: "0.5rem" }}
-								>
-									Vibe of the composition
-								</Label>
-								<Button
-									className="primary-button"
-									size="sm"
-									onClick={suggestVibe}
-								>
-									Suggest one for me{" "}
-									<i className={`bi bi-magic`}></i>
-								</Button>
-								<Input
-									type="text"
-									id="vibe"
-									value={vibe}
-									onChange={(e) => setVibe(e.target.value)}
-									placeholder="Enter a vibe here"
-									maxLength={100}
-									className="mt-2"
-								/>
-								<span className="character-counter">
-									{vibe.length}/100
-								</span>
-							</FormGroup> */}
 							<FormGroup>
-								{/* <Button
-									type="submit"
-									value="Generate Music"
-									className="btn btn-primary primary-button"
-									disabled={!vibe || isLoading}
-								>
-									{isLoading && (
-										<>
-											<Spinner
-												as="span"
-												animation="border"
-												size="sm"
-												role="status"
-												aria-hidden="true"
-											/>{" "}
-										</>
-									)}
-									Generate Music{" "}
-									<i
-										className={`bi bi-music-note-beamed`}
-									></i>
-								</Button> */}
-
 								<p>
 									Don't know what to ask for? Use the
 									"Surprise me" button to let the AI compose
 									whatever it wants.
 								</p>
+								{renderCustomModelExplanation()}
 
 								{/* Surprise me button */}
 								<Button
@@ -602,9 +662,15 @@ const ComposeContent = () => {
 					</TabPane>
 					<TabPane tabId="2">
 						<Form onSubmit={handleSubmit} className="mt-3">
+							<p>
+								Advanced Compose allows you to provide a full
+								prompt for the composition. The custom GPT-4o
+								model will generate music based on your prompt.
+							</p>
+							{renderCustomModelExplanation()}
 							<FormGroup className="col-12 col-md-8">
 								<Label
-									for="fullPrompt"
+									for="advancedPrompt"
 									style={{ marginRight: "0.5rem" }}
 								>
 									Prompt
@@ -612,35 +678,35 @@ const ComposeContent = () => {
 								<Button
 									className="primary-button"
 									size="sm"
-									onClick={suggestFullPrompt}
+									onClick={suggestAdvancedPrompt}
 								>
 									Suggest one for me{" "}
 									<i className={`bi bi-magic`}></i>
 								</Button>
 								<Input
 									type="textarea"
-									id="fullPrompt"
-									value={fullPrompt}
+									id="advancedPrompt"
+									value={advancedPrompt}
 									onChange={(e) =>
-										setFullPrompt(e.target.value)
+										setAdvancedPrompt(e.target.value)
 									}
 									placeholder="Write a full prompt for what you want the composition to be"
 									className="mt-2"
 									style={{
 										height: `${
-											fullPrompt.split("\n").length * 24 +
+											advancedPrompt.split("\n").length *
+												24 +
 											16
 										}px`,
 									}}
 								/>
 							</FormGroup>
-
 							<FormGroup>
 								<Button
 									type="submit"
 									value="Generate Music"
 									className="btn btn-primary primary-button"
-									disabled={!fullPrompt || isLoading}
+									disabled={!advancedPrompt || isLoading}
 								>
 									{isLoading && (
 										<>
@@ -663,27 +729,83 @@ const ComposeContent = () => {
 					</TabPane>
 					<TabPane tabId="3">
 						<Form onSubmit={handleSubmit} className="mt-3">
+							<p>
+								OpenRouter Compose allows try out different
+								models available on OpenRouter AI. You can
+								provide a prompt for the composition and the
+								model will generate music based on your prompt.
+							</p>
+							<FormText>
+								<strong>OpenRouter Models</strong>
+								<p>
+									OpenRouter provides access to a variety of
+									LLM models. You can select a model to
+									generate music with. Your prompt will be
+									added to a short preamble. Other than the
+									preamble, and your prompt, the models are
+									unchanged.
+								</p>
+							</FormText>
+
 							<FormGroup>
 								<Label
-									for="fullPrompt"
+									for="openRouterModel"
+									style={{ marginRight: "0.5rem" }}
+								>
+									Model
+								</Label>
+
+								<Dropdown
+									isOpen={dropdownOpen}
+									toggle={toggleDropdown}
+								>
+									<DropdownToggle
+										caret
+										className="primary-dropdown"
+									>
+										{OPEN_ROUTER_MODELS[model]}
+									</DropdownToggle>
+									<DropdownMenu>
+										{Object.keys(OPEN_ROUTER_MODELS).map(
+											(modelKey) => (
+												<DropdownItem
+													key={modelKey}
+													onClick={() =>
+														setModel(modelKey)
+													}
+												>
+													{
+														OPEN_ROUTER_MODELS[
+															modelKey
+														]
+													}
+												</DropdownItem>
+											)
+										)}
+									</DropdownMenu>
+								</Dropdown>
+							</FormGroup>
+							<FormGroup>
+								<Label
+									for="openRouterPrompt"
 									style={{ marginRight: "0.5rem" }}
 								>
 									Prompt
 								</Label>
-								<Button
+								{/* <Button
 									className="primary-button"
 									size="sm"
-									onClick={suggestFullPrompt}
+									onClick={suggestOpenRouterPrompt}
 								>
 									Suggest one for me{" "}
 									<i className={`bi bi-magic`}></i>
-								</Button>
+								</Button> */}
 								<Input
 									type="textarea"
-									id="fullPrompt"
-									value={fullPrompt}
+									id="openRouterPrompt"
+									value={openRouterPrompt}
 									onChange={(e) =>
-										setFullPrompt(e.target.value)
+										setOpenRouterPrompt(e.target.value)
 									}
 									placeholder="Write a full prompt for what you want the composition to be"
 									className="mt-2"
@@ -695,7 +817,7 @@ const ComposeContent = () => {
 									type="submit"
 									value="Generate Music"
 									className="btn btn-primary primary-button"
-									disabled={!fullPrompt || isLoading}
+									disabled={!openRouterPrompt || isLoading}
 								>
 									{isLoading && (
 										<>
