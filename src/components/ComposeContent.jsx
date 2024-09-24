@@ -43,8 +43,8 @@ import {
 	AVERAGE_ORCHESTRAI_COMPLETION_TIME as EXPECTED_DURATION,
 	ORCHESTRAI_LOADING_MESSAGES as LOADING_MESSAGES,
 	ORCHESTRAI_TIMEOUT_DURATION as MAX_DURATION,
-	PROMPT_SUGGESTIONS,
 	OPEN_ROUTER_MODELS,
+	PROMPT_SUGGESTIONS,
 } from "../assets/Constants";
 import GenerateId from "../services/GenerateId";
 import TuneViewerComponent from "./TuneViewerComponent";
@@ -69,7 +69,6 @@ const ComposeContent = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [timeSoFar, setTimeSoFar] = useState(0);
 	const [percentComplete, setPercentComplete] = useState(1);
-	const [loadingMessage, setLoadingMessage] = useState("Composing music...");
 	const [hasGeneratedMusic, setHasGeneratedMusic] = useState(false);
 	const [errorMessage, setErrorMessage] = useState();
 	const [runStatus, setRunStatus] = useState("");
@@ -85,7 +84,8 @@ const ComposeContent = () => {
 	const [numFixes, setNumFixes] = useState(0);
 	const [warnings, setWarnings] = useState([]);
 	const [fixesList, setFixesList] = useState([]);
-	const [failed, setFailed] = useState(false);
+	// TODO use this
+	// const [failed, setFailed] = useState(false);
 
 	// File download information
 	const [thread, setThread] = useState("");
@@ -103,10 +103,6 @@ const ComposeContent = () => {
 
 	const toggleTab = (tab) => {
 		if (activeTab !== tab) setActiveTab(tab);
-	};
-
-	const handleNotationChange = (newNotation) => {
-		setAbcNotation(newNotation);
 	};
 
 	const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
@@ -144,7 +140,7 @@ const ComposeContent = () => {
 		setNumFixes(cleanedNotation.numFixes);
 		setWarnings(cleanedNotation.warnings);
 		setFixesList(cleanedNotation.fixes);
-		setFailed(cleanedNotation.failed);
+		// setFailed(cleanedNotation.failed);
 	}, [abcNotation]);
 
 	// When ready to save tune
@@ -209,7 +205,7 @@ const ComposeContent = () => {
 		if (hasGeneratedMusic && hasCleaned && tuneId) {
 			handleSaveTune();
 		}
-	}, [hasGeneratedMusic, hasCleaned, tuneId]); // TODO seems I'm doing this wrong somehow
+	}, [hasGeneratedMusic, hasCleaned, tuneId]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	const suggestAdvancedPrompt = () => {
 		const nextIndex = (advancedPromptIndex + 1) % PROMPT_SUGGESTIONS.length;
@@ -221,7 +217,6 @@ const ComposeContent = () => {
 		e.preventDefault();
 
 		const startTime = Date.now();
-		// setLoadingMessage(LOADING_MESSAGES[0]);
 		setPercentComplete(0);
 		setErrorMessage("");
 		setIsLoading(true);
@@ -349,7 +344,6 @@ const ComposeContent = () => {
 						if (messageIndex >= messagesLength) {
 							messageIndex = messagesLength - 1;
 						}
-						// setLoadingMessage(LOADING_MESSAGES[messageIndex]);
 					}
 
 					// Make sure we wait at least 2 seconds before pinging again
@@ -551,7 +545,7 @@ const ComposeContent = () => {
 
 	return (
 		<Container>
-			<h1 className="border-bottom">Compose Music with GPT-4</h1>
+			<h1 className="border-bottom">Compose Music with AI</h1>
 			<p>
 				This composition tool uses LLM APIs like GPT-4 or Claude Sonnet
 				to generate music notation. You can provide any text
@@ -730,9 +724,9 @@ const ComposeContent = () => {
 					<TabPane tabId="3">
 						<Form onSubmit={handleSubmit} className="mt-3">
 							<p>
-								OpenRouter Compose allows try out different
-								models available on OpenRouter AI. You can
-								provide a prompt for the composition and the
+								OpenRouter Compose allows you to try out
+								different models available on OpenRouter AI. You
+								can provide a prompt for the composition and the
 								model will generate music based on your prompt.
 							</p>
 							<FormText>
@@ -867,7 +861,7 @@ const ComposeContent = () => {
 									</Badge>
 								</div>
 							)}
-							<p>{loadingMessage}</p>
+							<p>Composing music...</p>
 						</Col>
 						<Progress
 							animated

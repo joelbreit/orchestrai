@@ -6,9 +6,10 @@ import GeneratedTunes from "../assets/GeneratedTunes";
 // import ABCNotations from "../assets/ABCNotations";
 import ABCCleaner from "./ABCCleaner";
 import CompositionComparisonContent from "./CompositionComparisonContent";
+import ModalComparisonComponent from "./ModalComparisonComponent";
 
 const JuxComposeContent = () => {
-	const [activeTab, setActiveTab] = useState("1");
+	const [activeTab, setActiveTab] = useState("Cleaner");
 	const [abcNotation1, setAbcNotation1] = useState("");
 	const [abcNotation2, setAbcNotation2] = useState("");
 	const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -47,15 +48,32 @@ const JuxComposeContent = () => {
 				with ABC music notation.
 			</p>
 			<Nav tabs className="mb-3">
-				<NavItem>
+				{/* <NavItem>
 					<NavLink
 						className={
-							activeTab === "1"
+							activeTab === "ModalCompare"
 								? "active active-tab"
 								: "inactive-tab"
 						}
 						onClick={() => {
-							toggleTab("1");
+							toggleTab("ModalCompare");
+						}}
+					>
+						LLM Comparison{" "}
+						<span className="icon-square flex-shrink-0">
+							<i className={`bi bi-music-note-beamed`}></i>
+						</span>
+					</NavLink>
+				</NavItem> */}
+				<NavItem>
+					<NavLink
+						className={
+							activeTab === "Cleaner"
+								? "active active-tab"
+								: "inactive-tab"
+						}
+						onClick={() => {
+							toggleTab("Cleaner");
 						}}
 					>
 						Notation Cleaner{" "}
@@ -67,12 +85,12 @@ const JuxComposeContent = () => {
 				<NavItem>
 					<NavLink
 						className={
-							activeTab === "2"
+							activeTab === "Scorer"
 								? "active active-tab"
 								: "inactive-tab"
 						}
 						onClick={() => {
-							toggleTab("2");
+							toggleTab("Scorer");
 						}}
 					>
 						Composition Comparison{" "}
@@ -83,11 +101,15 @@ const JuxComposeContent = () => {
 				</NavItem>
 			</Nav>
 			<TabContent activeTab={activeTab}>
-				<TabPane tabId="1">
+				<TabPane tabId="ModalCompare">
+					{/* <ModalComparisonComponent /> */}
+				</TabPane>
+
+				<TabPane tabId="Cleaner">
 					<ABCCleaner />
 				</TabPane>
 
-				<TabPane tabId="2">
+				<TabPane tabId="Scorer">
 					<CompositionComparisonContent />
 				</TabPane>
 			</TabContent>
