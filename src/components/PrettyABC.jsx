@@ -24,7 +24,10 @@ const PrettyABC = ({ code, setCode, onEdit }) => {
 			className="language-abc"
 			style={{
 				padding: "10px",
-				borderRadius: "6px",
+				borderTopLeftRadius: "0",
+				borderTopRightRadius: "0",
+				borderBottomLeftRadius: "6px",
+				borderBottomRightRadius: "6px",
 				border: "1px solid #DADDE1",
 				position: "relative",
 				marginBottom: "0",
@@ -37,7 +40,7 @@ const PrettyABC = ({ code, setCode, onEdit }) => {
 			>
 				{code || "\n\n\n"}
 			</code>
-			<div className="ABCFormButtons">
+			{/* <div className="ABCFormButtons">
 				<Button
 					type="button"
 					className="primary-button-outline btn-sm"
@@ -59,7 +62,7 @@ const PrettyABC = ({ code, setCode, onEdit }) => {
 						<i className={`bi bi-pencil`}></i>
 					</span>
 				</Button>
-			</div>
+			</div> */}
 		</pre>
 	);
 };

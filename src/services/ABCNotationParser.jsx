@@ -17,6 +17,7 @@ class ABCNotation {
 		this.warnings = [];
 		this.failed = false;
 		this.fixes = [];
+		this.normalizations = [];
 		this.abcNotation = "";
 		this.title = "";
 		this.voices = new Map(); // map of voice names to all the text in that voice
@@ -105,6 +106,7 @@ class ABCNotation {
 
 	/**
 	 * Normalize the given text by performing the following operations:
+	 * 1. Adds new lines after any inline voice names
 	 * 2. Removes leading and trailing whitespace from each line
 	 * 3. Remove empty lines
 	 *
@@ -114,25 +116,34 @@ class ABCNotation {
 	normalizeText(text) {
 		let lines = text.split("\n");
 
-		// Add new lines after ] characters if they appear in the first 10 characters
+		// Add new lines after any inline voice names
 		// TODO this was removed because it was breaking some tunes (e.g. m1evmmxb)
 		let linesCopy = [...lines];
-		// for (const line of linesCopy) {
-		// 	console.debug("line: ", line);
-		// 	if (line.slice(0, 10).includes("]")) {
-		// 		const index = line.indexOf("]");
-		// 		lines.splice(lines.indexOf(line) + 1, 0, line.slice(index + 1));
-		// 		lines[lines.indexOf(line)] = line.slice(0, index + 1);
-		// 		this.fixes.push(`Added new line after ]`);
-		// 	}
-		// }
+		for (const line of linesCopy) {
+			// if (line.slice(0, 10).includes("]")) {
+			// 	const index = line.indexOf("]");
+			// 	lines.splice(lines.indexOf(line) + 1, 0, line.slice(index + 1));
+			// 	lines[lines.indexOf(line)] = line.slice(0, index + 1);
+			// 	this.normalizations.push(`Added new line after ]`);
+			// }
+
+			const voiceNameMatch = line.match(/^\[V:\d+\] /);
+			if (voiceNameMatch) {
+				const index = voiceNameMatch[0].length;
+				lines.splice(lines.indexOf(line) + 1, 0, line.slice(index));
+				lines[lines.indexOf(line)] = line.slice(0, index);
+				this.normalizations.push(`Added newline after voice name`);
+			}
+		}
 
 		// Remove leading and trailing whitespace
 		linesCopy = [...lines];
 		for (const line of linesCopy) {
 			if (line !== line.trim()) {
 				lines[lines.indexOf(line)] = line.trim();
-				this.fixes.push(`Removed leading and trailing whitespace`);
+				this.normalizations.push(
+					`Removed leading and trailing whitespace`
+				);
 			}
 		}
 
@@ -141,7 +152,7 @@ class ABCNotation {
 		for (const line of linesCopy) {
 			if (line === "") {
 				lines.splice(lines.indexOf(line), 1);
-				this.fixes.push(`Removed empty line`);
+				this.normalizations.push(`Removed empty line`);
 			}
 		}
 		// Lines that start with "w" are words, not notes
@@ -790,36 +801,5 @@ class ABCNotation {
 		}
 	}
 }
-
-const uncleaned = `abc
-X:1
-T:Reflective Trio Sonata
-C:OrchestrAI
-M:3/4
-L:1/8
-Q:1/4=96
-K:C
-V:1 clef=treble name="Violin"
-%%MIDI program 40
-|:"C"E2 | "Am"A4 z2 | "Dm"F4 z2 | "G7"G3 F G2 | "C"E4 z2 |
- "C7"E2 "F"D3 E F2 | "Dm"D4 z2 | "G7"B,2 "C"A,3 G, A,2 | "Am"E4 z2 |
- "F"A2 "C"G3 A G2 | "Dm"F4 z2 | "G7"B2 B2 A2 | "C"G4 z2 |
- "Am"A3 G F2 | "Dm"D4 z2 | "G7"G4 z2 |[1 "C"C4 :|[2 "C"C4 ||
-V:2 clef=treble name="Viola"
-%%MIDI program 41
-|:"C"C4 z2 | "Am"A2 A2 z2 | "Dm"F2 F2 z2 | "G7"A2 A2 B2 | "C"C4 z2 |
- "C7"C2 "F"F2 G2 | "Dm"F2 "G7"F3 E | "C"G,4 z2 | "Am"A2 E2 C2 |
- "F"F2 "C"E2 G2 | "Dm"F2 F4 | "G7"G2 G2 F2 | "C"E2 E4 |
- "Am"A2 A2 G2 | "Dm"F2 F4 | "G7"G2 z2 F2 |[1 "C"C4 :|[2 "C"C2 z4 ||
-V:3 clef=bass name="Cello"
-%%MIDI program 42
-|:"C"C,6 | "Am"A,4 C2 | "Dm"D,3 E F2 | "G7"G,4 B,2 | "C"C,4 E2 |
- "C7"C2 "F"F,4 | "Dm"F,4 D2 | "G7"B,,3 E G,2 | "C"C,2 E2 G,2 |
- "F"F,2 C2 F,2 | "Dm"D,3 A, D2 | "G7"D,2 G,2 B,2 | "C"C,4 D2 |
- "Am"A,4 E2 | "Dm"D,2 A,2 D2 | "G7"D,2 F,2 G,2 |[1 "C"C,4 :|[2 "C"C,2 z4 ||`;
-
-const test = new ABCNotation(uncleaned);
-
-console.log(test);
 
 export default ABCNotation;

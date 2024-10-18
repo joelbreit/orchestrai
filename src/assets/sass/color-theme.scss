@@ -218,6 +218,22 @@ $light-border: #dee2e6;
 	}
 }
 
+.ABCToolBar {
+	background-color: #424242;
+	// 6px on top and 0 on the bottom
+	border-radius: 6px 6px 0 0;
+	height: 48px;
+	display: flex;
+	justify-content: flex-end;
+}
+
+.ABCToolBar button {
+	background-color: #424242;
+	color: white;
+	border: none;
+	height: 48px;
+}
+
 .ABCForm {
 	position: relative;
 }
@@ -240,6 +256,8 @@ $light-border: #dee2e6;
 	line-height: 21px;
 	padding: 10px;
 	min-height: 85px !important;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
 }
 
 // .ABCBlock {

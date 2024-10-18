@@ -24,7 +24,7 @@
 - [ ] Personal stats
   - [ ] You've created x compositions. That's more than y% of users.
   - [ ] You joined on x date making you the yth user out of z.
-- [ ] Ability to use other LLMs
+- [x] Ability to use other LLMs
 - [ ] 2 compositions per attempt
 - [ ] Make private/public functionality
 - [ ] Site-wide small modal for live update of in-progress compositions
@@ -42,7 +42,6 @@
 - [ ] Bring back spacebar to play/pause feature
 - [ ] Highlight notation when notes selected
 - [ ] Allow dragging of notes on paper
-- [ ] Improve notation repair tool
 - [ ] Add follow-up ability to send message to same chat thread
 - [x] Switch Layout button
 - [ ] Dark mode
@@ -50,6 +49,18 @@
 - [ ] Format ABC so that measures line up across voices
 - [ ] "Discourage lyrics, pickup measures, and percussion" checkbox(es)
 - [ ] Number of voices/measures dropdowns
+- [x] Keep Paste button in edit mode
+- [x] Add a Copy button as well
+- [x] Exit ABC notation box after successfully pasteing
+- [ ] Uncleaned notation tab in viewer
+
+### Notation Mechanic
+
+- [x] Improve tool
+- [x] Add repair button to ABC formatter
+- [ ] Complete TODOs
+- [ ] Include normalizations, fixes, and warnings on the page
+- [ ] Rename to "Notation Mechanic"
 
 ## Changes
 
@@ -69,7 +80,7 @@
 
 ## Ideas
 
-- [ ] Move all buttons for ABC text editor/formatter to a toolbar
+- [x] Move all buttons for ABC text editor/formatter to a toolbar
 
 ## Explore
 

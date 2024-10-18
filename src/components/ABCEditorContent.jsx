@@ -225,7 +225,7 @@ const ABCEditorContent = ({ tuneId, handleLayoutChange, layout }) => {
 					)}
 					{!tuneId && (
 						<>
-							<h2>Enter ABC Notation</h2>
+							{/* <h2>Enter ABC Notation</h2> */}
 							<ABCNotationComponent
 								parentText={abcNotation}
 								placeholderText="Enter ABC notation here"
@@ -233,7 +233,7 @@ const ABCEditorContent = ({ tuneId, handleLayoutChange, layout }) => {
 							/>
 						</>
 					)}
-					<Row className="mt-2">
+					{/* <Row className="mt-2">
 						<Col className="d-flex justify-content-end">
 							<Button
 								onClick={() => setAbcNotation("")}
@@ -246,7 +246,7 @@ const ABCEditorContent = ({ tuneId, handleLayoutChange, layout }) => {
 							</Button>
 							<FileUploader handleFile={setFile} />
 						</Col>
-					</Row>
+					</Row> */}
 					{didUpload && (
 						<Row className="mt-2">
 							<Col>
@@ -262,7 +262,7 @@ const ABCEditorContent = ({ tuneId, handleLayoutChange, layout }) => {
 				</Col>
 
 				<Col md={layout === "tall" ? 12 : 6}>
-					<Row className="mt-2">
+					<Row>
 						<Col>
 							{/* <h2>Rendered Sheet Music</h2> */}
 							<Synthesizer abcNotation={abcNotation} index={0} />
