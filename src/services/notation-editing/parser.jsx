@@ -112,12 +112,10 @@ class NoteLength {
 					return 1;
 				}
 			} else {
-				console.warn("Unrecognized note length: ", this.text);
 				this.addWarning("Unrecognized note length: " + this.text);
 			}
 		} else {
 			// TODO deal with invalid note lengths
-			console.warn("Invalid note length: ", this.text);
 			this.addWarning("Invalid note length: " + this.text);
 			return 1;
 		}

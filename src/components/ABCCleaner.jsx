@@ -17,7 +17,8 @@ import GeneratedTunes from "../assets/GeneratedTunes";
 // import ABCNotations from "../assets/ABCNotations";
 import Synthesizer from "./Synthesizer";
 
-import ABCNotation from "../services/ABCNotationParser";
+// import ABCNotation from "../services/ABCNotationParser";
+import ABCNotation from "../services/notation-editing/parser";
 
 import OrcheImage from "../assets/images/Orche.png";
 import ABCNotationComponent from "./ABCNotationComponent";
@@ -266,9 +267,9 @@ const ABCCleaner = () => {
 							const cleanedNotation = new ABCNotation(
 								abcNotation1
 							);
-							setAbcNotation2(cleanedNotation.abcNotation);
+							setAbcNotation2(cleanedNotation.fullText);
 							setHasCleaned(true);
-							setNumFixes(cleanedNotation.numFixes);
+							setNumFixes(cleanedNotation.fixes.length);
 							setWarnings(cleanedNotation.warnings);
 							setFailed(cleanedNotation.failed);
 						}}

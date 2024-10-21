@@ -96,16 +96,6 @@ const ABCNotationComponent = ({ parentText, placeholderText, onChange }) => {
 		}
 	}, [parentText]); // eslint-disable-line react-hooks/exhaustive-deps
 
-	undoStack.forEach((item, index) =>
-		console.log(`undoStack[${index}].length: ${item.length}`)
-	);
-
-	// log length of each stack
-	console.log(
-		`undoStack: ${undoStack.length} redoStack: ${redoStack.length}`
-	);
-	// console.log(`undoStack: ${undoStack}`);
-
 	return (
 		<div ref={formRef}>
 			{/* Toolbar with buttons */}

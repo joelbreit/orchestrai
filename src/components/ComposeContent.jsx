@@ -32,7 +32,8 @@ import {
 	TabContent,
 	TabPane,
 } from "reactstrap";
-import ABCNotation from "../services/ABCNotationParser";
+// import ABCNotation from "../services/ABCNotationParser";
+import ABCNotation from "../services/notation-editing/parser";
 import FeedbackForm from "./FeedbackForm";
 
 // Import contexts
@@ -135,9 +136,9 @@ const ComposeContent = () => {
 
 	useEffect(() => {
 		const cleanedNotation = new ABCNotation(abcNotation);
-		setAbcNotation(cleanedNotation.abcNotation);
+		setAbcNotation(cleanedNotation.fullText);
 		setHasCleaned(true);
-		setNumFixes(cleanedNotation.numFixes);
+		setNumFixes(cleanedNotation.fixes.length);
 		setWarnings(cleanedNotation.warnings);
 		setFixesList(cleanedNotation.fixes);
 		// setFailed(cleanedNotation.failed);
@@ -319,7 +320,7 @@ const ComposeContent = () => {
 						break;
 					case "failed":
 						setRunStatus("Failed");
-						break;
+						return;
 					default:
 						setRunStatus("Unknown");
 						break;
