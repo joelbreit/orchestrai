@@ -14,6 +14,7 @@
 - [ ] m1cmysxk gets cleaned incorrectly (removes note instead of adding one)
 - [x] Article PDF doesn't show completely on mobile
 - [ ] Prompt textarea doesn't expand to fit text when lines wrap
+- [ ] notation mechanic removes `abc` at beginning, and trailing lyric lines
 
 ## Features
 
@@ -53,6 +54,8 @@
 - [x] Add a Copy button as well
 - [x] Exit ABC notation box after successfully pasteing
 - [ ] Uncleaned notation tab in viewer
+- [ ] Load more compositions on profile page
+- [ ] Immediately viewable fix, warning, and normalization counts
 
 ### Notation Mechanic
 

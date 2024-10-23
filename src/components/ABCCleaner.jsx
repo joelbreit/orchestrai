@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	Alert,
 	Button,
@@ -10,6 +10,7 @@ import {
 	DropdownToggle,
 	Row,
 } from "reactstrap";
+import AllCreations from "../assets/AllCreations.js";
 import Logger from "../services/Logger";
 
 // import tunes from "../assets/Tunes";
@@ -52,6 +53,10 @@ const ABCCleaner = () => {
 	const [numFixes, setNumFixes] = useState(0);
 	const [warnings, setWarnings] = useState([]);
 	const [failed, setFailed] = useState(false);
+
+	const [tunes, setTunes] = useState(AllCreations.split("X:"));
+
+	const [fileIndex, setFileIndex] = useState(0);
 
 	const [selectedTune, setSelectedTune] = useState("Select a tune");
 
@@ -246,6 +251,23 @@ const ABCCleaner = () => {
 						Load Example{" "}
 						<span className="icon-square flex-shrink-0">
 							<i className={`bi bi-code-square`}></i>
+						</span>
+					</Button>
+
+					{/* Load from All Creations */}
+					<Button
+						onClick={() => {
+							setFileIndex((fileIndex + 1) % tunes.length);
+							const contents = "X:" + tunes[fileIndex];
+							setAbcNotation1(contents);
+							setAbcNotation2("");
+							resetCleaner();
+						}}
+						className="primary-button-outline mb-2"
+					>
+						Load Random{" "}
+						<span className="icon-square flex-shrink-0">
+							<i className={`bi bi-dice-5`}></i>
 						</span>
 					</Button>
 

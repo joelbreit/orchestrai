@@ -28,6 +28,7 @@ import {
 	NavItem,
 	NavLink,
 	Progress,
+	Row,
 	Spinner,
 	TabContent,
 	TabPane,
@@ -45,6 +46,7 @@ import {
 	ORCHESTRAI_LOADING_MESSAGES as LOADING_MESSAGES,
 	ORCHESTRAI_TIMEOUT_DURATION as MAX_DURATION,
 	OPEN_ROUTER_MODELS,
+	PROMPT_BASE,
 	PROMPT_SUGGESTIONS,
 } from "../assets/Constants";
 import GenerateId from "../services/GenerateId";
@@ -65,6 +67,17 @@ const ComposeContent = () => {
 	const [advancedPromptIndex, setAdvancedPromptIndex] = useState(
 		Math.floor(Math.random() * PROMPT_SUGGESTIONS.length)
 	);
+	const [isCustomBasePrompt, setIsCustomBasePrompt] = useState(false);
+	const [customBasePrompt, setCustomBasePrompt] = useState("");
+	const [numInstruments, setNumInstruments] = useState(null);
+	const [numMeasures, setNumMeasures] = useState(null);
+	const [promptFlags, setPromptFlags] = useState({
+		discouragePercussion: true,
+		discourageLyrics: true,
+		discouragePickupMeasures: true,
+	});
+
+	const [fullPrompt, setFullPrompt] = useState("");
 
 	// Loading state
 	const [isLoading, setIsLoading] = useState(false);
@@ -163,6 +176,8 @@ const ComposeContent = () => {
 			const newTitle = abcNotation.match(/^T:(.*)$/m)[1];
 			setTitle(newTitle);
 
+			const prompt = fullPrompt || input || "Compose whatever you want";
+
 			const body = {
 				tuneId: tuneId,
 				accountId: appState.accountId || "m18g2y71", // NotLoggedIn account used for easy compose feature
@@ -170,7 +185,7 @@ const ComposeContent = () => {
 				thread: thread,
 				run: run,
 				title: newTitle,
-				prompt: input || "Compose whatever you want", // TODO this might be wrong if the user switches tabs
+				prompt: prompt,
 				description: description,
 				notation: abcNotation,
 				warnings: warnings,
@@ -239,6 +254,8 @@ const ComposeContent = () => {
 			} else {
 				Logger.warn("Unknown tab:", activeTab);
 			}
+
+			setFullPrompt(content);
 
 			const generateMusicResponse = await fetch(
 				`${apiUrl}/generateMusic`,
@@ -376,6 +393,7 @@ const ComposeContent = () => {
 				parsedNotation = output.match(/```([^`]*)```/)[1];
 			} catch (error) {
 				Logger.error("Error parsing notation:", error);
+				Logger.debug("Output:", output);
 				setErrorMessage(
 					"Unable to find ABC notation in the response. Please try again."
 				);
@@ -395,6 +413,47 @@ const ComposeContent = () => {
 		const handleOpenRouterAPI = async () => {
 			let secondsSoFar = 0;
 			setRunStatus("In Progress");
+
+			let content = "";
+
+			// if custom base prompt and customBasePrompt is not empty
+			//   content = customBasePrompt + openRouterPrompt
+			// else
+			//   content = PROMPT_BASE + openRouterPrompt
+			if (isCustomBasePrompt && customBasePrompt) {
+				content = customBasePrompt;
+			} else {
+				content = PROMPT_BASE;
+			}
+
+			//   if percussion flag on, add percussion prompt
+			//   if lyrics flag on, add lyrics prompt
+			//   if pickup measures flag on, add pickup measures prompt
+
+			if (promptFlags.discouragePercussion) {
+				content += " DO NOT include percussion.";
+			}
+			if (promptFlags.discourageLyrics) {
+				content += " DO NOT include lyrics or words.";
+			}
+			if (promptFlags.discouragePickupMeasures) {
+				content += " DO NOT include pickup measures or beats.";
+			}
+
+			//   if numInstruments is not null, add numInstruments prompt
+			//   if numMeasures is not null, add numMeasures prompt
+
+			if (numInstruments) {
+				content += ` Try to include ${numInstruments} voices.`;
+			}
+			if (numMeasures) {
+				content += ` Try to include ${numMeasures} measures per voice.`;
+			}
+
+			content += `\n\nYour prompt for this composition is: ${openRouterPrompt}`;
+
+			setFullPrompt(content);
+
 			const openRouterResponse = await fetch(
 				`${apiUrl}/OpenRouterGenerate`,
 				{
@@ -404,7 +463,7 @@ const ComposeContent = () => {
 					},
 					body: JSON.stringify({
 						accountId: appState.accountId,
-						content: `${openRouterPrompt}`,
+						content: content,
 						model: model,
 					}),
 				}
@@ -448,6 +507,7 @@ const ComposeContent = () => {
 				parsedNotation = output.match(/```([^`]*)```/)[1];
 			} catch (error) {
 				Logger.error("Error parsing notation:", error);
+				Logger.debug("Output:", output);
 				setErrorMessage(
 					"Unable to find ABC notation in the response. Please try again."
 				);
@@ -742,6 +802,154 @@ const ComposeContent = () => {
 								</p>
 							</FormText>
 
+							{/* Base Prompt Toggle */}
+							<FormGroup switch>
+								<Input
+									type="switch"
+									checked={isCustomBasePrompt}
+									onClick={() => {
+										setIsCustomBasePrompt(
+											!isCustomBasePrompt
+										);
+									}}
+								/>
+								<Label check>Use a custom base prompt</Label>
+							</FormGroup>
+
+							{/* Custom Base Prompt */}
+							{isCustomBasePrompt && (
+								<FormGroup>
+									<Label
+										for="customBasePrompt"
+										style={{ marginRight: "0.5rem" }}
+									>
+										Custom Base Prompt
+									</Label>
+									<Input
+										type="textarea"
+										id="customBasePrompt"
+										value={customBasePrompt}
+										onChange={(e) =>
+											setCustomBasePrompt(e.target.value)
+										}
+										placeholder={`Write a base prompt for the model (e.g. "Act as an advanced AI composer specializing in ABC notation")`}
+										className="mt-2"
+									/>
+								</FormGroup>
+							)}
+
+							{/* Prompt Flag Toggles */}
+							<FormGroup>
+								<Label
+									for="promptFlags"
+									style={{ marginRight: "0.5rem" }}
+								>
+									Guardrails
+								</Label>
+								<FormGroup check>
+									<Label check>
+										<Input
+											type="checkbox"
+											checked={
+												promptFlags.discouragePercussion
+											}
+											onChange={() =>
+												setPromptFlags({
+													...promptFlags,
+													discouragePercussion:
+														!promptFlags.discouragePercussion,
+												})
+											}
+										/>
+										{"Discourage percussion"}
+									</Label>
+								</FormGroup>
+								<FormGroup check>
+									<Label check>
+										<Input
+											type="checkbox"
+											checked={
+												promptFlags.discourageLyrics
+											}
+											onChange={() =>
+												setPromptFlags({
+													...promptFlags,
+													discourageLyrics:
+														!promptFlags.discourageLyrics,
+												})
+											}
+										/>
+										{"Discourage lyrics"}
+									</Label>
+								</FormGroup>
+								<FormGroup check>
+									<Label check>
+										<Input
+											type="checkbox"
+											checked={
+												promptFlags.discouragePickupMeasures
+											}
+											onChange={() =>
+												setPromptFlags({
+													...promptFlags,
+													discouragePickupMeasures:
+														!promptFlags.discouragePickupMeasures,
+												})
+											}
+										/>
+										{"Discourage pickup measures"}
+									</Label>
+								</FormGroup>
+							</FormGroup>
+							<Row>
+								<Col md={6}>
+									{/* Number of Voices */}
+									<FormGroup>
+										<Label
+											for="numInstruments"
+											style={{ marginRight: "0.5rem" }}
+										>
+											Number of Instruments (optional)
+										</Label>
+										<Input
+											type="number"
+											id="numInstruments"
+											value={numInstruments}
+											onChange={(e) =>
+												setNumInstruments(
+													e.target.value
+												)
+											}
+											placeholder="Recommended between 1 and 4"
+											className="mt-2"
+										/>
+									</FormGroup>
+								</Col>
+
+								<Col md={6}>
+									{/* Number of Measures */}
+									<FormGroup>
+										<Label
+											for="numMeasures"
+											style={{ marginRight: "0.5rem" }}
+										>
+											Number of Measures (optional)
+										</Label>
+										<Input
+											type="number"
+											id="numMeasures"
+											value={numMeasures}
+											onChange={(e) =>
+												setNumMeasures(e.target.value)
+											}
+											placeholder="Recommended between 8 and 16"
+											className="mt-2"
+										/>
+									</FormGroup>
+								</Col>
+							</Row>
+
+							{/* Model Dropdown */}
 							<FormGroup>
 								<Label
 									for="openRouterModel"
@@ -785,7 +993,7 @@ const ComposeContent = () => {
 									for="openRouterPrompt"
 									style={{ marginRight: "0.5rem" }}
 								>
-									Prompt
+									Tune Prompt
 								</Label>
 								{/* <Button
 									className="primary-button"
@@ -802,7 +1010,7 @@ const ComposeContent = () => {
 									onChange={(e) =>
 										setOpenRouterPrompt(e.target.value)
 									}
-									placeholder="Write a full prompt for what you want the composition to be"
+									placeholder="Write a prompt for what you want the composition to be"
 									className="mt-2"
 								/>
 							</FormGroup>

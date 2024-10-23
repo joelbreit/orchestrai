@@ -650,6 +650,9 @@ class Voice {
 				preText = "";
 			}
 		}
+		if (this.lines) {
+			this.lines[this.lines.length - 1].postText = preText + "\n";
+		}
 
 	}
 
@@ -711,6 +714,10 @@ class ABCNotation {
 		try {
 			this.abcNotation = this.normalizeText(abcNotation);
 			this.title = "";
+			const matches = this.abcNotation.match(REGEX.headers.title);
+			if (matches) {
+				this.title = matches[1];
+			}
 			this.measureTextMatrix = [];
 			this.parse();
 			// TODO log if there are any outstanding issues
@@ -726,13 +733,6 @@ class ABCNotation {
 				);
 				const error = `Error: mismatched number of measures between voices. Measure numbers: ${measureNumbers}`;
 				this.addWarning(error);
-			}
-
-			const tunes = abcjs.parseOnly(this.abcNotation);
-			const abcWarnings = tunes[0].warnings;
-
-			if (this.warnings.length > 0) {
-				this.warnings = this.warnings.concat(abcWarnings);
 			}
 
 			for (const [, voiceText] of this.voices) {
@@ -768,15 +768,23 @@ class ABCNotation {
 			// TODO enforceMeasuresPerLine
 			// TODO enforceMatching barlines
 
+			this.checkForErrors();
+
+			const tunes = abcjs.parseOnly(this.abcNotation);
+			const abcWarnings = tunes[0].warnings;
+
+			if (this.warnings.length > 0) {
+				// add "abcjs" to the end of each warning
+				this.warnings = this.warnings.concat(
+					abcWarnings.map((warning) => warning + " (abcjs)")
+				);
+			}
 		} catch (error) {
 			this.failed = true; // TODO warnings should be errors and always imply failure
 			this.addWarning(
-				"Unexpected error in while parsing: " + error
+				"Unexpected error while parsing: " + error
 			);
 		}
-
-		this.checkForErrors();
-
 	}
 
 	get numFixes() {
@@ -1090,7 +1098,7 @@ class ABCNotation {
 		const mostCommonLength = determineMeasureLengths();
 
 		if (notesPerMeasure !== mostCommonLength) {
-			this.addWarning(`Mismatch between notes per measure ${notesPerMeasure} and most common measure length ${mostCommonLength}`);
+			this.addNote(`Mismatch between notes per measure ${notesPerMeasure} and most common measure length ${mostCommonLength}`);
 		}
 
 		const desiredMeasureLength = mostCommonLength;

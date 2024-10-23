@@ -31,7 +31,6 @@ function Synthesizer({ abcNotation, index, animate }) {
 	};
 
 	useEffect(() => {
-		Logger.debug("Synthesizer useEffect");
 		if (!abcNotation) return;
 
 		if (ABCJS.synth.supportsAudio()) {

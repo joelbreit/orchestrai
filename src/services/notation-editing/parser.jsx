@@ -705,6 +705,9 @@ class Voice {
 				preText = "";
 			}
 		}
+		if (this.lines) {
+			this.lines[this.lines.length - 1].postText = preText + "\n";
+		}
 	}
 
 	get fullText() {
@@ -766,6 +769,10 @@ class ABCNotation {
 		try {
 			this.abcNotation = this.normalizeText(abcNotation);
 			this.title = "";
+			const matches = this.abcNotation.match(REGEX.headers.title);
+			if (matches) {
+				this.title = matches[1];
+			}
 			this.measureTextMatrix = [];
 			this.parse();
 			// TODO log if there are any outstanding issues
@@ -836,11 +843,14 @@ class ABCNotation {
 			const abcWarnings = tunes[0].warnings;
 
 			if (this.warnings.length > 0) {
-				this.warnings = this.warnings.concat(abcWarnings);
+				// add "abcjs" to the end of each warning
+				this.warnings = this.warnings.concat(
+					abcWarnings.map((warning) => warning + " (abcjs)")
+				);
 			}
 		} catch (error) {
 			this.failed = true; // TODO warnings should be errors and always imply failure
-			this.addWarning("Unexpected error in while parsing: " + error);
+			this.addWarning("Unexpected error while parsing: " + error);
 		}
 	}
 
@@ -1166,7 +1176,7 @@ class ABCNotation {
 		const mostCommonLength = determineMeasureLengths();
 
 		if (notesPerMeasure !== mostCommonLength) {
-			this.addWarning(
+			this.addNote(
 				`Mismatch between notes per measure ${notesPerMeasure} and most common measure length ${mostCommonLength}`
 			);
 		}
