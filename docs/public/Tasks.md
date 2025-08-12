@@ -4,7 +4,7 @@
 
 - [ ] This composition caused an infinite loop with the cleanup code: m0wtjbep
 - [x] Clean up report
-- [ ] When API fails, you should stop it right away instead of continueing the progress bar for 2ish minutes
+- [x] When API fails, you should stop it right away instead of continueing the progress bar for 2ish minutes
 - [ ] Audio stops working in tabs after a while
 - [ ] Music keeps playing when you navigate away
 - [x] ABC editor limits height (scrolls) but ABC formatter does not
