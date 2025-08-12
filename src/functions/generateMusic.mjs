@@ -178,12 +178,12 @@ export const handler = async (event) => {
 		);
 
 		const axiosInstance = axios.create({
-			baseURL: "https://api.openai.com/v1/",
-			headers: {
-				Authorization: `Bearer ${apiKey}`,
-				"Content-Type": "application/json",
-				"OpenAI-Beta": "assistants=v1",
-			},
+				baseURL: "https://api.openai.com/v1/",
+				headers: {
+						Authorization: `Bearer ${apiKey}`,
+						"Content-Type": "application/json",
+						"OpenAI-Beta": "assistants=v2",
+				},
 		});
 
 		console.log(`Creating thread with prompt: ${content}`);
