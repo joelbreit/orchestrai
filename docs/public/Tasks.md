@@ -18,6 +18,11 @@
 
 ## Features
 
+- [x] Add new models (August 2025)
+- [x] Add new models banner
+- [ ] Add feed of recent public compositions
+- [ ] Include generation time in tune info
+- [ ] Include model in tune info
 - [ ] Workflow capability (brainstorming -> composing -> feedback -> cleanup)
 - [ ] Easy feedback right away (awful, poor, fine, good, incredible)
 - [ ] Easy reporting right away (notation broken (timing), notation broken (other), 
