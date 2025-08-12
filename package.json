@@ -49,5 +49,8 @@
     },
     "overrides": {
         "midi": "github:mudcube/MIDI.js"
+    },
+    "devDependencies": {
+        "typescript": "^4.9.5"
     }
 }
