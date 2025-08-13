@@ -93,7 +93,7 @@ const Header = (args) => {
                 >
                     <strong>🎵 New AI Models Available!</strong> August 2025
                     models now include GPT-5, Claude Sonnet 4, and Gemini 2.5
-                    Flash. Try them in the{" "}
+                    Flash. Try them in the OpenRouter Compose tab of the {" "}
                     <RouterNavLink
                         to="/compose"
                         style={{
@@ -103,7 +103,7 @@ const Header = (args) => {
                     >
                         Compose
                     </RouterNavLink>{" "}
-                    section!
+                    page!
                 </Alert>
             )}
             <Navbar expand="md" light {...args}>

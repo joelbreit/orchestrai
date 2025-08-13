@@ -48,6 +48,7 @@ import {
     OPEN_ROUTER_MODELS,
     PROMPT_BASE,
     PROMPT_SUGGESTIONS,
+	GOOD_EXAMPLE_PROMPT,
 } from "../assets/Constants";
 import GenerateId from "../services/GenerateId";
 import TuneViewerComponent from "./TuneViewerComponent";
@@ -60,9 +61,9 @@ const ComposeContent = () => {
     // User Input
     const [activeTab, setActiveTab] = useState("1");
     const [advancedPrompt, setAdvancedPrompt] = useState("");
-    const [openRouterPrompt, setOpenRouterPrompt] = useState("");
+    const [openRouterPrompt, setOpenRouterPrompt] = useState(GOOD_EXAMPLE_PROMPT);
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    const [model, setModel] = useState("openai/gpt-4o");
+    const [model, setModel] = useState("anthropic/claude-sonnet-4");
     const [input, setInput] = useState("");
     const [advancedPromptIndex, setAdvancedPromptIndex] = useState(
         Math.floor(Math.random() * PROMPT_SUGGESTIONS.length)
@@ -625,19 +626,19 @@ const ComposeContent = () => {
         <Container>
             <h1 className="border-bottom">Compose Music with AI</h1>
             <p>
-                This composition tool uses LLM APIs like GPT-4 or Claude Sonnet
+                This composition tool uses LLM APIs
                 to generate music notation. You can provide any text
                 description, and a piece of music will be generated in ABC
                 notation which will then be rendered for you to watch, listen,
                 edit and save.
             </p>
-            {!appState.authenticated && (
+            {/* {!appState.authenticated && (
                 <p className="mt-3">
                     <a href="/signup">Create a free account</a> or{" "}
                     <a href="/login">log in</a> to use the advanced compose
                     feature.
                 </p>
-            )}
+            )} */}
             {errorMessage && <Alert color="danger">{errorMessage}</Alert>}
             {/* <ProtectedContent> */}
             <div>
@@ -660,7 +661,7 @@ const ComposeContent = () => {
                                 toggleTab("1");
                             }}
                         >
-                            Easy Compose <i className="bi bi-music-note"></i>
+                            Quick Compose <i className="bi bi-music-note"></i>
                         </NavLink>
                     </NavItem>
                     <NavItem>
@@ -673,7 +674,7 @@ const ComposeContent = () => {
                             onClick={() => {
                                 toggleTab("2");
                             }}
-                            disabled={!appState.authenticated}
+                            // disabled={!appState.authenticated}
                         >
                             Advanced Compose{" "}
                             <i className="bi bi-code-square"></i>
@@ -689,7 +690,7 @@ const ComposeContent = () => {
                             onClick={() => {
                                 toggleTab("3");
                             }}
-                            disabled={!appState.authenticated}
+                            // disabled={!appState.authenticated}
                         >
                             OpenRouter Compose{" "}
                             <i className="bi bi-diagram-3"></i>

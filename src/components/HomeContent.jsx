@@ -32,8 +32,7 @@ const HomeContent = () => {
 					<h1>OrchestrAI</h1>
 				</div>
 				<p className="lead">
-					OrchestrAI is a tool that uses large language models like
-					GPT-4 to help generate and refine music compositions in ABC
+					OrchestrAI is a tool that uses large language models to help generate and refine music compositions in ABC
 					notation. This notation style allows for ledgeable and
 					editable music that can be viewed and played in the browser,
 					shared with others, or exported to MIDI.
