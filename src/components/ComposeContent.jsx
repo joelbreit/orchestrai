@@ -283,13 +283,13 @@ const ComposeContent = () => {
                     "An internal error occurred starting music generation. Please try again.";
                 setErrorMessage(msg);
                 Logger.error("Error:", msg);
-                setRunStatus("Failed");
-                setIsLoading(false);
-                setPercentComplete(0);
-                setTimeSoFar(0);
-                setThread("");
-                setRun("");
-                return;
+                // setRunStatus("Failed");
+                // setIsLoading(false);
+                // setPercentComplete(0);
+                // setTimeSoFar(0);
+                // setThread("");
+                // setRun("");
+                // return; // TODO should return and set error here but that is causing issues
             }
             Logger.log("Generated response:", generateMusicBody.message);
 
@@ -497,13 +497,19 @@ const ComposeContent = () => {
                 setErrorMessage(responseBody.message);
                 setRunStatus("Failed");
                 Logger.error("Error:", responseBody.message);
+				// setIsLoading(false);
+				// setPercentComplete(0);
+				// setTimeSoFar(0);
+				// setThread("");
+				// setRun("");
+				// return;
             }
 
             const message = responseBody.message;
             Logger.debug("Message:", message);
             const data = responseBody.data;
             Logger.debug("Data:", data);
-            const choices = data.choices;
+            const choices = data && Array.isArray(data.choices) ? data.choices : [];
             Logger.debug("Choices:", choices);
 
             Logger.log("Generated response:", responseBody.message);

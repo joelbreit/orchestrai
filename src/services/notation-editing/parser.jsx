@@ -695,9 +695,8 @@ class Voice {
 			if (
 				line.match(REGEX.commentLine) ||
 				line.match(REGEX.lyricLine) ||
-				line.match(
-					REGEX.voiceDefinition || line.match(REGEX.partDefinition)
-				)
+				line.match(REGEX.voiceDefinition) ||
+				line.match(REGEX.partDefinition)
 			) {
 				preText += line + "\n";
 			} else if (line !== "") {
