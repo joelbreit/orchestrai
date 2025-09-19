@@ -48,7 +48,7 @@ import {
     OPEN_ROUTER_MODELS,
     PROMPT_BASE,
     PROMPT_SUGGESTIONS,
-	GOOD_EXAMPLE_PROMPT,
+    GOOD_EXAMPLE_PROMPT,
 } from "../assets/Constants";
 import GenerateId from "../services/GenerateId";
 import TuneViewerComponent from "./TuneViewerComponent";
@@ -59,9 +59,10 @@ const ComposeContent = () => {
     const { appState } = useContext(AppContext);
 
     // User Input
-    const [activeTab, setActiveTab] = useState("1");
+    const [activeTab, setActiveTab] = useState("3");
     const [advancedPrompt, setAdvancedPrompt] = useState("");
-    const [openRouterPrompt, setOpenRouterPrompt] = useState(GOOD_EXAMPLE_PROMPT);
+    const [openRouterPrompt, setOpenRouterPrompt] =
+        useState(GOOD_EXAMPLE_PROMPT);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [model, setModel] = useState("anthropic/claude-sonnet-4");
     const [input, setInput] = useState("");
@@ -497,19 +498,20 @@ const ComposeContent = () => {
                 setErrorMessage(responseBody.message);
                 setRunStatus("Failed");
                 Logger.error("Error:", responseBody.message);
-				// setIsLoading(false);
-				// setPercentComplete(0);
-				// setTimeSoFar(0);
-				// setThread("");
-				// setRun("");
-				// return;
+                // setIsLoading(false);
+                // setPercentComplete(0);
+                // setTimeSoFar(0);
+                // setThread("");
+                // setRun("");
+                // return;
             }
 
             const message = responseBody.message;
             Logger.debug("Message:", message);
             const data = responseBody.data;
             Logger.debug("Data:", data);
-            const choices = data && Array.isArray(data.choices) ? data.choices : [];
+            const choices =
+                data && Array.isArray(data.choices) ? data.choices : [];
             Logger.debug("Choices:", choices);
 
             Logger.log("Generated response:", responseBody.message);
@@ -632,11 +634,10 @@ const ComposeContent = () => {
         <Container>
             <h1 className="border-bottom">Compose Music with AI</h1>
             <p>
-                This composition tool uses LLM APIs
-                to generate music notation. You can provide any text
-                description, and a piece of music will be generated in ABC
-                notation which will then be rendered for you to watch, listen,
-                edit and save.
+                This composition tool uses LLM APIs to generate music notation.
+                You can provide any text description, and a piece of music will
+                be generated in ABC notation which will then be rendered for you
+                to watch, listen, edit and save.
             </p>
             {/* {!appState.authenticated && (
                 <p className="mt-3">
@@ -656,7 +657,7 @@ const ComposeContent = () => {
                 </h3>
 
                 <Nav tabs>
-                    <NavItem>
+                    {/* <NavItem>
                         <NavLink
                             className={
                                 activeTab === "1"
@@ -685,7 +686,7 @@ const ComposeContent = () => {
                             Advanced Compose{" "}
                             <i className="bi bi-code-square"></i>
                         </NavLink>
-                    </NavItem>
+                    </NavItem> */}
                     <NavItem>
                         <NavLink
                             className={
