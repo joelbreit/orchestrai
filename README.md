@@ -1,6 +1,8 @@
 # OrchestrAI
 
-OrchestrAI is an web application that transforms text prompts into playable, viewable, and editable music compositions. Leveraging OpenAI's API with GPT-4 Turbo model, OrchestrAI offers a unique platform for users to generate music in ABC notation format directly from textual descriptions. It is likely the first public AI application that can create playable music in staff music notation from text prompts.
+![demo](./docs/demo.gif)
+
+OrchestrAI is a web application that transforms text prompts into playable, viewable, and editable music compositions. Leveraging several models through OpenRouter, OrchestrAI offers a unique platform for utilizing LLMs to generate symbolic (sheet) music from text prompts.
 
 ## Features
 

@@ -78,7 +78,7 @@ const Footer = () => {
 						</a>
 					</li>
 				</ul>
-				<Row className="d-flex justify-content-center">
+				{/* <Row className="d-flex justify-content-center">
 					<div className="mt-3">
 						<h6>Questions or suggesstions?</h6>
 						Message the{" "}
@@ -92,7 +92,7 @@ const Footer = () => {
 							Discord <i className="bi bi-discord"></i>
 						</a>
 					</div>
-				</Row>
+				</Row> */}
 				<div className="mt-5">&copy; {year} Joel Breit</div>
 			</Container>
 		</footer>
